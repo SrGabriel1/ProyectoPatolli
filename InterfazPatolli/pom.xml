@@ -12,4 +12,11 @@
         <exec.mainClass>com.mycompany.patolli.Patolli</exec.mainClass>
     </properties>
     <name>Interfazpatolli</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE210</version>
+        </dependency>
+    </dependencies>
 </project>
