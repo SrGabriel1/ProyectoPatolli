@@ -31,7 +31,7 @@ public class panelColorSeleccionado extends javax.swing.JPanel {
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gabriel\\OneDrive\\Documentos\\GitHub\\patolli\\InterfazPatolli\\src\\main\\img\\colorSeleccionado.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/colorSeleccionado.png"))); // NOI18N
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, -1, -1));
 
         jButton1.setText("jButton1");

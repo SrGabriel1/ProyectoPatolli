@@ -38,7 +38,7 @@ public class vistaJuego extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(240, 202, 148));
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 270, 40));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Gabriel\\OneDrive\\Documentos\\GitHub\\patolli\\InterfazPatolli\\src\\main\\img\\jugar.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/jugar.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 638));
 
         jButton1.setText("jButton1");
