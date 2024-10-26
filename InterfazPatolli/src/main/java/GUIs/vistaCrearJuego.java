@@ -15,6 +15,7 @@ public class vistaCrearJuego extends javax.swing.JFrame {
      */
     public vistaCrearJuego() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -27,62 +28,55 @@ public class vistaCrearJuego extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        btnInicio = new javax.swing.JButton();
+        btnLobby = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/crearJuego.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        btnInicio.setText("jButton1");
+        btnInicio.setBorderPainted(false);
+        btnInicio.setContentAreaFilled(false);
+        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 120, 80));
+
+        btnLobby.setText("jButton1");
+        btnLobby.setBorderPainted(false);
+        btnLobby.setContentAreaFilled(false);
+        btnLobby.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLobbyActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLobby, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 520, 140, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(vistaCrearJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(vistaCrearJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(vistaCrearJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(vistaCrearJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        vistaInicio inicio = new vistaInicio();
+        inicio.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnInicioActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new vistaCrearJuego().setVisible(true);
-            }
-        });
-    }
+    private void btnLobbyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLobbyActionPerformed
+        vistaLobby lobby = new vistaLobby();
+        lobby.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnLobbyActionPerformed
+
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnInicio;
+    private javax.swing.JButton btnLobby;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
