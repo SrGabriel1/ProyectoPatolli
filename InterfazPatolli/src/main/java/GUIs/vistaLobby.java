@@ -4,11 +4,16 @@
  */
 package GUIs;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Gabriel
  */
 public class vistaLobby extends javax.swing.JFrame {
+
+    private int JugadoresListos = 0;
+    private int TotalJugadores = 0;
 
     /**
      * Creates new form vistaMenuInicio
@@ -16,6 +21,13 @@ public class vistaLobby extends javax.swing.JFrame {
     public vistaLobby() {
         initComponents();
         setLocationRelativeTo(null);
+    }
+
+    public vistaLobby(int total) {
+        initComponents();
+        setLocationRelativeTo(null);
+        TotalJugadores = total;
+        ContadorJugadores.setText("(" + JugadoresListos + "/" + TotalJugadores + ")");
     }
 
     /**
@@ -27,14 +39,20 @@ public class vistaLobby extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ContadorJugadores = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnJuego = new javax.swing.JButton();
+        botonListo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        ContadorJugadores.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        ContadorJugadores.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(ContadorJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 530, 100, 60));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Lobby.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 450, 630));
 
         btnJuego.setText("jButton5");
         btnJuego.setBorderPainted(false);
@@ -44,7 +62,17 @@ public class vistaLobby extends javax.swing.JFrame {
                 btnJuegoActionPerformed(evt);
             }
         });
-        getContentPane().add(btnJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 690, 150, 90));
+        getContentPane().add(btnJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 150, 80));
+
+        botonListo.setText("jButton1");
+        botonListo.setBorderPainted(false);
+        botonListo.setContentAreaFilled(false);
+        botonListo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonListoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(botonListo, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 510, 120, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -55,8 +83,24 @@ public class vistaLobby extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnJuegoActionPerformed
 
+    private void botonListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonListoActionPerformed
+        if (JugadoresListos < TotalJugadores) {
+            JugadoresListos++;
+            ContadorJugadores.setText("(" + JugadoresListos + "/" + TotalJugadores + ")");
+        }
+
+        // Solo abre la vista del juego cuando se alcanza exactamente el número máximo de jugadores
+        if (JugadoresListos == TotalJugadores) {
+            vistaTablero Tablero = new vistaTablero(TotalJugadores);
+            Tablero.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_botonListoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ContadorJugadores;
+    private javax.swing.JButton botonListo;
     private javax.swing.JButton btnJuego;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
