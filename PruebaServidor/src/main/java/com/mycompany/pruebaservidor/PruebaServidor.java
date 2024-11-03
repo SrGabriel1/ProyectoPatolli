@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.pruebaservidor;
 
 import java.util.List;
@@ -21,22 +20,23 @@ import java.util.logging.Logger;
  *
  * @author USER
  */
-public class PruebaServidor extends Observable implements Runnable{
-    
+public class PruebaServidor extends Observable implements Runnable {
+
     private ArrayList<DatosUsuario> clientes = new ArrayList<>();
     private int puerto = 4444;
     ServerSocket servidor = null;
     Socket sc = null;
     ObjectInputStream in;
     ObjectOutputStream outObject;
-    boolean listening=true;
+    boolean listening = true;
 
     @Override
     public void run() {
         agregarUsuariosAPartida();
-        
+
         partidaEnJuego();
     }
+
     public void agregarUsuariosAPartida() {
         try {
             servidor = new ServerSocket(puerto);
@@ -53,19 +53,22 @@ public class PruebaServidor extends Observable implements Runnable{
             e.printStackTrace();
         }
     }
-    public boolean validarUsuario(String nombre){
-        for(DatosUsuario cliente:clientes){
-            if(cliente.getNombre().equalsIgnoreCase(nombre)){
+
+    public boolean validarUsuario(String nombre) {
+        for (DatosUsuario cliente : clientes) {
+            if (cliente.getNombre().equalsIgnoreCase(nombre)) {
                 return false;
             }
         }
         return true;
     }
-    public void notificarALaInterfaz(Object o){
+
+    public void notificarALaInterfaz(Object o) {
         this.setChanged();
         this.notifyObservers(o);
         this.clearChanged();
     }
+
     private class ClientHandler implements Runnable {
 
         private Socket clientSocket;
@@ -74,20 +77,20 @@ public class PruebaServidor extends Observable implements Runnable{
 
         public ClientHandler(Socket socket) {
             this.clientSocket = socket;
-            
+
         }
 
         @Override
         public void run() {
-            
+
             try {
-                in = new ObjectInputStream(clientSocket.getInputStream());
                 out = new ObjectOutputStream(clientSocket.getOutputStream());
+                in = new ObjectInputStream(clientSocket.getInputStream());
 
                 while (true) {
                     Mensaje mensajeRecibido = (Mensaje) in.readObject();
-                    if(mensajeRecibido.getTipo().equals("String")){
-                        String mensaje= (String)mensajeRecibido.getContenido();
+                    if (mensajeRecibido.getTipo().equals("String")) {
+                        String mensaje = (String) mensajeRecibido.getContenido();
                         if (validarUsuario(mensaje)) {
                             clientes.add(new DatosUsuario(sc, mensaje));
                             notificarALaInterfaz(mensaje);
@@ -96,15 +99,14 @@ public class PruebaServidor extends Observable implements Runnable{
                             out.flush();
                         }
                     }
-                    
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    
-    public void partidaEnJuego(){
-        
+
+    public void partidaEnJuego() {
+
     }
 }

@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.pruebaservidor;
 
 import java.io.DataInputStream;
@@ -15,14 +14,14 @@ import java.util.Observable;
  *
  * @author USER
  */
-public class PruebaCliente extends Observable implements Runnable{
-    
+public class PruebaCliente extends Observable implements Runnable {
+
     private int puerto = 4444;
     private String nombreJugador;
     private Socket sc;
-    private boolean usuarioValidado=true;
-    ObjectInputStream inObject;
+    private boolean usuarioValidado = true;
     ObjectOutputStream outObject;
+    ObjectInputStream inObject;
     final String host = "localhost";
 
     public void setNombreJugador(String nombreJugador) {
@@ -33,7 +32,8 @@ public class PruebaCliente extends Observable implements Runnable{
     public void run() {
         try {
             sc = new Socket(host, puerto);
-            ObjectInputStream inObject = new ObjectInputStream(sc.getInputStream());
+            outObject = new ObjectOutputStream(sc.getOutputStream());
+            inObject = new ObjectInputStream(sc.getInputStream());
             while (usuarioValidado) {
                 Mensaje mensajeRecibido = (Mensaje) inObject.readObject();
                 if (mensajeRecibido.getTipo().equals("Error")) {
@@ -41,7 +41,7 @@ public class PruebaCliente extends Observable implements Runnable{
                     this.notifyObservers(mensajeRecibido.getContenido());
                     this.clearChanged();
                 } else {
-                    usuarioValidado = false; 
+                    usuarioValidado = false;
                 }
             }
         } catch (Exception e) {
@@ -51,7 +51,6 @@ public class PruebaCliente extends Observable implements Runnable{
 
     public void enviarNombreUsuarioAlServidor(String texto) throws Exception {
         try {
-            outObject = new ObjectOutputStream(sc.getOutputStream());
             outObject.writeObject(new Mensaje("String", texto));
             outObject.flush();
         } catch (Exception e) {
