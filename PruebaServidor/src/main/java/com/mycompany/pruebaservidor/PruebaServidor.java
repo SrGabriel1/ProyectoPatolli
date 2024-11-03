@@ -7,11 +7,15 @@ package com.mycompany.pruebaservidor;
 import java.util.List;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,46 +27,81 @@ public class PruebaServidor extends Observable implements Runnable{
     private int puerto = 4444;
     ServerSocket servidor = null;
     Socket sc = null;
-    DataInputStream in;
+    ObjectInputStream in;
+    ObjectOutputStream outObject;
+    boolean listening=true;
 
     @Override
     public void run() {
         agregarUsuariosAPartida();
-        partidaEnJuego();
         
+        partidaEnJuego();
     }
-    
-    public void agregarUsuariosAPartida(){
-        try{
-            servidor =new ServerSocket(puerto);
+    public void agregarUsuariosAPartida() {
+        try {
+            servidor = new ServerSocket(puerto);
             System.out.println("Servidor iniciado");
-            
-            while(true){
-                sc=servidor.accept();
-                System.out.println("Validando usuario");
-                in=new DataInputStream(sc.getInputStream());
-                String mensaje=in.readUTF();
-                if(validarUsuario(mensaje)){
-                    clientes.add(new DatosUsuario(sc, mensaje));
-                    this.setChanged();
-                    this.notifyObservers(mensaje);
-                    this.clearChanged();
-                }else{
-                    sc.close();
-                }
+
+            while (listening) {
+                Socket clientSocket = servidor.accept();
+                System.out.println("Nuevo cliente conectado");
+
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                new Thread(clientHandler).start();
             }
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    
     public boolean validarUsuario(String nombre){
         for(DatosUsuario cliente:clientes){
-            if(cliente.getNombre().endsWith(nombre)){
-                return true;
+            if(cliente.getNombre().equalsIgnoreCase(nombre)){
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+    public void notificarALaInterfaz(Object o){
+        this.setChanged();
+        this.notifyObservers(o);
+        this.clearChanged();
+    }
+    private class ClientHandler implements Runnable {
+
+        private Socket clientSocket;
+        private ObjectInputStream in;
+        private ObjectOutputStream out;
+
+        public ClientHandler(Socket socket) {
+            this.clientSocket = socket;
+            
+        }
+
+        @Override
+        public void run() {
+            
+            try {
+                in = new ObjectInputStream(clientSocket.getInputStream());
+                out = new ObjectOutputStream(clientSocket.getOutputStream());
+
+                while (true) {
+                    Mensaje mensajeRecibido = (Mensaje) in.readObject();
+                    if(mensajeRecibido.getTipo().equals("String")){
+                        String mensaje= (String)mensajeRecibido.getContenido();
+                        if (validarUsuario(mensaje)) {
+                            clientes.add(new DatosUsuario(sc, mensaje));
+                            notificarALaInterfaz(mensaje);
+                        } else {
+                            out.writeObject(new Mensaje("Error", new Error("Usuario con nombre repetido", "Otro usuario ya cuenta con ese nombre")));
+                            out.flush();
+                        }
+                    }
+                    
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     public void partidaEnJuego(){

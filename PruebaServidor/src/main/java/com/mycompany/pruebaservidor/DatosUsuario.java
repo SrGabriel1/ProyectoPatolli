@@ -14,7 +14,12 @@ import java.net.Socket;
 public class DatosUsuario implements Serializable{
     private Socket socket;
     private String nombre;
+    
     public DatosUsuario() {
+    }
+
+    public DatosUsuario(String nombre) {
+        this.nombre = nombre;
     }
 
     public DatosUsuario(Socket socket, String nombre) {

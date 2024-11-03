@@ -155,6 +155,22 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        Error error= (Error) arg;
+        JOptionPane.showMessageDialog(this,error.getMensaje());
+        esperando.setVisible(false);
+        conectar.setEnabled(true);
+    }
+    
+    public void conectarUsuarioAlServidor(){
+        try{
+            String nombreJugador = jTextField1.getText();
+            cliente.enviarNombreUsuarioAlServidor(nombreJugador);
+            esperando.setVisible(true);
+            conectar.setEnabled(false);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+        
         
     }
 
