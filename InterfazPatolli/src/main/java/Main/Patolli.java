@@ -1,4 +1,4 @@
-package com.mycompany.patolli;
+package Main;
 
 import GUIs.vistaInicio;
 

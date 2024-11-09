@@ -15,12 +15,21 @@ public class PatolliPanel extends JPanel {
     private JPanel casillasDer;
     private JPanel casillasCentrales;
     private int jugadores; // Número de jugadores
+    private Image fondoImagen;
+    private int imagenAncho;
+    private int imagenAlto;
 
     // Constructor que acepta el número de jugadores
-    public PatolliPanel(int jugadores) {
+    public PatolliPanel(int jugadores, int imagenAncho, int imagenAlto) {
         this.jugadores = jugadores;
         this.casillas = new ArrayList<>();
+        this.imagenAlto = imagenAlto;
+        this.imagenAncho = imagenAncho;
+        // Configura el tamaño del panel según el tamaño de la imagen
+        setPreferredSize(new Dimension(imagenAncho, imagenAlto));
 
+        // Configura el layout absoluto
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         // Configura el layout absoluto para el JPanel
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -39,12 +48,51 @@ public class PatolliPanel extends JPanel {
         casillasDer = new JPanel();
         casillasCentrales = new JPanel();
 
-        // Añade los paneles a la disposición en "X"
-        add(casillasArriba, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 100, 200)); // Panel superior
-        add(casillasAbajo, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 380, 100, 200)); // Panel inferior
-        add(casillasIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 200, 100)); // Panel izquierdo
-        add(casillasDer, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 250, 200, 100)); // Panel derecho
-        add(casillasCentrales, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 100, 100)); // Centro de la "X"
+        // Calcula el punto central basado en el tamaño de la imagen
+        int centerX = (imagenAncho / 2) - 50;  // 50 es la mitad del ancho del panel central
+        int centerY = (imagenAlto / 2) - 50;   // 50 es la mitad del alto del panel central
+        // Hacer transparentes los subpaneles
+        casillasArriba.setOpaque(false);
+        casillasAbajo.setOpaque(false);
+        casillasIzq.setOpaque(false);
+        casillasDer.setOpaque(false);
+        casillasCentrales.setOpaque(false);
+        
+        // Añade los paneles centrados relativos al punto central
+        add(casillasArriba, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                centerX, // x
+                centerY - 200, // y
+                100, // ancho
+                200 // alto
+        ));
+
+        add(casillasAbajo, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                centerX, // x
+                centerY + 100, // y
+                100, // ancho
+                200 // alto
+        ));
+
+        add(casillasIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                centerX - 200, // x
+                centerY, // y
+                200, // ancho
+                100 // alto
+        ));
+
+        add(casillasDer, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                centerX + 100, // x
+                centerY, // y
+                200, // ancho
+                100 // alto
+        ));
+
+        add(casillasCentrales, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                centerX, // x
+                centerY, // y
+                100, // ancho
+                100 // alto
+        ));
     }
 
     /**

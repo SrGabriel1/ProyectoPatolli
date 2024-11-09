@@ -11,7 +11,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>com.mycompany.patolli.Patolli</exec.mainClass>
     </properties>
-    <name>Interfazpatolli</name>
+    <name>Patolli</name>
     <dependencies>
         <dependency>
             <groupId>org.netbeans.external</groupId>
