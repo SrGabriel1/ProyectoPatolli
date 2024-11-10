@@ -34,13 +34,7 @@ public class vistaTablero extends JFrame {
         repaint(); // Re-dibuja para asegurarse que el tablero se muestre correctamente
     }
 
-    public static void main(String[] args) {
-        int jugadores = 4; // Cambia este valor para probar con 2 o 4 jugadores
-        SwingUtilities.invokeLater(() -> {
-            new vistaTablero(jugadores).setVisible(true);
-        });
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
