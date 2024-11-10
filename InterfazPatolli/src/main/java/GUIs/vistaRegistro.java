@@ -34,6 +34,7 @@ public class vistaRegistro extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnUnirse = new javax.swing.JButton();
         btnValidar = new javax.swing.JButton();
+        btnVolverInicio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -81,6 +82,16 @@ public class vistaRegistro extends javax.swing.JFrame {
         });
         getContentPane().add(btnValidar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 330, 40));
 
+        btnVolverInicio.setText("jButton1");
+        btnVolverInicio.setBorderPainted(false);
+        btnVolverInicio.setContentAreaFilled(false);
+        btnVolverInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverInicioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 140, 90));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -110,10 +121,17 @@ public class vistaRegistro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnValidarActionPerformed
 
+    private void btnVolverInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverInicioActionPerformed
+        vistaInicio inicio = new vistaInicio();
+        inicio.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverInicioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUnirse;
     private javax.swing.JButton btnValidar;
+    private javax.swing.JButton btnVolverInicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPartida;

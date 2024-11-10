@@ -40,6 +40,11 @@ public class vistaLobby extends javax.swing.JFrame {
     private void initComponents() {
 
         ContadorJugadores = new javax.swing.JLabel();
+        Codigo = new javax.swing.JLabel();
+        jugador1 = new javax.swing.JLabel();
+        jugador2 = new javax.swing.JLabel();
+        jugador3 = new javax.swing.JLabel();
+        jugador4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnJuego = new javax.swing.JButton();
         botonListo = new javax.swing.JButton();
@@ -49,7 +54,27 @@ public class vistaLobby extends javax.swing.JFrame {
 
         ContadorJugadores.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         ContadorJugadores.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(ContadorJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 530, 100, 60));
+        getContentPane().add(ContadorJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 530, 120, 60));
+
+        Codigo.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        Codigo.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(Codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, 130, 50));
+
+        jugador1.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jugador1.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(jugador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 200, 30));
+
+        jugador2.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jugador2.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 200, 30));
+
+        jugador3.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jugador3.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(jugador3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 200, 30));
+
+        jugador4.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jugador4.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(jugador4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 200, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Lobby.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 450, 630));
@@ -99,9 +124,14 @@ public class vistaLobby extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Codigo;
     private javax.swing.JLabel ContadorJugadores;
     private javax.swing.JButton botonListo;
     private javax.swing.JButton btnJuego;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jugador1;
+    private javax.swing.JLabel jugador2;
+    private javax.swing.JLabel jugador3;
+    private javax.swing.JLabel jugador4;
     // End of variables declaration//GEN-END:variables
 }
