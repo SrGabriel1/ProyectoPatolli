@@ -6,6 +6,7 @@ package com.mycompany.pruebaservidor;
 
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +14,7 @@ import javax.swing.JOptionPane;
  * @author USER
  */
 public class FrmCliente extends javax.swing.JFrame implements Observer {
-    
-    /**
-     * Creates new form FrmCliente
-     */
-    
+    Thread hiloCliente;
     private PruebaCliente cliente;
     
     public FrmCliente() {
@@ -27,7 +24,7 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
         cliente = new PruebaCliente(); 
         cliente.addObserver(this);
         
-        Thread hiloCliente = new Thread(cliente);
+        hiloCliente = new Thread(cliente);
         hiloCliente.start();
     }
 
@@ -155,10 +152,12 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Error error= (Error) arg;
-        JOptionPane.showMessageDialog(this,error.getMensaje());
-        esperando.setVisible(false);
-        conectar.setEnabled(true);
+        Mensaje mensaje=(Mensaje)arg;
+        if(mensaje.getTipo().equals("Error")){
+            mostrarError((String)mensaje.getContenido());
+        }else{
+            cambiarVistaALobby();
+        }
     }
     
     public void conectarUsuarioAlServidor(){
@@ -170,8 +169,21 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
         }catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, e);
         }
+    }
+    
+    public void mostrarError(String mensaje){
+        JOptionPane.showMessageDialog(this,mensaje);
+        esperando.setVisible(false);
+        conectar.setEnabled(true);
+    }
+    
+    public void cambiarVistaALobby(){
+        Lobby lobby=new Lobby();
         
-        
+        cliente.deleteObserver(this);
+        cliente.addObserver(lobby);
+        lobby.setVisible(true);
+        this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

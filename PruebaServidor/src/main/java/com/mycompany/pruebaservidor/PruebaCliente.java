@@ -3,6 +3,7 @@
  */
 package com.mycompany.pruebaservidor;
 
+import Excepciones.ClienteException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.ObjectInputStream;
@@ -34,19 +35,18 @@ public class PruebaCliente extends Observable implements Runnable {
             sc = new Socket(host, puerto);
             outObject = new ObjectOutputStream(sc.getOutputStream());
             inObject = new ObjectInputStream(sc.getInputStream());
-            while (usuarioValidado) {
-                Mensaje mensajeRecibido = (Mensaje) inObject.readObject();
-                if (mensajeRecibido.getTipo().equals("Error")) {
-                    this.setChanged();
-                    this.notifyObservers(mensajeRecibido.getContenido());
-                    this.clearChanged();
-                } else {
-                    usuarioValidado = false;
-                }
+            while (true) {
+                notificarALaInterfaz((Mensaje) inObject.readObject() );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void notificarALaInterfaz(Mensaje mensaje) throws ClienteException{
+        this.setChanged();
+        this.notifyObservers(mensaje);
+        this.clearChanged();
     }
 
     public void enviarNombreUsuarioAlServidor(String texto) throws Exception {
