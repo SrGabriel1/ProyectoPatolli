@@ -33,17 +33,16 @@ public class vistaJuego extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnVolverInicio = new javax.swing.JButton();
         btrnCrearJuego = new javax.swing.JButton();
-        btnUnirse = new javax.swing.JButton();
+        btnRegistrarse = new javax.swing.JButton();
+
+        textPartida.setBackground(new java.awt.Color(240, 202, 148));
+        textPartida.setBorder(null);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        textPartida.setBackground(new java.awt.Color(240, 202, 148));
-        textPartida.setBorder(null);
-        getContentPane().add(textPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, 260, 40));
-
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/jugar.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 638));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 510));
 
         btnVolverInicio.setText("jButton1");
         btnVolverInicio.setBorderPainted(false);
@@ -53,7 +52,7 @@ public class vistaJuego extends javax.swing.JFrame {
                 btnVolverInicioActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 180, 90));
+        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 180, 90));
 
         btrnCrearJuego.setText("jButton2");
         btrnCrearJuego.setBorderPainted(false);
@@ -63,17 +62,16 @@ public class vistaJuego extends javax.swing.JFrame {
                 btrnCrearJuegoActionPerformed(evt);
             }
         });
-        getContentPane().add(btrnCrearJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 420, 100));
+        getContentPane().add(btrnCrearJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 310, 70));
 
-        btnUnirse.setText("jButton3");
-        btnUnirse.setBorderPainted(false);
-        btnUnirse.setContentAreaFilled(false);
-        btnUnirse.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrarse.setBorderPainted(false);
+        btnRegistrarse.setContentAreaFilled(false);
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUnirseActionPerformed(evt);
+                btnRegistrarseActionPerformed(evt);
             }
         });
-        getContentPane().add(btnUnirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 360, 430, 70));
+        getContentPane().add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 330, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -91,20 +89,17 @@ public class vistaJuego extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnVolverInicioActionPerformed
 
-    private void btnUnirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnirseActionPerformed
-        if (!textPartida.getText().isEmpty()) {
-            vistaLobby lobby = new vistaLobby();
-            lobby.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Poner Datos Correctos", "Error", JOptionPane.WARNING_MESSAGE);
-        }
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
 
-    }//GEN-LAST:event_btnUnirseActionPerformed
+            vistaRegistro registro = new vistaRegistro();
+            registro.setVisible(true);
+            this.dispose();
+      
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUnirse;
+    private javax.swing.JButton btnRegistrarse;
     private javax.swing.JButton btnVolverInicio;
     private javax.swing.JButton btrnCrearJuego;
     private javax.swing.JLabel jLabel1;
