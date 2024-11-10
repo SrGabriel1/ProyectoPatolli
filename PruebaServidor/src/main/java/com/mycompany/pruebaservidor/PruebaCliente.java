@@ -35,15 +35,17 @@ public class PruebaCliente extends Observable implements Runnable {
             sc = new Socket(host, puerto);
             outObject = new ObjectOutputStream(sc.getOutputStream());
             inObject = new ObjectInputStream(sc.getInputStream());
+            Mensaje handshake = (Mensaje) inObject.readObject();
+            System.out.println("Mensaje de handshake recibido: " + handshake.getContenido());
             while (true) {
-                notificarALaInterfaz((Mensaje) inObject.readObject() );
+                notificarALaInterfaz((Mensaje) inObject.readObject());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public void notificarALaInterfaz(Mensaje mensaje) throws ClienteException{
+
+    public void notificarALaInterfaz(Mensaje mensaje) throws ClienteException {
         this.setChanged();
         this.notifyObservers(mensaje);
         this.clearChanged();

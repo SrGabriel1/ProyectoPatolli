@@ -11,6 +11,8 @@ package com.mycompany.pruebaservidor;
 import java.io.Serializable;
 
 public class Mensaje implements Serializable {
+
+    private static final long serialVersionUID = 1L; 
     private String tipo;
     private Object contenido;
 
