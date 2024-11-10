@@ -178,7 +178,7 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
     }
     
     public void cambiarVistaALobby(){
-        Lobby lobby=new Lobby();
+        FrmLobby lobby=new FrmLobby();
         
         cliente.deleteObserver(this);
         cliente.addObserver(lobby);

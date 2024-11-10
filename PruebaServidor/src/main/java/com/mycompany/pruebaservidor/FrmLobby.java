@@ -11,13 +11,13 @@ import java.util.Observer;
  *
  * @author USER
  */
-public class Lobby extends javax.swing.JFrame implements Observer{
+public class FrmLobby extends javax.swing.JFrame implements Observer{
     Thread hiloCliente;
 
     /**
      * Creates new form Lobby
      */
-    public Lobby() {
+    public FrmLobby() {
         initComponents();
     }
 
@@ -32,15 +32,15 @@ public class Lobby extends javax.swing.JFrame implements Observer{
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        usuariosConectados = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Lobby");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        usuariosConectados.setColumns(20);
+        usuariosConectados.setRows(5);
+        jScrollPane1.setViewportView(usuariosConectados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,11 +73,27 @@ public class Lobby extends javax.swing.JFrame implements Observer{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea usuariosConectados;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void update(Observable o, Object arg) {
-        
+        Mensaje mensaje=(Mensaje) arg;
+        if(mensaje.getTipo().equalsIgnoreCase("Usuarios")){
+            String[] nombresDeUsuario=conseguirNombreDeUsuario((String)mensaje.getContenido());
+            for(String s:nombresDeUsuario){
+                
+                String mensajeActual = usuariosConectados.getText();
+                usuariosConectados.setText(mensajeActual+"\n" + (String) mensaje.getContenido() + " se ha conectado!!!!\n");
+            }
+        }else if(mensaje.getTipo().equalsIgnoreCase("Usuario agregado")){
+            String mensajeActual = usuariosConectados.getText();
+            usuariosConectados.setText(mensajeActual+"\n" + (String) mensaje.getContenido() + " se ha conectado!!!!\n");
+            System.out.println((String) mensaje.getContenido());
+        }
+    }
+    
+    public String[] conseguirNombreDeUsuario(String texto) {
+        return texto.trim().split("\\s+");
     }
 }

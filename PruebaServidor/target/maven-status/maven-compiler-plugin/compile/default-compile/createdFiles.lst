@@ -2,14 +2,15 @@ com\mycompany\pruebaservidor\FrmCliente.class
 com\mycompany\pruebaservidor\Mensaje.class
 com\mycompany\pruebaservidor\FrmCliente$1.class
 Excepciones\ClienteException.class
-com\mycompany\pruebaservidor\PruebaServidor$ClientHandler.class
+com\mycompany\pruebaservidor\FrmLobby.class
 com\mycompany\pruebaservidor\FrmServidor.class
 com\mycompany\pruebaservidor\FrmCliente$2.class
 com\mycompany\pruebaservidor\PruebaCliente.class
 com\mycompany\pruebaservidor\FrmCliente$3.class
+com\mycompany\pruebaservidor\PruebaServidor$RegistradorUsuario.class
 com\mycompany\pruebaservidor\Error.class
 com\mycompany\pruebaservidor\DatosUsuario.class
+com\mycompany\pruebaservidor\PruebaServidor$ManejadorLobby.class
 com\mycompany\pruebaservidor\FrmServidor$2.class
 com\mycompany\pruebaservidor\FrmServidor$1.class
 com\mycompany\pruebaservidor\PruebaServidor.class
-com\mycompany\pruebaservidor\Lobby.class

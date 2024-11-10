@@ -33,20 +33,28 @@ public class PruebaServidor extends Observable implements Runnable {
 
     @Override
     public void run() {
-        agregarUsuariosAPartida();
-        usuariosEnLobby();
-        partidaEnJuego();
+        try {
+            servidor = new ServerSocket(puerto);
+            System.out.println("Servidor iniciado");
+            agregarUsuariosAPartida();
+            usuariosEnLobby();
+            partidaEnJuego();
+
+        } catch (IOException ex) {
+            Logger.getLogger(PruebaServidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public void agregarUsuariosAPartida() {
         try {
-            servidor = new ServerSocket(puerto);
-            System.out.println("Servidor iniciado");
+            
+            
             while (listening) {
                 Socket clientSocket = servidor.accept();
                 System.out.println("Nuevo cliente conectado");
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                new Thread(clientHandler).start();
+                RegistradorUsuario registradorUsuario = new RegistradorUsuario(clientSocket);
+                new Thread(registradorUsuario).start();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,15 +69,23 @@ public class PruebaServidor extends Observable implements Runnable {
             e.printStackTrace();
         }
     }
+    public void partidaEnJuego() {
 
-    public boolean validarUsuario(String nombre) {
-        for (DatosUsuario cliente : clientes) {
-            if (cliente.getNombre().equalsIgnoreCase(nombre)) {
-                return false;
-            }
-        }
-        return true;
     }
+    
+    private void informarATodosLosUsuarios(String tipo,Object objeto) {
+        try {
+            for (int i = 0; i < clientes.size(); i++) {
+                Socket socket = clientes.get(i).getSocket();
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(new Mensaje(tipo, objeto));
+                out.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     public void notificarALaInterfaz(Object o) {
         this.setChanged();
@@ -77,13 +93,13 @@ public class PruebaServidor extends Observable implements Runnable {
         this.clearChanged();
     }
 
-    private class ClientHandler implements Runnable {
+    private class RegistradorUsuario implements Runnable {
 
         private Socket clientSocket;
         private ObjectInputStream in;
         private ObjectOutputStream out;
 
-        public ClientHandler(Socket socket) {
+        public RegistradorUsuario(Socket socket) {
             this.clientSocket = socket;
         }
 
@@ -102,6 +118,8 @@ public class PruebaServidor extends Observable implements Runnable {
                         }else if (validarUsuario(mensaje)) {
                             agregarClienteALobby(mensaje);
                             mandarUsuarioValido(out);
+                            mandarNombresDeUsuario(out);
+                            informarATodosLosUsuarios("Usuario agregado", mensaje);
                             if(clientes.size()==capacidadMaxima){
                                 listening=false;
                             }
@@ -129,19 +147,46 @@ public class PruebaServidor extends Observable implements Runnable {
             out.writeObject(new Mensaje("Error", "Otro usuario ya cuenta con ese nombre"));
             out.flush();
         }
+        public void mandarNombresDeUsuario(ObjectOutputStream out) throws IOException {
+            out.writeObject(new Mensaje("Usuarios", nombresDeUsuarios()));
+            out.flush();
+        }
         
         public void agregarClienteALobby(String mensaje){
-            clientes.add(new DatosUsuario(sc, mensaje));
+            clientes.add(new DatosUsuario(clientSocket, mensaje));
             notificarALaInterfaz(mensaje);
 
         }
+        public boolean validarUsuario(String nombre) {
+            for (DatosUsuario cliente : clientes) {
+                if (cliente.getNombre().equalsIgnoreCase(nombre)) {
+                    return false;
+                }
+            }
+            return true;
+        }
         
-        
+        public String nombresDeUsuarios() {
+            StringBuilder resultado = new StringBuilder();
+            for (int i=0;i<clientes.size();i++) {
+                System.out.println(clientes.get(i).getSocket());
+                resultado.append(clientes.get(i).getNombre()).append(" ");
+            }
+            if (resultado.length() > 0) {
+                resultado.setLength(resultado.length() - 1);
+            }
+
+            return resultado.toString();
+        }
     }
     
-    
+    private class ManejadorLobby implements Runnable{
 
-    public void partidaEnJuego() {
-
+        @Override
+        public void run() {
+        }
+        
     }
+
+    
 }
