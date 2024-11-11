@@ -19,6 +19,7 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
     
     public FrmCliente() {
         initComponents();
+        setTitle("Cliente");
         esperando.setVisible(false);
         
         cliente = new PruebaCliente(); 

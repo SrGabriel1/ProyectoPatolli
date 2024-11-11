@@ -21,6 +21,7 @@ public class FrmLobby extends javax.swing.JFrame implements Observer{
     public FrmLobby(PruebaCliente cliente) {
         this.cliente=cliente;
         initComponents();
+        setTitle("Lobby");
     }
 
     /**
