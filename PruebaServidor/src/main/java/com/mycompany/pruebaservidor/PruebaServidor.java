@@ -26,8 +26,6 @@ public class PruebaServidor extends Observable implements Runnable {
     private int puerto = 4444;
     ServerSocket servidor = null;
     Socket sc = null;
-    ObjectInputStream in;
-    ObjectOutputStream outObject;
     boolean listening = true;
     int capacidadMaxima=4;
 
@@ -73,13 +71,15 @@ public class PruebaServidor extends Observable implements Runnable {
 
     }
     
-    private void informarATodosLosUsuarios(String tipo,Object objeto) {
+    private void informarATodosLosUsuarios(String tipo,Object objeto,Socket excepcion) {
         try {
             for (int i = 0; i < clientes.size(); i++) {
-                Socket socket = clientes.get(i).getSocket();
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                out.writeObject(new Mensaje(tipo, objeto));
-                out.flush();
+                if(clientes.get(i).getSocket()!=excepcion){
+                    ObjectOutputStream out = clientes.get(i).getOut();
+                    out.writeObject(new Mensaje(tipo, objeto));
+                    out.flush();
+                }
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,10 +116,10 @@ public class PruebaServidor extends Observable implements Runnable {
                         if(clientes.size()==capacidadMaxima){
                             mandarLobyLleno(out);
                         }else if (validarUsuario(mensaje)) {
-                            agregarClienteALobby(mensaje);
+                            agregarClienteALobby(mensaje,out);
                             mandarUsuarioValido(out);
                             mandarNombresDeUsuario(out);
-                            informarATodosLosUsuarios("Usuario agregado", mensaje);
+                            informarATodosLosUsuarios("Usuario agregado", mensaje,clientSocket);
                             if(clientes.size()==capacidadMaxima){
                                 listening=false;
                             }
@@ -152,8 +152,8 @@ public class PruebaServidor extends Observable implements Runnable {
             out.flush();
         }
         
-        public void agregarClienteALobby(String mensaje){
-            clientes.add(new DatosUsuario(clientSocket, mensaje));
+        public void agregarClienteALobby(String mensaje,ObjectOutputStream out){
+            clientes.add(new DatosUsuario(clientSocket, mensaje,out));
             notificarALaInterfaz(mensaje);
 
         }

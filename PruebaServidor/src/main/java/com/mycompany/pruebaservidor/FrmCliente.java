@@ -156,6 +156,7 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
         if(mensaje.getTipo().equals("Error")){
             mostrarError((String)mensaje.getContenido());
         }else{
+            cliente.setNombreJugador(jTextField1.getText());
             cambiarVistaALobby();
         }
     }
@@ -178,8 +179,7 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
     }
     
     public void cambiarVistaALobby(){
-        FrmLobby lobby=new FrmLobby();
-        
+        FrmLobby lobby=new FrmLobby(cliente);
         cliente.deleteObserver(this);
         cliente.addObserver(lobby);
         lobby.setVisible(true);

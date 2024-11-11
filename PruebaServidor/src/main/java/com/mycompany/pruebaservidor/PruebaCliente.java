@@ -29,6 +29,11 @@ public class PruebaCliente extends Observable implements Runnable {
         this.nombreJugador = nombreJugador;
     }
 
+    public String getNombreJugador() {
+        return nombreJugador;
+    }
+    
+
     @Override
     public void run() {
         try {

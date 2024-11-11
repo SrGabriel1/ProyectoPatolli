@@ -4,6 +4,7 @@
  */
 package com.mycompany.pruebaservidor;
 
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 
@@ -14,17 +15,15 @@ import java.net.Socket;
 public class DatosUsuario implements Serializable{
     private Socket socket;
     private String nombre;
-    
+    private ObjectOutputStream out;
+
     public DatosUsuario() {
     }
 
-    public DatosUsuario(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public DatosUsuario(Socket socket, String nombre) {
+    public DatosUsuario(Socket socket, String nombre, ObjectOutputStream out) {
         this.socket = socket;
         this.nombre = nombre;
+        this.out = out;
     }
 
     public Socket getSocket() {
@@ -42,5 +41,20 @@ public class DatosUsuario implements Serializable{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public ObjectOutputStream getOut() {
+        return out;
+    }
+
+    public void setOut(ObjectOutputStream out) {
+        this.out = out;
+    }
+
+    @Override
+    public String toString() {
+        return "DatosUsuario{" + "socket=" + socket + ", nombre=" + nombre + ", out=" + out + '}';
+    }
+    
+    
     
 }

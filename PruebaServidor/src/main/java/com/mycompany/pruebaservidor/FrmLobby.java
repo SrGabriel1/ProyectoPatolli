@@ -13,11 +13,13 @@ import java.util.Observer;
  */
 public class FrmLobby extends javax.swing.JFrame implements Observer{
     Thread hiloCliente;
+    PruebaCliente cliente;
 
     /**
      * Creates new form Lobby
      */
-    public FrmLobby() {
+    public FrmLobby(PruebaCliente cliente) {
+        this.cliente=cliente;
         initComponents();
     }
 
@@ -78,17 +80,25 @@ public class FrmLobby extends javax.swing.JFrame implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        Mensaje mensaje=(Mensaje) arg;
-        if(mensaje.getTipo().equalsIgnoreCase("Usuarios")){
-            String[] nombresDeUsuario=conseguirNombreDeUsuario((String)mensaje.getContenido());
-            for(String s:nombresDeUsuario){
+        Mensaje mensaje = (Mensaje) arg;
+        if (mensaje.getTipo().equalsIgnoreCase("Usuarios")) {
+            String[] nombresDeUsuario = conseguirNombreDeUsuario((String) mensaje.getContenido());
+            StringBuilder mensajeCompleto = new StringBuilder(usuariosConectados.getText());
+            String nombreCliente=cliente.getNombreJugador();
+            for (int i=0;i<nombresDeUsuario.length;i++ ) {
+                if(nombresDeUsuario[i].equalsIgnoreCase(nombreCliente)){
+                    mensajeCompleto.append("\n").append(nombresDeUsuario[i]).append("(Tú)\n");
+                }else{
+                    mensajeCompleto.append("\n").append(nombresDeUsuario[i]).append("()\n");
+                }
                 
-                String mensajeActual = usuariosConectados.getText();
-                usuariosConectados.setText(mensajeActual+"\n" + (String) mensaje.getContenido() + " se ha conectado!!!!\n");
             }
-        }else if(mensaje.getTipo().equalsIgnoreCase("Usuario agregado")){
+
+            usuariosConectados.setText(mensajeCompleto.toString());
+
+        } else if (mensaje.getTipo().equalsIgnoreCase("Usuario agregado")) {
             String mensajeActual = usuariosConectados.getText();
-            usuariosConectados.setText(mensajeActual+"\n" + (String) mensaje.getContenido() + " se ha conectado!!!!\n");
+            usuariosConectados.setText(mensajeActual + "\n" + (String) mensaje.getContenido() + "()\n");
             System.out.println((String) mensaje.getContenido());
         }
     }
