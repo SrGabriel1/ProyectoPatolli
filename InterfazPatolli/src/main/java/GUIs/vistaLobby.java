@@ -4,6 +4,8 @@
  */
 package GUIs;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 /**
@@ -116,9 +118,15 @@ public class vistaLobby extends javax.swing.JFrame {
 
         // Solo abre la vista del juego cuando se alcanza exactamente el número máximo de jugadores
         if (JugadoresListos == TotalJugadores) {
-            vistaTablero Tablero = new vistaTablero(TotalJugadores);
-            Tablero.setVisible(true);
-            this.dispose();
+            vistaTablero Tablero;
+            try {
+                Tablero = new vistaTablero(TotalJugadores);
+                Tablero.setVisible(true);
+                this.dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(vistaLobby.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_botonListoActionPerformed
 

@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class vistaTablero extends JFrame {
 
-    public vistaTablero(int jugadores) {
+    public vistaTablero(int jugadores) throws Exception {
         initComponents();
         setLocationRelativeTo(null);
 
