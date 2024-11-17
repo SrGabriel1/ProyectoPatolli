@@ -4,8 +4,8 @@
  */
 package GUIs;
 
-import Control.PatolliPanel;
-import Control.PatolliPanel;
+import logica.PatolliPanel;
+import logica.PatolliPanel;
 import javax.swing.*;
 import java.awt.*;
 

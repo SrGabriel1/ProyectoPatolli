@@ -17,15 +17,16 @@ public class ClienteConectado implements Serializable{
     private Socket socket;
     private String nombre;
     private ObjectOutputStream out;
-    private ObjectInputStream out;
+    private ObjectInputStream in;
 
     public ClienteConectado() {
     }
 
-    public ClienteConectado(Socket socket, String nombre, ObjectOutputStream out) {
+    public ClienteConectado(Socket socket, String nombre, ObjectOutputStream out, ObjectInputStream in) {
         this.socket = socket;
         this.nombre = nombre;
         this.out = out;
+        this.in = in;
     }
 
     public Socket getSocket() {
@@ -52,10 +53,14 @@ public class ClienteConectado implements Serializable{
         this.out = out;
     }
 
-    @Override
-    public String toString() {
-        return "DatosUsuario{" + "socket=" + socket + ", nombre=" + nombre + ", out=" + out + '}';
+    public ObjectInputStream getIn() {
+        return in;
     }
+
+    public void setIn(ObjectInputStream in) {
+        this.in = in;
+    }
+    
     
     
     
