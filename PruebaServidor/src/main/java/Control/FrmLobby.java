@@ -4,6 +4,7 @@
  */
 package Control;
 
+import conexion.PruebaCliente;
 import java.util.Observable;
 import java.util.Observer;
 

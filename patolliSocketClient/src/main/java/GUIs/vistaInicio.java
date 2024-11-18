@@ -4,18 +4,30 @@
  */
 package GUIs;
 
+import javax.swing.SwingUtilities;
+import logica.ControladorVentanas;
+
 /**
  *
  * @author Gabriel
  */
 public class vistaInicio extends javax.swing.JFrame {
-
+    ControladorVentanas controlador;
     /**
      * Creates new form vistaInicio
      */
     public vistaInicio() {
         initComponents();
         setLocationRelativeTo(null); 
+        controlador=new ControladorVentanas();
+    }
+     public static void main(String[] args) {
+        // Inicia la interfaz gráfica (GUI)
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new vistaInicio().setVisible(true);  // Muestra la ventana principal
+            }
+        });
     }
 
     /**
@@ -81,9 +93,7 @@ public class vistaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
-        vistaJuego juego = new vistaJuego();
-        juego.setVisible(true);
-        this.dispose();
+        controlador.cambiaraVentanaJuego(this);
     }//GEN-LAST:event_btnJugarActionPerformed
 
 

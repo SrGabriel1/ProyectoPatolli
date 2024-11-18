@@ -16,17 +16,13 @@ import java.net.Socket;
 public class ClienteConectado implements Serializable{
     private Socket socket;
     private String nombre;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
 
     public ClienteConectado() {
     }
 
-    public ClienteConectado(Socket socket, String nombre, ObjectOutputStream out, ObjectInputStream in) {
+    public ClienteConectado(Socket socket, String nombre) {
         this.socket = socket;
         this.nombre = nombre;
-        this.out = out;
-        this.in = in;
     }
 
     public Socket getSocket() {
@@ -44,24 +40,4 @@ public class ClienteConectado implements Serializable{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public ObjectOutputStream getOut() {
-        return out;
-    }
-
-    public void setOut(ObjectOutputStream out) {
-        this.out = out;
-    }
-
-    public ObjectInputStream getIn() {
-        return in;
-    }
-
-    public void setIn(ObjectInputStream in) {
-        this.in = in;
-    }
-    
-    
-    
-    
 }

@@ -7,6 +7,7 @@ package conexion;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import logica.Lobby;
 import modelo.ClienteConectado;
 
 /**
@@ -15,6 +16,7 @@ import modelo.ClienteConectado;
  */
 public class ManejadorClientes {
     private List<HiloCliente> clientes;
+    private List<Lobby> lobbys;
 
     public ManejadorClientes() {
         this.clientes = new ArrayList<>();
@@ -30,5 +32,18 @@ public class ManejadorClientes {
 
     public List<HiloCliente> obtenerClientes() {
         return clientes;
+    }
+    
+    public boolean anadirClienteALobby(String codigo, HiloCliente cliente){
+        for(Lobby l:lobbys){
+            if(l.getCodigo().equalsIgnoreCase(codigo)){
+                if (l.comprobarJugadorConMismoNombre(codigo)) {
+                    return false;
+                } else {
+                    l.anadirJugadorAlLobby(new ClienteConectado(cliente.getClienteSocket(),));
+                }
+            }
+        }
+        return true;
     }
 }

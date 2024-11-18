@@ -21,8 +21,11 @@ public class HiloCliente implements Runnable{
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private ProtocoloServidor protocolo;
+    private ManejadorClientes manejadorClientes;
+    
     public HiloCliente(Socket clienteSocket, ManejadorClientes manejadorClientes) {
-            
+        this.manejadorClientes=manejadorClientes;
+            protocolo=new ProtocoloServidor();
         try {
             this.clienteSocket = clienteSocket;
             out = new ObjectOutputStream(clienteSocket.getOutputStream());
@@ -37,16 +40,20 @@ public class HiloCliente implements Runnable{
         try {
                 while (true) {
                     Mensaje mensajeRecibido = (Mensaje) in.readObject();
-                    if (mensajeRecibido.getTipo().equals("Nombre")) {
+                    if (mensajeRecibido.getTipo().equals("CrearLobby")) {
                         
-                    }else if(mensajeRecibido.getTipo().equalsIgnoreCase("")){
                         
+                    }else if(mensajeRecibido.getTipo().equalsIgnoreCase("UnirseLobby")){
+                        protocolo.unirClienteALobby();
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        
+    }
+
+    public Socket getClienteSocket() {
+        return clienteSocket;
     }
     
 }

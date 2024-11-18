@@ -4,23 +4,27 @@
  */
 package GUIs;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import logica.ControladorVentanas;
 
 /**
  *
  * @author Gabriel
  */
-public class vistaLobby extends javax.swing.JFrame {
-
+public class vistaLobby extends javax.swing.JFrame{
+    ControladorVentanas controlador;
     private int JugadoresListos = 0;
     private int TotalJugadores = 0;
 
     /**
      * Creates new form vistaMenuInicio
      */
-    public vistaLobby() {
+    public vistaLobby(ControladorVentanas controlador) {
+        this.controlador=controlador;
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -105,7 +109,7 @@ public class vistaLobby extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJuegoActionPerformed
-        vistaJuego juego = new vistaJuego();
+        vistaJuego juego = new vistaJuego(controlador);
         juego.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnJuegoActionPerformed
@@ -142,4 +146,5 @@ public class vistaLobby extends javax.swing.JFrame {
     private javax.swing.JLabel jugador3;
     private javax.swing.JLabel jugador4;
     // End of variables declaration//GEN-END:variables
+
 }

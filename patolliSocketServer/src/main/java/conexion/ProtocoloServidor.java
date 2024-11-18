@@ -10,6 +10,8 @@ package conexion;
  */
 public class ProtocoloServidor {
     
-    
+    public void unirClienteALobby(){
+        
+    }
     
 }

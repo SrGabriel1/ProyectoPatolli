@@ -4,6 +4,7 @@
  */
 package Control;
 
+import conexion.PruebaCliente;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JFrame;
@@ -181,8 +182,7 @@ public class FrmCliente extends javax.swing.JFrame implements Observer {
     
     public void cambiarVistaALobby(){
         FrmLobby lobby=new FrmLobby(cliente);
-        cliente.deleteObserver(this);
-        cliente.addObserver(lobby);
+        
         lobby.setVisible(true);
         this.dispose();
     }

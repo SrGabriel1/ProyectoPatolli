@@ -5,17 +5,19 @@
 package GUIs;
 
 import javax.swing.JOptionPane;
+import logica.ControladorVentanas;
 
 /**
  *
  * @author Gabriel
  */
 public class vistaJuego extends javax.swing.JFrame {
-
+    ControladorVentanas controlador;
     /**
      * Creates new form vistaSesion
      */
-    public vistaJuego() {
+    public vistaJuego(ControladorVentanas controlador) {
+        this.controlador=controlador;
         initComponents();
         setLocationRelativeTo(null);
     }

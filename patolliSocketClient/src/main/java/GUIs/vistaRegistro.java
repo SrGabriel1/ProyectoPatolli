@@ -97,8 +97,8 @@ public class vistaRegistro extends javax.swing.JFrame {
 
     private void btnUnirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnirseActionPerformed
         if (!txtPartida.getText().isEmpty()) {
-            vistaLobby lobby = new vistaLobby();
-            lobby.setVisible(true);
+            //vistaLobby lobby = new vistaLobby();
+            //lobby.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Poner Datos Correctos", "Error", JOptionPane.WARNING_MESSAGE);

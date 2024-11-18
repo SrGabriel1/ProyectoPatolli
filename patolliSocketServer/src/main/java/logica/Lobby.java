@@ -20,6 +20,19 @@ public class Lobby {
         this.codigo = codigo;
         this.clientesEnLobby = new ArrayList<>();
     }
+    
+    public void anadirJugadorAlLobby(ClienteConectado cliente){
+        clientesEnLobby.add(cliente);
+    }
+    
+    public boolean comprobarJugadorConMismoNombre(String nombre){
+        for(ClienteConectado c:clientesEnLobby){
+            if(c.getNombre().equalsIgnoreCase(nombre)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String getCodigo() {
         return codigo;
