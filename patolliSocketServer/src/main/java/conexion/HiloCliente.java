@@ -4,6 +4,8 @@
  */
 package conexion;
 
+import Entidades.CondicionesPartida;
+import Entidades.SolicitudALobby;
 import mensajes.Mensaje;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.ClienteConectado;
 
 /**
  *
@@ -24,8 +27,8 @@ public class HiloCliente implements Runnable{
     private ManejadorClientes manejadorClientes;
     
     public HiloCliente(Socket clienteSocket, ManejadorClientes manejadorClientes) {
-        this.manejadorClientes=manejadorClientes;
-            protocolo=new ProtocoloServidor();
+            this.manejadorClientes=manejadorClientes;
+            this.protocolo=new ProtocoloServidor(manejadorClientes);
         try {
             this.clienteSocket = clienteSocket;
             out = new ObjectOutputStream(clienteSocket.getOutputStream());
@@ -42,9 +45,20 @@ public class HiloCliente implements Runnable{
                     Mensaje mensajeRecibido = (Mensaje) in.readObject();
                     if (mensajeRecibido.getTipo().equals("CrearLobby")) {
                         
+                        CondicionesPartida condiciones=(CondicionesPartida)mensajeRecibido.getContenido();
+                        String codigo= protocolo.crearLobby(condiciones);
+                        out.writeObject(new Mensaje("Codigo",codigo));
+                        out.flush();
                         
-                    }else if(mensajeRecibido.getTipo().equalsIgnoreCase("UnirseLobby")){
-                        protocolo.unirClienteALobby();
+                        String nombre=condiciones.getAdmin().getNombre();
+                        SolicitudALobby solicitud=new SolicitudALobby(nombre, codigo);
+                        ClienteConectado clienteConectado=new ClienteConectado(out, in, nombre);
+                        protocolo.unirClienteALobby(solicitud,clienteConectado);
+                        
+                    }else if(mensajeRecibido.getTipo().equalsIgnoreCase("UnirseALobby")){
+                        SolicitudALobby solicitud=(SolicitudALobby)mensajeRecibido.getContenido();
+                        ClienteConectado cliente=new ClienteConectado(out, in, solicitud.getNombre());
+                        protocolo.unirClienteALobby(solicitud,cliente);
                     }
                 }
             } catch (Exception e) {
@@ -54,6 +68,15 @@ public class HiloCliente implements Runnable{
 
     public Socket getClienteSocket() {
         return clienteSocket;
+    }
+    
+    public void mandarMensajeAlCliente(Mensaje mensaje){
+        try {
+            out.writeObject(mensaje);
+            out.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

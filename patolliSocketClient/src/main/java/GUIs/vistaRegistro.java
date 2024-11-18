@@ -4,18 +4,24 @@
  */
 package GUIs;
 
+import Entidades.SolicitudALobby;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JOptionPane;
+import logica.ControladorVentanas;
+import mensajes.Mensaje;
 
 /**
  *
  * @author Gabriel
  */
-public class vistaRegistro extends javax.swing.JFrame {
-
+public class vistaRegistro extends javax.swing.JFrame implements Observer{
+    ControladorVentanas controlador;
     /**
      * Creates new form vistaRegistro
      */
-    public vistaRegistro() {
+    public vistaRegistro(ControladorVentanas controlador) {
+        this.controlador=controlador;
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -96,13 +102,8 @@ public class vistaRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUnirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnirseActionPerformed
-        if (!txtPartida.getText().isEmpty()) {
-            //vistaLobby lobby = new vistaLobby();
-            //lobby.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Poner Datos Correctos", "Error", JOptionPane.WARNING_MESSAGE);
-        }
+        SolicitudALobby solicitud=new SolicitudALobby(txtNombre.getText(), txtPartida.getText());
+        controlador.registrarUsuarioEnLobby(solicitud);
     }//GEN-LAST:event_btnUnirseActionPerformed
 
     private void txtPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPartidaActionPerformed
@@ -136,4 +137,18 @@ public class vistaRegistro extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPartida;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Mensaje mensaje=(Mensaje)arg;
+        if(mensaje.getTipo().equalsIgnoreCase("UsuarioValido")){
+            controlador.cambiaraVentanaLobby(this);
+        }else if(mensaje.getTipo().equalsIgnoreCase("UsuarioInvalido")){
+            JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
+        }else if(mensaje.getTipo().equalsIgnoreCase("LobbyInexistente")){
+            JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 }

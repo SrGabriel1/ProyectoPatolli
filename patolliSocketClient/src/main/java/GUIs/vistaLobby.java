@@ -4,18 +4,21 @@
  */
 package GUIs;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import logica.ControladorVentanas;
+import mensajes.Mensaje;
 
 /**
  *
  * @author Gabriel
  */
-public class vistaLobby extends javax.swing.JFrame{
+public class vistaLobby extends javax.swing.JFrame implements Observer{
     ControladorVentanas controlador;
     private int JugadoresListos = 0;
     private int TotalJugadores = 0;
@@ -146,5 +149,34 @@ public class vistaLobby extends javax.swing.JFrame{
     private javax.swing.JLabel jugador3;
     private javax.swing.JLabel jugador4;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Mensaje mensaje = (Mensaje) arg;
+        if (mensaje.getTipo().equalsIgnoreCase("Codigo")) {
+            Codigo.setText((String) mensaje.getContenido());
+        }else if(mensaje.getTipo().equalsIgnoreCase("UsuarioNuevo")){
+            comprobarLabelVacio().setText((String)mensaje.getContenido());
+        }else if(mensaje.getTipo().equalsIgnoreCase("UsuariosConectados")){
+            List<String> usuarios=( List<String>)mensaje.getContenido();
+            for(String s:usuarios){
+                comprobarLabelVacio().setText(s);
+            }
+        }
+    }
+    
+    public JLabel comprobarLabelVacio(){
+        if(jugador1.getText().equalsIgnoreCase("")){
+            return jugador1;
+        }else if(jugador2.getText().equalsIgnoreCase("")){
+            return jugador2;
+        }else if(jugador3.getText().equalsIgnoreCase("")){
+            return jugador3;
+        }else if(jugador4.getText().equalsIgnoreCase("")){
+            return jugador4;
+        }else{
+            return null;
+        }
+    }
 
 }

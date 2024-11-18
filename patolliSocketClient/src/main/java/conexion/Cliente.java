@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mensajes.Mensaje;
 
 /**
@@ -53,12 +55,13 @@ public class Cliente extends Observable implements Runnable {
         this.clearChanged();
     }
 
-    public void enviarNombreUsuarioAlServidor(String texto) throws Exception {
+    public void mandarMensajeAlServidor(Mensaje mensaje){
         try {
-            out.writeObject(new Mensaje("String", texto));
+            out.writeObject(mensaje);
             out.flush();
-        } catch (Exception e) {
-            throw new Exception();
-        }
+        } catch (IOException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
     }
 }

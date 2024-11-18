@@ -4,20 +4,25 @@
  */
 package GUIs;
 
+import Entidades.CondicionesPartida;
+import Entidades.SolicitudALobby;
 import javax.swing.JOptionPane;
+import logica.ControladorVentanas;
 
 /**
  *
  * @author Gabriel
  */
 public class vistaRegistro2 extends javax.swing.JFrame {
-
+    ControladorVentanas controlador;
     /**
      * Creates new form vistaRegistro
      */
-    public vistaRegistro2() {
+    public vistaRegistro2(ControladorVentanas controlador) {
+        this.controlador=controlador;
         initComponents();
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -85,9 +90,11 @@ public class vistaRegistro2 extends javax.swing.JFrame {
 
     private void btnSiguenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguenteActionPerformed
         if (!txtNombre.getText().isEmpty()) {
-            vistaCrearJuego crearJuego = new vistaCrearJuego();
-            crearJuego.setVisible(true);
-            this.dispose();
+            CondicionesPartida nombre=new CondicionesPartida();
+            SolicitudALobby solicitud=new SolicitudALobby();
+            solicitud.setNombre(txtNombre.getText());
+            nombre.setAdmin(solicitud);
+            controlador.cambiaraVentanaCrearJuego(this,nombre);
         } else {
             JOptionPane.showMessageDialog(this, "Poner Datos Correctos", "Error", JOptionPane.WARNING_MESSAGE);
         }

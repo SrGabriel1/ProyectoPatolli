@@ -4,12 +4,17 @@
  */
 package GUIs;
 
+import Entidades.CondicionesPartida;
+import logica.ControladorVentanas;
+
 /**
  *
  * @author Gabriel
  */
 public class vistaCrearJuego extends javax.swing.JFrame {
 
+    ControladorVentanas control;
+    CondicionesPartida condiciones;
     /**
      * Creates new form vistaRegistroUsuario
      */
@@ -20,7 +25,9 @@ public class vistaCrearJuego extends javax.swing.JFrame {
     private int minApuesta = 10;
     private final int MaxApuesta = 900;
 
-    public vistaCrearJuego() {
+    public vistaCrearJuego(ControladorVentanas control,CondicionesPartida condiciones) {
+        this.control=control;
+        this.condiciones=condiciones;
         initComponents();
         setLocationRelativeTo(null);
         jugadores.setText("(" + MinJugadores + "/" + TotalJugadores + ")");
@@ -170,9 +177,10 @@ public class vistaCrearJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnLobbyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLobbyActionPerformed
-        vistaLobby lobby = new vistaLobby(MinJugadores);
-        lobby.setVisible(true);
-        this.dispose();
+        condiciones.setJugadores(MinJugadores);
+        condiciones.setSemillas(minSemillas);
+        condiciones.setApuestas(minApuesta);
+        control.cambiaraVentanaLobby(this,condiciones);
     }//GEN-LAST:event_btnLobbyActionPerformed
 
     private void btnJugadorMenosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugadorMenosActionPerformed

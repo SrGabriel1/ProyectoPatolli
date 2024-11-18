@@ -79,9 +79,7 @@ public class vistaJuego extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btrnCrearJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btrnCrearJuegoActionPerformed
-        vistaRegistro2 registro = new vistaRegistro2();
-        registro.setVisible(true);
-        this.dispose();
+        controlador.cambiaraVentanaRegistro2(this);
     }//GEN-LAST:event_btrnCrearJuegoActionPerformed
 
     private void btnVolverInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverInicioActionPerformed
@@ -92,10 +90,7 @@ public class vistaJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverInicioActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-
-            vistaRegistro registro = new vistaRegistro();
-            registro.setVisible(true);
-            this.dispose();
+        controlador.cambiaraVentanaRegistro(this);
       
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 

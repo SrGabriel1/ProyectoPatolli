@@ -14,23 +14,33 @@ import java.net.Socket;
  * @author USER
  */
 public class ClienteConectado implements Serializable{
-    private Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
     private String nombre;
 
     public ClienteConectado() {
     }
 
-    public ClienteConectado(Socket socket, String nombre) {
-        this.socket = socket;
+    public ClienteConectado(ObjectOutputStream out, ObjectInputStream in, String nombre) {
+        this.out = out;
+        this.in = in;
         this.nombre = nombre;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public ObjectOutputStream getOut() {
+        return out;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void setOut(ObjectOutputStream out) {
+        this.out = out;
+    }
+
+    public ObjectInputStream getIn() {
+        return in;
+    }
+
+    public void setIn(ObjectInputStream in) {
+        this.in = in;
     }
 
     public String getNombre() {
@@ -40,4 +50,7 @@ public class ClienteConectado implements Serializable{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    
+
 }

@@ -4,6 +4,7 @@
  */
 package conexion;
 
+import Entidades.SolicitudALobby;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ManejadorClientes {
 
     public ManejadorClientes() {
         this.clientes = new ArrayList<>();
+        this.lobbys = new ArrayList<>();
     }
 
     public void agregarCliente(HiloCliente hiloCliente) {
@@ -34,14 +36,25 @@ public class ManejadorClientes {
         return clientes;
     }
     
-    public boolean anadirClienteALobby(String codigo, HiloCliente cliente){
-        for(Lobby l:lobbys){
+    public void anadirLobby(Lobby lobby){
+        lobbys.add(lobby);
+        System.out.println("Lobby agregado exitosamente");
+        System.out.println(lobby);
+    }
+    
+    public Lobby comprobarSiLobbyExiste(String codigo){
+        for(Lobby l: lobbys){
             if(l.getCodigo().equalsIgnoreCase(codigo)){
-                if (l.comprobarJugadorConMismoNombre(codigo)) {
-                    return false;
-                } else {
-                    l.anadirJugadorAlLobby(new ClienteConectado(cliente.getClienteSocket(),));
-                }
+                return l;
+            }
+        }
+        return null;
+    }
+    
+    public boolean comprobarUsuarioEnLobby(Lobby lobby,String nombre){
+        for( ClienteConectado c:lobby.getClientesEnLobby()){
+            if(c.getNombre().equalsIgnoreCase(nombre)){
+                return false;
             }
         }
         return true;
