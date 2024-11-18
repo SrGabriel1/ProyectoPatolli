@@ -79,8 +79,8 @@ public class vistaJuego extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btrnCrearJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btrnCrearJuegoActionPerformed
-        vistaCrearJuego CrearJuego = new vistaCrearJuego();
-        CrearJuego.setVisible(true);
+        vistaRegistro2 registro = new vistaRegistro2();
+        registro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btrnCrearJuegoActionPerformed
 
