@@ -48,7 +48,6 @@ public class ProtocoloServidor {
             cliente.getOut().writeObject(new Mensaje("LobbyInexistente", "No existe ese lobby"));
             cliente.getOut().flush();
         }
-        System.out.println( lobby.getClientesEnLobby());
     }
     
     public String crearLobby(CondicionesPartida condiciones){

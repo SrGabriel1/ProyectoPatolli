@@ -147,7 +147,7 @@ public class vistaRegistro extends javax.swing.JFrame implements Observer{
             JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
         }else if(mensaje.getTipo().equalsIgnoreCase("LobbyInexistente")){
             JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
-        }else{
+        }else if(mensaje.getTipo().equalsIgnoreCase("LobbyLleno")){
             JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
