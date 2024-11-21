@@ -8,6 +8,7 @@ import Entidades.CondicionesPartida;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import mensajes.Mensaje;
 import modelo.ClienteConectado;
 
@@ -16,48 +17,42 @@ import modelo.ClienteConectado;
  * @author USER
  */
 public class Lobby {
+
     private String codigo;
     private List<ClienteConectado> clientesEnLobby;
     private CondicionesPartida condiciones;
-    
 
     public Lobby(String codigo) {
         this.codigo = codigo;
         this.clientesEnLobby = new ArrayList<>();
     }
-    
-    public void anadirJugadorAlLobby(ClienteConectado cliente){
+
+    public void anadirJugadorAlLobby(ClienteConectado cliente) {
         clientesEnLobby.add(cliente);
     }
-    
-    public boolean comprobarJugadorConMismoNombre(String nombre){
-        for(ClienteConectado c:clientesEnLobby){
-            if(c.getNombre().equalsIgnoreCase(nombre)){
-                return true;
-            }
-        }
-        return false;
+
+    public boolean comprobarJugadorConMismoNombre(String nombre) {
+        ClienteConectado cli = clientesEnLobby.stream().filter(c -> c.getNombre().equalsIgnoreCase(nombre)).findFirst().orElse(null);
+        return cli != null;
     }
-    
-    public List<String> obtenerNombresDeUsuarios(){
-        List<String> usuarios=new ArrayList<>();
-        for(ClienteConectado c: clientesEnLobby){
-            usuarios.add(c.getNombre());
-        }
-        return usuarios;
+
+    public List<String> obtenerNombresDeUsuarios() {
+        return clientesEnLobby.stream()
+                .map(ClienteConectado::getNombre) // Obtiene el nombre de cada ClienteConectado
+                .collect(Collectors.toList());
     }
-    
-    public void informarDeNuevoUsuario(String nombre) throws IOException{
-        for(ClienteConectado c: clientesEnLobby){
-            c.getOut().writeObject(new Mensaje("UsuarioNuevo",nombre));
+
+    public void informarDeNuevoUsuario(String nombre) throws IOException {
+        for (ClienteConectado c : clientesEnLobby) {
+            c.getOut().writeObject(new Mensaje("UsuarioNuevo", nombre));
             c.getOut().flush();
         }
     }
-    
-    public boolean lobbyLleno(){
-        if(clientesEnLobby.size()==condiciones.getJugadores()){
+
+    public boolean lobbyLleno() {
+        if (clientesEnLobby.size() == condiciones.getJugadores()) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -90,8 +85,5 @@ public class Lobby {
     public String toString() {
         return "Lobby{" + "codigo=" + codigo + ", clientesEnLobby=" + clientesEnLobby + ", condiciones=" + condiciones + '}';
     }
-    
-    
-    
-    
+
 }
