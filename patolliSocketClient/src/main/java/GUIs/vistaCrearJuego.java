@@ -213,14 +213,14 @@ public class vistaCrearJuego extends javax.swing.JFrame {
 
     private void btnSemillasMenosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemillasMenosActionPerformed
         if (minSemillas != 100) {
-            minSemillas=minSemillas-100;
+            minSemillas=minSemillas-10;
             semillas.setText("(" + minSemillas + "/" + SemillasMax + ")");
         }
     }//GEN-LAST:event_btnSemillasMenosActionPerformed
 
     private void btnSemillasMasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemillasMasActionPerformed
         if (minSemillas < 900) {
-            minSemillas=100+minSemillas;
+            minSemillas=10+minSemillas;
             semillas.setText("(" + minSemillas + "/" + SemillasMax + ")");
         }
     }//GEN-LAST:event_btnSemillasMasActionPerformed

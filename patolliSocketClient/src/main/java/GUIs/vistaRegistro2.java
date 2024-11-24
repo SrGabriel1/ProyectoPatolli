@@ -37,7 +37,6 @@ public class vistaRegistro2 extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         btnSiguente = new javax.swing.JButton();
-        btnValidar = new javax.swing.JButton();
         btnVolverInicio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -52,7 +51,7 @@ public class vistaRegistro2 extends javax.swing.JFrame {
                 txtNombreActionPerformed(evt);
             }
         });
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, 260, 20));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 240, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/registro2.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -64,16 +63,7 @@ public class vistaRegistro2 extends javax.swing.JFrame {
                 btnSiguenteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSiguente, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 490, 130, 70));
-
-        btnValidar.setBorderPainted(false);
-        btnValidar.setContentAreaFilled(false);
-        btnValidar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnValidarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnValidar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 329, 400, 60));
+        getContentPane().add(btnSiguente, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 450, 120, 70));
 
         btnVolverInicio.setText("jButton1");
         btnVolverInicio.setBorderPainted(false);
@@ -83,7 +73,7 @@ public class vistaRegistro2 extends javax.swing.JFrame {
                 btnVolverInicioActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 130, 80));
+        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 110, 70));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -104,14 +94,6 @@ public class vistaRegistro2 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void btnValidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidarActionPerformed
-        if (!txtNombre.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nombre Correcto", "Notificacion", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Poner Datos Correctos", "Error", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_btnValidarActionPerformed
-
     private void btnVolverInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverInicioActionPerformed
         vistaInicio inicio = new vistaInicio();
         inicio.setVisible(true);
@@ -121,7 +103,6 @@ public class vistaRegistro2 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSiguente;
-    private javax.swing.JButton btnValidar;
     private javax.swing.JButton btnVolverInicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txtNombre;

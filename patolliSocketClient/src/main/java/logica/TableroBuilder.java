@@ -5,10 +5,9 @@
 package logica;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -47,8 +46,15 @@ public class TableroBuilder {
     }
 
     private void configurarTamano() {
-        tablero.setLayout(new GridLayout(filas, columnas, 5, 5));
-        tablero.setPreferredSize(tablero.getSize());
+        int casillaAncho = 100;  // Cambiar este valor si es necesario
+        int casillaAlto = 100;   // Cambiar este valor si es necesario
+
+        int panelAncho = columnas * casillaAncho;
+        int panelAlto = filas * casillaAlto;
+        tablero.setPreferredSize(new Dimension(panelAncho, panelAlto));
+        
+        // Utiliza GridLayout con espaciado adecuado
+        tablero.setLayout(new GridLayout(filas, columnas, 0, 0)); // 0px de espaciado
     }
 
     public void construirTablero() {
@@ -66,6 +72,7 @@ public class TableroBuilder {
         label.setBorder(new LineBorder(Color.BLACK, 1));
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
+        label.setPreferredSize(new Dimension(100, 100));
         return label;
     }
 

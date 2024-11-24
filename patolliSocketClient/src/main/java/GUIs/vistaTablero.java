@@ -29,6 +29,11 @@ public class vistaTablero extends JFrame {
         tablero.setBounds(0, 0, Tablero.getIcon().getIconWidth(), Tablero.getIcon().getIconHeight());
         layeredPane.add(tablero, Integer.valueOf(1)); // Capa superior
 
+        redimensionarCañas(); // Redimensiona las imágenes de las cañas
+
+        // Posiciona las cañas en la capa intermedia
+        posicionarCañas(layeredPane);
+
         // Agrega los botones al layeredPane en una capa intermedia
         Tirar.setBounds(340, 670, 170, 60);
         layeredPane.add(Tirar, Integer.valueOf(2));
@@ -39,13 +44,57 @@ public class vistaTablero extends JFrame {
         // Agrega el layeredPane al JFrame
         setContentPane(layeredPane);
         pack();
+        revalidate();
         repaint(); // Re-dibuja para asegurarse que el tablero se muestre correctamente
+    }
+
+    private void redimensionarCañas() {
+        // Tamaño deseado para las cañas
+        int ancho = 70; // Cambia este valor para ajustar el ancho
+        int alto = 35;  // Cambia este valor para ajustar el alto
+
+        // Redimensionar cada caña
+        JLabel[] cañas = {cana1, cana2, cana3, cana4, cana5};
+        for (JLabel caña : cañas) {
+            // Cargar la imagen original del JLabel
+            ImageIcon iconoOriginal = (ImageIcon) caña.getIcon();
+            Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+
+            // Establecer la nueva imagen escalada en el JLabel
+            caña.setIcon(new ImageIcon(imagenRedimensionada));
+        }
+    }
+
+    /**
+     * Método para posicionar las cañas en el tablero.
+     */
+    private void posicionarCañas(JLayeredPane layeredPane) {
+        // Coordenadas para las cañas, basadas en la imagen
+        int[][] posiciones = {
+            {820, 210}, // caña1
+            {820, 250}, // caña2
+            {820, 290}, // caña3
+            {820, 330}, // caña4
+            {820, 370} // caña5
+        };
+
+        JLabel[] cañas = {cana1, cana2, cana3, cana4, cana5};
+
+        for (int i = 0; i < cañas.length; i++) {
+            cañas[i].setBounds(posiciones[i][0], posiciones[i][1], 110, 50); // Ajustar tamaño y posición
+            layeredPane.add(cañas[i], Integer.valueOf(2)); // Añadir a la capa intermedia
+        }
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        cana3 = new javax.swing.JLabel();
+        cana1 = new javax.swing.JLabel();
+        cana4 = new javax.swing.JLabel();
+        cana5 = new javax.swing.JLabel();
+        cana2 = new javax.swing.JLabel();
         Nombre1 = new javax.swing.JLabel();
         Dinero1 = new javax.swing.JLabel();
         Nombre2 = new javax.swing.JLabel();
@@ -58,9 +107,25 @@ public class vistaTablero extends JFrame {
         Tirar = new javax.swing.JButton();
         btnVolverInicio = new javax.swing.JButton();
         Tablero = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        cana3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
+        getContentPane().add(cana3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 320, 110, 50));
+
+        cana1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
+        getContentPane().add(cana1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 200, 110, 50));
+
+        cana4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
+        getContentPane().add(cana4, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 410, 110, 50));
+
+        cana5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
+        getContentPane().add(cana5, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 480, 110, 50));
+
+        cana2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
+        getContentPane().add(cana2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, 110, 50));
 
         Nombre1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre1.setForeground(new java.awt.Color(0, 0, 0));
@@ -118,8 +183,9 @@ public class vistaTablero extends JFrame {
         });
         getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 670, 100, 60));
 
-        Tablero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Tablero.png"))); // NOI18N
+        Tablero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tablero2.png"))); // NOI18N
         getContentPane().add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 10, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -148,5 +214,11 @@ public class vistaTablero extends JFrame {
     private javax.swing.JButton Tirar;
     private javax.swing.JLabel Turno;
     private javax.swing.JButton btnVolverInicio;
+    private javax.swing.JLabel cana1;
+    private javax.swing.JLabel cana2;
+    private javax.swing.JLabel cana3;
+    private javax.swing.JLabel cana4;
+    private javax.swing.JLabel cana5;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
