@@ -25,15 +25,20 @@ public class ControlPartida {
     public ControlPartida(PatolliPanel tablero, int numJugadores) {
         this.tablero = tablero;
         this.posicionesJugadores = new int[numJugadores];
-        this.fichasEnTablero = new boolean[numJugadores]; // Inicialmente false
+        this.fichasEnTablero = new boolean[numJugadores];
         this.jugadores = new ArrayList<>();
         this.casillasInicialesPorJugador = new ArrayList<>();
 
-        // Asignar casillas amarillas a jugadores
+        // Obtener casillas amarillas
         List<Integer> casillasAmarillas = tablero.getCasillasAmarillas();
+        if (casillasAmarillas == null || casillasAmarillas.isEmpty()) {
+            casillasAmarillas = generarCasillasAmarillasDefault(numJugadores);
+        }
+
         for (int i = 0; i < numJugadores; i++) {
-            casillasInicialesPorJugador.add(casillasAmarillas.get(i % casillasAmarillas.size()));
-            posicionesJugadores[i] = -1; // -1 indica que la ficha no está en el tablero
+            int posicionInicial = casillasAmarillas.get(i);
+            casillasInicialesPorJugador.add(posicionInicial);
+            posicionesJugadores[i] = -1; // Indica que no están en el tablero
         }
 
         // Inicializar jugadores
@@ -45,7 +50,7 @@ public class ControlPartida {
 
             List<Ficha> fichas = new ArrayList<>();
             Ficha ficha = new Ficha(coloresJugadores[i]);
-            ficha.setPosicion(-1); // La ficha empieza fuera del tablero
+            ficha.setPosicion(-1);
             fichas.add(ficha);
 
             jugador.setFichas(fichas);
@@ -53,33 +58,54 @@ public class ControlPartida {
         }
     }
 
+    // Método auxiliar para generar posiciones por defecto
+    private List<Integer> generarCasillasAmarillasDefault(int numJugadores) {
+        List<Integer> casillasDefault = new ArrayList<>();
+        casillasDefault.add(54); // Arriba
+        casillasDefault.add(24); // Abajo
+        casillasDefault.add(9); // Izquierda
+        casillasDefault.add(52); // Derecha
+
+//        // Si hay más jugadores que casillas amarillas
+//        while (casillasDefault.size() < numJugadores) {
+//            casillasDefault.add(casillasDefault.size() + 1);
+//        }
+
+        return casillasDefault;
+    }
+
     public void turnoJugador(int jugador, int pasos) {
-        // Si la ficha no está en el tablero y hay pasos válidos, colocarla
+        // Si la ficha no está en el tablero, colócala en su casilla amarilla
         if (!fichasEnTablero[jugador] && pasos > 0) {
             colocarFichaInicial(jugador);
             return;
         }
 
         // Si la ficha ya está en el tablero, moverla
-        if (fichasEnTablero[jugador]) {
+        else if (fichasEnTablero[jugador]) {
             int posicionActual = posicionesJugadores[jugador];
             int nuevaPosicion = calcularNuevaPosicion(posicionActual, pasos);
 
-            // Mover la ficha en el tablero
+            // Mover la ficha gráficamente
             tablero.moverFicha(posicionActual, nuevaPosicion - posicionActual, coloresJugadores[jugador]);
+
+            // Actualizar la nueva posición del jugador
             posicionesJugadores[jugador] = nuevaPosicion;
         }
     }
 
     private int calcularNuevaPosicion(int posicionActual, int pasos) {
-        int totalCasillas = tablero.getCasillas().size();
+        int totalCasillas = tablero.getCasillas().size(); // Total de casillas en el tablero
         return (posicionActual + pasos) % totalCasillas; // Movimiento circular
     }
 
     private void colocarFichaInicial(int jugador) {
+        // Obtener la posición inicial del jugador (casilla amarilla asignada)
         int posicionInicial = casillasInicialesPorJugador.get(jugador);
-        posicionesJugadores[jugador] = posicionInicial;
-        fichasEnTablero[jugador] = true;
+        posicionesJugadores[jugador] = posicionInicial; // Actualizar posición inicial
+        fichasEnTablero[jugador] = true; // Indicar que la ficha está en el tablero
+        System.out.println(posicionInicial);
+        // Mover la ficha gráficamente al tablero
         tablero.moverFicha(posicionInicial, 0, coloresJugadores[jugador]);
     }
 

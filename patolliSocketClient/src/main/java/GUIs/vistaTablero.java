@@ -206,10 +206,12 @@ public class vistaTablero extends JFrame {
        try {
         // Generar resultados de las cañas y calcular los pasos
         boolean[] resultados = controlPartida.generarCañasAleatorias();
-        int pasos = controlPartida.calcularPasos(resultados);
 
         // Mostrar las cañas en la interfaz
         mostrarCañas(resultados);
+        
+        
+        int pasos = controlPartida.calcularPasos(resultados);
 
         // Mover la ficha del jugador actual
         controlPartida.turnoJugador(jugadorActual, pasos);

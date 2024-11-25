@@ -42,59 +42,135 @@ public class TableroBuilder {
     }
 
     public static TableroBuilder builderTablero(int filas, int columnas, JPanel tablero,
-            List<JLabel> casillas, TipoTablero tipoTablero,
-            int numJugadores) {
+            List<JLabel> casillas, TipoTablero tipoTablero, int numJugadores) {
         return new TableroBuilder(filas, columnas, tablero, casillas, tipoTablero, numJugadores);
     }
 
     private void configurarTamano() {
-        int casillaAncho = 100;  // Cambiar este valor si es necesario
-        int casillaAlto = 100;   // Cambiar este valor si es necesario
-
-        int panelAncho = columnas * casillaAncho;
-        int panelAlto = filas * casillaAlto;
+        int casillaAncho = 60;  // Reducido de 100 a 60
+        int casillaAlto = 60;   // Reducido de 100 a 60
+        int panelAncho = 2 * casillaAncho;
+        int panelAlto = 7 * casillaAlto;
         tablero.setPreferredSize(new Dimension(panelAncho, panelAlto));
-
-        // Utiliza GridLayout con espaciado adecuado
-        tablero.setLayout(new GridLayout(filas, columnas, 0, 0)); // 0px de espaciado
+        tablero.setLayout(new GridLayout(filas, columnas, 2, 2)); // Añadido gap de 2 pixels
     }
 
     public void construirTablero() {
         configurarTamano();
-        int indiceGlobal = calcularIndiceInicial(); // Método nuevo que calcularemos
 
-        for (int i = 1; i <= filas * columnas; i++) {
-            JLabel casilla = crearCasilla();
-            pintarCasillas(casilla, i);
-            tablero.add(casilla);
-            casillas.add(casilla);
+        if (tipoTablero == TipoTablero.CENTRAL) {
+            construirTableroCentral();
+        } else {
+            construirTableroExterno();
         }
     }
 
-    private int calcularIndiceInicial() {
-        // Calcula el índice inicial basado en el tipo de tablero
+    private void construirTableroExterno() {
+        JLabel[][] casillasTemp = new JLabel[7][2];
+
+        // Determinar el rango de números según el tipo de tablero
+        int[][] numeracion = getNumeracionSegunTipo();
+
+        // Crear y numerar las casillas
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 2; j++) {
+                int numero = numeracion[i][j];
+                JLabel casilla = crearCasilla(numero);
+                casillasTemp[i][j] = casilla;
+                pintarCasillas(casilla, numero);
+            }
+        }
+
+        // Agregar las casillas al tablero
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 2; j++) {
+                tablero.add(casillasTemp[i][j]);
+                casillas.add(casillasTemp[i][j]);
+                
+            }
+        }
+    }
+
+    private int[][] getNumeracionSegunTipo() {
+        int[][] numeracion = new int[7][2];
+
         switch (tipoTablero) {
             case ARRIBA:
-                return 0;
-            case DERECHA:
-                return filas * columnas;
-            case ABAJO:
-                return filas * columnas * 2;
+                numeracion = new int[][]{
+                    {1, 60},
+                    {2, 59},
+                    {3, 58},
+                    {4, 57},
+                    {5, 56},
+                    {6, 55},
+                    {7, 54}
+                };
+                break;
+
             case IZQUIERDA:
-                return filas * columnas * 3;
-            case CENTRAL:
-                return filas * columnas * 4;
-            default:
-                return 0;
+                numeracion = new int[][]{
+                    {15, 14}, // Empieza en 15 y cuenta hacia atrás
+                    {13, 12},
+                    {11, 10}, // Continúa en orden
+                    {9, 16},
+                    {17, 18}, // Conecta con el tablero central
+                    {19, 20},
+                    {21, 22}
+                };
+                break;
+
+            case ABAJO:
+                numeracion = new int[][]{
+                    {24, 37}, // Empieza a contar hacia abajo
+                    {25, 36},
+                    {26, 35},
+                    {27, 34},
+                    {28, 33},
+                    {29, 32},
+                    {30, 31}
+                };
+                break;
+
+            case DERECHA:
+                numeracion = new int[][]{
+                    {52, 51}, // Continúa hacia la derecha
+                    {50, 49},
+                    {48, 47},
+                    {46, 39},
+                    {40, 41},
+                    {42, 43},
+                    {44, 45}
+                };
+                break;
         }
+
+        return numeracion;
     }
 
-    private JLabel crearCasilla() {
-        JLabel label = new JLabel("");
+    private void construirTableroCentral() {
+        int[][] numeracionCentral = {
+            {8, 53}, // Primera fila del centro
+            {23, 38} // Segunda fila del centro
+        };
+
+        for (int i = 0; i < numeracionCentral.length; i++) {
+            for (int j = 0; j < numeracionCentral[i].length; j++) {
+                int numero = numeracionCentral[i][j]; // Obtener número desde la matriz
+                JLabel casilla = crearCasilla(numero); // Crear la casilla
+                tablero.add(casilla); // Agregar al tablero
+                casillas.add(casilla); // Guardar referencia
+            }
+        }
+
+    }
+
+    private JLabel crearCasilla(int numero) {
+        JLabel label = new JLabel(numero > 0 ? String.valueOf(numero) : "");
         label.setBorder(new LineBorder(Color.BLACK, 1));
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
-        label.setPreferredSize(new Dimension(100, 100));
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
         return label;
     }
 
@@ -103,133 +179,47 @@ public class TableroBuilder {
             return;
         }
 
-        pintarCasillaRoja(casilla, posicion);
-        pintarCasillaAmarilla(casilla, posicion);
-    }
-
-    private void pintarCasillaRoja(JLabel casilla, int posicion) {
-        if (tipoTablero == TipoTablero.CENTRAL) {
-            return;
-        }
-
-        boolean casillaRoja = false;
-
-        switch (numJugadores) {
-            case 2:
-                switch (tipoTablero) {
-                    case ARRIBA:
-                        casillaRoja = (posicion == 5 || posicion == 6);
-                        break;
-                    case ABAJO:
-                        casillaRoja = (posicion == 11 || posicion == 12);
-                        break;
-                    case IZQUIERDA:
-                        casillaRoja = (posicion == 3 || posicion == 11);
-                        break;
-                    case DERECHA:
-                        casillaRoja = (posicion == 6 || posicion == 14);
-                        break;
-                }
-                break;
-            case 3:
-                switch (tipoTablero) {
-                    case ARRIBA:
-                        casillaRoja = (posicion == 5 || posicion == 6);
-                        break;
-                    case ABAJO:
-                        casillaRoja = (posicion == 15 || posicion == 16);
-                        break;
-                    case IZQUIERDA:
-                        casillaRoja = (posicion == 3 || posicion == 13);
-                        break;
-                    case DERECHA:
-                        casillaRoja = (posicion == 8 || posicion == 18);
-                        break;
-                }
-                break;
-            case 4:
-                switch (tipoTablero) {
-                    case ARRIBA:
-                        casillaRoja = (posicion == 5 || posicion == 6);
-                        break;
-                    case ABAJO:
-                        casillaRoja = (posicion == 23 || posicion == 24);
-                        break;
-                    case IZQUIERDA:
-                        casillaRoja = (posicion == 3 || posicion == 17);
-                        break;
-                    case DERECHA:
-                        casillaRoja = (posicion == 12 || posicion == 26);
-                        break;
-                }
-                break;
-        }
-        if (casillaRoja) {
-            casilla.setBackground(Color.RED);
-        }
-    }
-
-    private void pintarCasillaAmarilla(JLabel casilla, int posicion) {
-        if (tipoTablero == TipoTablero.CENTRAL) {
-            return;
-        }
-
+        // Casillas amarillas según la imagen
         boolean casillaAmarilla = false;
-
-        switch (numJugadores) {
-            case 2:
-                switch (tipoTablero) {
-                    case ARRIBA:
-                        casillaAmarilla = (posicion == 16);
-                        break;
-                    case ABAJO:
-                        casillaAmarilla = (posicion == 1);
-                        break;
-                    case IZQUIERDA:
-                        casillaAmarilla = (posicion == 8);
-                        break;
-                    case DERECHA:
-                        casillaAmarilla = (posicion == 9);
-                        break;
-                }
+        switch (tipoTablero) {
+            case ARRIBA:
+                casillaAmarilla = (posicion == 54);
                 break;
-            case 3:
-                switch (tipoTablero) {
-                    case ARRIBA:
-                        casillaAmarilla = (posicion == 20);
-                        break;
-                    case ABAJO:
-                        casillaAmarilla = (posicion == 1);
-                        break;
-                    case IZQUIERDA:
-                        casillaAmarilla = (posicion == 10);
-                        break;
-                    case DERECHA:
-                        casillaAmarilla = (posicion == 11);
-                        break;
-                }
+            case ABAJO:
+                casillaAmarilla = (posicion == 24);
                 break;
-            case 4:
-                switch (tipoTablero) {
-                    case ARRIBA:
-                        casillaAmarilla = (posicion == 28);
-                        break;
-                    case ABAJO:
-                        casillaAmarilla = (posicion == 1);
-                        break;
-                    case IZQUIERDA:
-                        casillaAmarilla = (posicion == 14);
-                        break;
-                    case DERECHA:
-                        casillaAmarilla = (posicion == 15);
-                        break;
-                }
+            case IZQUIERDA:
+                casillaAmarilla = (posicion == 9);
+                break;
+            case DERECHA:
+                casillaAmarilla = (posicion == 52);
                 break;
         }
 
         if (casillaAmarilla) {
             casilla.setBackground(Color.YELLOW);
             casillasAmarillasPos.add(posicion);
+        }
+
+        // Casillas rojas según la imagen
+        boolean casillaRoja = false;
+        switch (tipoTablero) {
+            case ARRIBA:
+                casillaRoja = (posicion == 3 || posicion == 58);
+                break;
+            case ABAJO:
+                casillaRoja = (posicion == 28 || posicion == 33);
+                break;
+            case IZQUIERDA:
+                casillaRoja = (posicion == 13 || posicion == 18);
+                break;
+            case DERECHA:
+                casillaRoja = (posicion == 43 || posicion == 48);
+                break;
+        }
+
+        if (casillaRoja) {
+            casilla.setBackground(Color.RED);
         }
     }
 

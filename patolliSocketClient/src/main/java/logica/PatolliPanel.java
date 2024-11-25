@@ -7,8 +7,7 @@ import java.util.List;
 
 public class PatolliPanel extends JPanel {
 
-    private List
-    <JLabel> casillas; // Lista para almacenar las casillas
+    private List<JLabel> casillas; // Lista para almacenar las casillas
     private JPanel casillasArriba;
     private JPanel casillasAbajo;
     private JPanel casillasIzq;
@@ -106,23 +105,14 @@ public class PatolliPanel extends JPanel {
      * de jugadores.
      */
     private void configurarTablero() throws Exception {
-        int casillasPorAspa = switch (jugadores) {
-            case 2 ->
-                8;
-            case 3 ->
-                10;
-            case 4 ->
-                14;
-            default ->
-                throw new Exception("Número de jugadores inválido");
-        };
+        int casillasPorAspa = 7; // Siempre 7 filas por aspa
+        int columnasPorAspa = 2; // Siempre 2 columnas
 
-        // Configurar cada panel con su tipo correspondiente
-        configurarPanel(casillasArriba, casillasPorAspa, 2, TableroBuilder.TipoTablero.ARRIBA);
-        configurarPanel(casillasAbajo, casillasPorAspa, 2, TableroBuilder.TipoTablero.ABAJO);
-        configurarPanel(casillasIzq, 2, casillasPorAspa, TableroBuilder.TipoTablero.IZQUIERDA);
-        configurarPanel(casillasDer, 2, casillasPorAspa, TableroBuilder.TipoTablero.DERECHA);
-        configurarPanel(casillasCentrales, 2, 2, TableroBuilder.TipoTablero.CENTRAL);
+        configurarPanel(casillasArriba, casillasPorAspa, columnasPorAspa, TableroBuilder.TipoTablero.ARRIBA);
+        configurarPanel(casillasAbajo, casillasPorAspa, columnasPorAspa, TableroBuilder.TipoTablero.ABAJO);
+        configurarPanel(casillasIzq, columnasPorAspa, casillasPorAspa, TableroBuilder.TipoTablero.IZQUIERDA);
+        configurarPanel(casillasDer, columnasPorAspa, casillasPorAspa, TableroBuilder.TipoTablero.DERECHA);
+        configurarPanel(casillasCentrales, 2, 2, TableroBuilder.TipoTablero.CENTRAL); // Mantén el central como 2x2
     }
     List<Integer> casillasAmarillas;
 
@@ -135,6 +125,7 @@ public class PatolliPanel extends JPanel {
                 tipo,
                 jugadores
         );
+
         tablero.construirTablero();
         for (Integer c : tablero.getCasillasAmarillas()) {
             casillasAmarillas.add(c);
@@ -154,22 +145,42 @@ public class PatolliPanel extends JPanel {
         if (posicionActual >= 0 && posicionActual < casillas.size()) {
             // Calcula la nueva posición
             int nuevaPosicion = posicionActual + pasos;
+            int antiguaPosicion = 0;
 
             // Verifica que la nueva posición esté dentro del rango
             if (nuevaPosicion >= casillas.size()) {
                 nuevaPosicion = casillas.size() - 1;
             }
 
-            // Limpia la casilla anterior (quita solo la imagen)
-            JLabel casillaAnterior = casillas.get(posicionActual);
-            casillaAnterior.setIcon(null);
+            for (int i = 0; i < casillas.size(); i++) {
+                if(casillas.get(i).getIcon()==null){
+                    continue;
+                }
+                else if (casillas.get(i).getText().equalsIgnoreCase(""+posicionActual)) {
+                    antiguaPosicion=i;
+                }
+            }
 
-            // Marca la nueva casilla con la imagen correspondiente
-            JLabel nuevaCasilla = casillas.get(nuevaPosicion);
-            nuevaCasilla.setIcon(obtenerImagenFicha(colorFicha));
-            nuevaCasilla.setHorizontalAlignment(JLabel.CENTER);
-            nuevaCasilla.setVerticalAlignment(JLabel.CENTER);
-            repaint();
+            for (JLabel c : casillas) {
+                if (c.getText().equalsIgnoreCase("" + nuevaPosicion)) {
+                    c.setIcon(obtenerImagenFicha(colorFicha));
+                    c.setHorizontalAlignment(JLabel.CENTER);
+                    c.setVerticalAlignment(JLabel.CENTER);
+                    System.out.println(posicionActual);
+                    casillas.get(antiguaPosicion).setIcon(null);
+                    repaint();
+                }
+            }
+//            // Limpia la casilla anterior (quita solo la imagen)
+//            JLabel casillaAnterior = casillas.get(posicionActual);
+//            casillaAnterior.setIcon(null);
+//
+//            // Marca la nueva casilla con la imagen correspondiente
+//            JLabel nuevaCasilla = casillas.get(nuevaPosicion);
+//            nuevaCasilla.setIcon(obtenerImagenFicha(colorFicha));
+//            nuevaCasilla.setHorizontalAlignment(JLabel.CENTER);
+//            nuevaCasilla.setVerticalAlignment(JLabel.CENTER);
+//            repaint();
 
 //        // Opcional: lógica adicional según tipo de casilla
 //        if (nuevaCasilla.getBackground().equals(Color.RED)) {
