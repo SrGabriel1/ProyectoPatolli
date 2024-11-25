@@ -5,7 +5,7 @@
 package conexion;
 
 import Entidades.CondicionesPartida;
-import Entidades.SolicitudALobby;
+import mensajes.SolicitudALobby;
 import mensajes.Mensaje;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mensajes.MensajeALobby;
 import modelo.ClienteConectado;
 
 /**
@@ -59,6 +60,10 @@ public class HiloCliente implements Runnable{
                         SolicitudALobby solicitud=(SolicitudALobby)mensajeRecibido.getContenido();
                         ClienteConectado cliente=new ClienteConectado(out, in, solicitud.getNombre());
                         protocolo.unirClienteALobby(solicitud,cliente);
+                    }else if(mensajeRecibido.getTipo().equalsIgnoreCase("MensajeALobby")){
+                        MensajeALobby mensaje=(MensajeALobby) mensajeRecibido.getContenido();
+                        protocolo.manejarMensajesALobby(mensaje);
+                        
                     }
                 }
             } catch (Exception e) {

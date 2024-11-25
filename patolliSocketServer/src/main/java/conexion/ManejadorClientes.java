@@ -4,11 +4,12 @@
  */
 package conexion;
 
-import Entidades.SolicitudALobby;
+import mensajes.SolicitudALobby;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import logica.Lobby;
+import mensajes.MensajeALobby;
 import modelo.ClienteConectado;
 
 /**
@@ -58,5 +59,8 @@ public class ManejadorClientes {
             }
         }
         return true;
+    }
+    public void recibirMensajeDeLobby(MensajeALobby mensaje){
+        
     }
 }

@@ -5,12 +5,14 @@
 package conexion;
 
 import Entidades.CondicionesPartida;
-import Entidades.SolicitudALobby;
+import mensajes.SolicitudALobby;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 import logica.Lobby;
 import mensajes.Mensaje;
+import mensajes.MensajeALobby;
+import mensajes.MensajeMovimiento;
 import modelo.ClienteConectado;
 
 /**
@@ -33,6 +35,9 @@ public class ProtocoloServidor {
                     cliente.getOut().flush();
                     lobby.informarDeNuevoUsuario(solicitud.getNombre());
                     lobby.anadirJugadorAlLobby(cliente);
+                    cliente.getOut().writeObject(new Mensaje("Codigo", solicitud.getCodigo()));
+                    cliente.getOut().flush();
+
                     cliente.getOut().writeObject(new Mensaje("UsuariosConectados", lobby.obtenerNombresDeUsuarios()));
                     cliente.getOut().flush();
 
@@ -40,8 +45,8 @@ public class ProtocoloServidor {
                     cliente.getOut().writeObject(new Mensaje("UsuarioInvalido", "Ese usuario ya existe"));
                     cliente.getOut().flush();
                 }
-            }else{
-                cliente.getOut().writeObject(new Mensaje("LobyLleno", "Este lobby ya esta lleno"));
+            } else {
+                cliente.getOut().writeObject(new Mensaje("LobbyLleno", "Este lobby ya esta lleno"));
                 cliente.getOut().flush();
             }
         }else{
@@ -68,5 +73,32 @@ public class ProtocoloServidor {
         }
         
         return codigo.toString();
+    }
+    public void manejarMensajesALobby(MensajeALobby mensaje) throws IOException{
+        String codigo=mensaje.getCodigo();
+        Lobby lobby=manejadorClientes.comprobarSiLobbyExiste(codigo);
+        if(mensaje.getMensaje().equalsIgnoreCase("UsuarioListo")){
+            if(lobby.usuarioListo()){
+                lobby.informarATodosLosJugadoresEnLobby(new Mensaje("PartidaIniciada", null));
+                for(int i=0;i<lobby.getClientesEnLobby().size();i++){
+                    lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("TuNumeroDeJugador", i));
+                    lobby.getClientesEnLobby().get(i).getOut().flush();
+                }
+            }
+        }else if (mensaje.getMensaje().equalsIgnoreCase("Tirar")) {
+            MensajeMovimiento movimiento=(MensajeMovimiento)mensaje.getContenido();
+            for(int i=0;i<lobby.getClientesEnLobby().size();i++){
+                if(i==movimiento.getUsuarioTira()){
+                    continue;
+                }else{
+                    lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("TiroJugador", movimiento));
+                    lobby.getClientesEnLobby().get(i).getOut().flush();
+                }
+            }
+            lobby.cambiarTurno();
+            lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getOut().writeObject(new Mensaje("Tu turno", null));
+            lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getOut().flush();
+            
+        }
     }
 }

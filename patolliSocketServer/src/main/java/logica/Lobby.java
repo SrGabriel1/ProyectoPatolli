@@ -21,14 +21,24 @@ public class Lobby {
     private String codigo;
     private List<ClienteConectado> clientesEnLobby;
     private CondicionesPartida condiciones;
+    private int usuariosListos;
+    private int usuarioEnTurno;
 
     public Lobby(String codigo) {
         this.codigo = codigo;
         this.clientesEnLobby = new ArrayList<>();
+        usuarioEnTurno=0;
     }
 
     public void anadirJugadorAlLobby(ClienteConectado cliente) {
         clientesEnLobby.add(cliente);
+    }
+    
+    public void cambiarTurno(){
+        usuarioEnTurno++;
+        if(usuarioEnTurno==clientesEnLobby.size()){
+            usuarioEnTurno=0;
+        }
     }
 
     public boolean comprobarJugadorConMismoNombre(String nombre) {
@@ -38,7 +48,7 @@ public class Lobby {
 
     public List<String> obtenerNombresDeUsuarios() {
         return clientesEnLobby.stream()
-                .map(ClienteConectado::getNombre) // Obtiene el nombre de cada ClienteConectado
+                .map(ClienteConectado::getNombre)
                 .collect(Collectors.toList());
     }
 
@@ -54,6 +64,21 @@ public class Lobby {
             return false;
         } else {
             return true;
+        }
+    }
+    
+    public boolean usuarioListo(){
+        usuariosListos++;
+        if(usuariosListos==clientesEnLobby.size()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public void informarATodosLosJugadoresEnLobby(Mensaje mensaje) throws IOException{
+        for(ClienteConectado c:clientesEnLobby){
+            c.getOut().writeObject(mensaje);
         }
     }
 
@@ -80,6 +105,12 @@ public class Lobby {
     public void setCondiciones(CondicionesPartida condiciones) {
         this.condiciones = condiciones;
     }
+
+    public int getUsuarioEnTurno() {
+        return usuarioEnTurno;
+    }
+    
+    
 
     @Override
     public String toString() {

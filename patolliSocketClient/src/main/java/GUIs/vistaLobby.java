@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import logica.ControladorVentanas;
 import mensajes.Mensaje;
+import mensajes.MensajeALobby;
 
 /**
  *
@@ -30,6 +31,8 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
         this.controlador=controlador;
         initComponents();
         setLocationRelativeTo(null);
+        esperandoJugadoresLabel.setText("Esperando Jugadores...");
+        esperandoJugadoresLabel.setVisible(false);
     }
 
     public vistaLobby(int total) {
@@ -48,6 +51,7 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        esperandoJugadoresLabel = new javax.swing.JLabel();
         ContadorJugadores = new javax.swing.JLabel();
         Codigo = new javax.swing.JLabel();
         jugador1 = new javax.swing.JLabel();
@@ -61,9 +65,12 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        esperandoJugadoresLabel.setText("jLabel2");
+        getContentPane().add(esperandoJugadoresLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 550, 210, 40));
+
         ContadorJugadores.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         ContadorJugadores.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(ContadorJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 530, 120, 60));
+        getContentPane().add(ContadorJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 120, 60));
 
         Codigo.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         Codigo.setForeground(new java.awt.Color(0, 0, 0));
@@ -106,7 +113,7 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
                 botonListoActionPerformed(evt);
             }
         });
-        getContentPane().add(botonListo, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 510, 120, 40));
+        getContentPane().add(botonListo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 510, 140, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -118,23 +125,10 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
     }//GEN-LAST:event_btnJuegoActionPerformed
 
     private void botonListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonListoActionPerformed
-        if (JugadoresListos < TotalJugadores) {
-            JugadoresListos++;
-            ContadorJugadores.setText("(" + JugadoresListos + "/" + TotalJugadores + ")");
-        }
-
-        // Solo abre la vista del juego cuando se alcanza exactamente el número máximo de jugadores
-        if (JugadoresListos == TotalJugadores) {
-            vistaTablero Tablero;
-            try {
-                Tablero = new vistaTablero(TotalJugadores);
-                Tablero.setVisible(true);
-                this.dispose();
-            } catch (Exception ex) {
-                Logger.getLogger(vistaLobby.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
+        esperandoJugadoresLabel.setVisible(true);
+        botonListo.setEnabled(false);
+        Mensaje mensaje=new Mensaje("MensajeALobby", new MensajeALobby(Codigo.getText(),"UsuarioListo", null));
+        controlador.mandarMensajeAServidor(mensaje);
     }//GEN-LAST:event_botonListoActionPerformed
 
 
@@ -143,6 +137,7 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
     private javax.swing.JLabel ContadorJugadores;
     private javax.swing.JButton botonListo;
     private javax.swing.JButton btnJuego;
+    private javax.swing.JLabel esperandoJugadoresLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jugador1;
     private javax.swing.JLabel jugador2;
@@ -155,12 +150,18 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
         Mensaje mensaje = (Mensaje) arg;
         if (mensaje.getTipo().equalsIgnoreCase("Codigo")) {
             Codigo.setText((String) mensaje.getContenido());
-        }else if(mensaje.getTipo().equalsIgnoreCase("UsuarioNuevo")){
-            comprobarLabelVacio().setText((String)mensaje.getContenido());
-        }else if(mensaje.getTipo().equalsIgnoreCase("UsuariosConectados")){
-            List<String> usuarios=( List<String>)mensaje.getContenido();
-            for(String s:usuarios){
+        } else if (mensaje.getTipo().equalsIgnoreCase("UsuarioNuevo")) {
+            comprobarLabelVacio().setText((String) mensaje.getContenido());
+        } else if (mensaje.getTipo().equalsIgnoreCase("UsuariosConectados")) {
+            List<String> usuarios = (List<String>) mensaje.getContenido();
+            for (String s : usuarios) {
                 comprobarLabelVacio().setText(s);
+            }
+        } else if (mensaje.getTipo().equalsIgnoreCase("PartidaIniciada")) {
+            try {
+                controlador.cambiaraVentanaVistaTablero(this, Codigo.getText());
+            } catch (Exception ex) {
+                Logger.getLogger(vistaLobby.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

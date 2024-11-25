@@ -17,7 +17,7 @@ public class ControlPartida {
 
     private int[] posicionesJugadores;
     private boolean[] fichasEnTablero; // Nuevo: Controla qué fichas están en juego
-    private String[] coloresJugadores = {"naranja", "roja", "amarilla", "morada"};
+    private String[] coloresJugadores = {"morada", "amarilla", "roja", "naranja"};
     private PatolliPanel tablero;
     private List<Jugador> jugadores;
     private List<Integer> casillasInicialesPorJugador; // Nuevo: Guarda la casilla inicial de cada jugador

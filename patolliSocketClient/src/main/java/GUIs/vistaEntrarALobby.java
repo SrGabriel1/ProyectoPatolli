@@ -4,25 +4,26 @@
  */
 package GUIs;
 
-import Entidades.CondicionesPartida;
-import Entidades.SolicitudALobby;
+import mensajes.SolicitudALobby;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JOptionPane;
 import logica.ControladorVentanas;
+import mensajes.Mensaje;
 
 /**
  *
  * @author Gabriel
  */
-public class vistaRegistro2 extends javax.swing.JFrame {
+public class vistaEntrarALobby extends javax.swing.JFrame implements Observer{
     ControladorVentanas controlador;
     /**
      * Creates new form vistaRegistro
      */
-    public vistaRegistro2(ControladorVentanas controlador) {
+    public vistaEntrarALobby(ControladorVentanas controlador) {
         this.controlador=controlador;
         initComponents();
         setLocationRelativeTo(null);
-        
     }
 
     /**
@@ -35,8 +36,9 @@ public class vistaRegistro2 extends javax.swing.JFrame {
     private void initComponents() {
 
         txtNombre = new javax.swing.JTextField();
+        txtPartida = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        btnSiguente = new javax.swing.JButton();
+        btnUnirse = new javax.swing.JButton();
         btnVolverInicio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -51,19 +53,30 @@ public class vistaRegistro2 extends javax.swing.JFrame {
                 txtNombreActionPerformed(evt);
             }
         });
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 240, 30));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 230, 30));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/registro2.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        btnSiguente.setBorderPainted(false);
-        btnSiguente.setContentAreaFilled(false);
-        btnSiguente.addActionListener(new java.awt.event.ActionListener() {
+        txtPartida.setBackground(new java.awt.Color(240, 202, 148));
+        txtPartida.setForeground(new java.awt.Color(0, 0, 0));
+        txtPartida.setBorder(null);
+        txtPartida.setHighlighter(null);
+        txtPartida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguenteActionPerformed(evt);
+                txtPartidaActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSiguente, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 450, 120, 70));
+        getContentPane().add(txtPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 230, 30));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/registro.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        btnUnirse.setBorderPainted(false);
+        btnUnirse.setContentAreaFilled(false);
+        btnUnirse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUnirseActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnUnirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 380, 150, 50));
 
         btnVolverInicio.setText("jButton1");
         btnVolverInicio.setBorderPainted(false);
@@ -73,22 +86,19 @@ public class vistaRegistro2 extends javax.swing.JFrame {
                 btnVolverInicioActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 110, 70));
+        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 140, 90));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSiguenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguenteActionPerformed
-        if (!txtNombre.getText().isEmpty()) {
-            CondicionesPartida nombre=new CondicionesPartida();
-            SolicitudALobby solicitud=new SolicitudALobby();
-            solicitud.setNombre(txtNombre.getText());
-            nombre.setAdmin(solicitud);
-            controlador.cambiaraVentanaCrearJuego(this,nombre);
-        } else {
-            JOptionPane.showMessageDialog(this, "Poner Datos Correctos", "Error", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_btnSiguenteActionPerformed
+    private void btnUnirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnirseActionPerformed
+        SolicitudALobby solicitud=new SolicitudALobby(txtNombre.getText(), txtPartida.getText());
+        controlador.registrarUsuarioEnLobby(solicitud);
+    }//GEN-LAST:event_btnUnirseActionPerformed
+
+    private void txtPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPartidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPartidaActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
@@ -102,9 +112,24 @@ public class vistaRegistro2 extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSiguente;
+    private javax.swing.JButton btnUnirse;
     private javax.swing.JButton btnVolverInicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPartida;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Mensaje mensaje=(Mensaje)arg;
+        if(mensaje.getTipo().equalsIgnoreCase("UsuarioValido")){
+            controlador.cambiaraVentanaLobby(this);
+        }else if(mensaje.getTipo().equalsIgnoreCase("UsuarioInvalido")){
+            JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
+        }else if(mensaje.getTipo().equalsIgnoreCase("LobbyInexistente")){
+            JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
+        }else if(mensaje.getTipo().equalsIgnoreCase("LobbyLleno")){
+            JOptionPane.showMessageDialog(this, (String)mensaje.getContenido(), "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 }

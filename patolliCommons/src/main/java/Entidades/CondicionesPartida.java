@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import mensajes.SolicitudALobby;
 import java.io.Serializable;
 
 /**
