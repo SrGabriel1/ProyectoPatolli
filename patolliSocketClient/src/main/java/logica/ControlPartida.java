@@ -52,7 +52,8 @@ public class ControlPartida {
             Ficha ficha = new Ficha(coloresJugadores[i]);
             ficha.setPosicion(-1);
             fichas.add(ficha);
-
+            colocarFichaInicial(i);
+            
             jugador.setFichas(fichas);
             jugadores.add(jugador);
         }
@@ -74,13 +75,9 @@ public class ControlPartida {
         return casillasDefault;
     }
 
-    public void turnoJugador(int jugador, int pasos) {
-        if (!fichasEnTablero[jugador] && pasos > 0) {
-            colocarFichaInicial(jugador);
-        }else if (fichasEnTablero[jugador]) {
-            int posicionActual=tablero.moverFicha(posicionesJugadores[jugador],pasos , coloresJugadores[jugador]);
-            posicionesJugadores[jugador] = posicionActual;
-        }
+    public void moverFichaJugador(int jugador, int pasos) {
+        int posicionActual = tablero.moverFicha(posicionesJugadores[jugador], pasos, coloresJugadores[jugador]);
+        posicionesJugadores[jugador] = posicionActual;
     }
 
     private void colocarFichaInicial(int jugador) {
@@ -95,12 +92,6 @@ public class ControlPartida {
     public boolean esFichaEnTablero(int jugador) {
         return fichasEnTablero[jugador];
     }
-
-    public void lanzarDadosYMover(int pasos, int jugadorActual) {
-        turnoJugador(jugadorActual, pasos); // Mueve la ficha del jugador actual
-        jugadorActual = (jugadorActual + 1) % posicionesJugadores.length; // Cambia al siguiente jugador
-    }
-
     public String getJugadorActualColor(int jugadorActual) {
         return coloresJugadores[jugadorActual]; // Devuelve el color del jugador actual
     }

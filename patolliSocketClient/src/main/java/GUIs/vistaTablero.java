@@ -213,7 +213,7 @@ public class vistaTablero extends JFrame {
         
         int pasos = controlPartida.calcularPasos(resultados);
         // Mover la ficha del jugador actual
-        controlPartida.turnoJugador(jugadorActual, pasos);
+        controlPartida.moverFichaJugador(jugadorActual, pasos);
 
         // Actualizar el indicador de turno en la interfaz
         Turno.setText(controlPartida.getJugadorActualColor(jugadorActual));
