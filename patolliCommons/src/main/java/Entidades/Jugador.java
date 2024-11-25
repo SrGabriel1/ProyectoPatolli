@@ -22,11 +22,52 @@ public class Jugador {
         return 0;
     }
 
-    public void moverficha(Integer casillas) {
-
-    }
+  
 
     public void apostar(Integer monto) {
 
     }
+
+    public Jugador() {
+    }
+
+    public Jugador(String nombre, Integer fondos, List<Ficha> fichas, Integer apuesta) {
+        this.nombre = nombre;
+        this.fondos = fondos;
+        this.fichas = fichas;
+        this.apuesta = apuesta;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Integer getFondos() {
+        return fondos;
+    }
+
+    public void setFondos(Integer fondos) {
+        this.fondos = fondos;
+    }
+
+    public List<Ficha> getFichas() {
+        return fichas;
+    }
+
+    public void setFichas(List<Ficha> fichas) {
+        this.fichas = fichas;
+    }
+
+    public Integer getApuesta() {
+        return apuesta;
+    }
+
+    public void setApuesta(Integer apuesta) {
+        this.apuesta = apuesta;
+    }
+    
 }

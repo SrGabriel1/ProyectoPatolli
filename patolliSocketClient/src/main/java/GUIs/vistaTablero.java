@@ -5,84 +5,90 @@
 package GUIs;
 
 import logica.PatolliPanel;
-import logica.PatolliPanel;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.util.List;
+import logica.ControlPartida;
 
 public class vistaTablero extends JFrame {
+
+    private static final int ANCHO_CAÑA = 70;
+    private static final int ALTO_CAÑA = 35;
+    private ControlPartida controlPartida;
+    private int jugadorActual = 0;
+    private int jugadoresMax;
 
     public vistaTablero(int jugadores) throws Exception {
         initComponents();
         setLocationRelativeTo(null);
+        jugadoresMax = jugadores;
 
-        // Crea un JLayeredPane para permitir la superposición
+        // Crea un JLayeredPane para manejar capas
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(Tablero.getIcon().getIconWidth(), Tablero.getIcon().getIconHeight()));
 
-        // Agrega el JLabel con la imagen al fondo
+        // Fondo del tablero
         Tablero.setBounds(0, 0, Tablero.getIcon().getIconWidth(), Tablero.getIcon().getIconHeight());
-        layeredPane.add(Tablero, Integer.valueOf(0)); // Capa inferior
+        layeredPane.add(Tablero, Integer.valueOf(0));
 
-        // Crea e integra el PatolliPanel en la capa superior
+        // Capa del tablero de juego
         PatolliPanel tablero = new PatolliPanel(jugadores, Tablero.getIcon().getIconWidth(), Tablero.getIcon().getIconHeight());
-        tablero.setOpaque(false); // Haz el tablero transparente para ver el fondo
+        controlPartida = new ControlPartida(tablero, jugadores);
+
+        tablero.setOpaque(false);
         tablero.setBounds(0, 0, Tablero.getIcon().getIconWidth(), Tablero.getIcon().getIconHeight());
-        layeredPane.add(tablero, Integer.valueOf(1)); // Capa superior
+        layeredPane.add(tablero, Integer.valueOf(1));
 
-        redimensionarCañas(); // Redimensiona las imágenes de las cañas
-
-        // Posiciona las cañas en la capa intermedia
+        // Redimensiona las cañas y posiciona
+        redimensionarCañas();
         posicionarCañas(layeredPane);
 
-        // Agrega los botones al layeredPane en una capa intermedia
-        Tirar.setBounds(340, 670, 170, 60);
+        // Botones
+        Tirar.setBounds(340, 650, 170, 60);
         layeredPane.add(Tirar, Integer.valueOf(2));
 
-        btnVolverInicio.setBounds(10, 670, 100, 60);
+        btnVolverInicio.setBounds(10, 650, 100, 60);
         layeredPane.add(btnVolverInicio, Integer.valueOf(2));
 
         // Agrega el layeredPane al JFrame
         setContentPane(layeredPane);
         pack();
         revalidate();
-        repaint(); // Re-dibuja para asegurarse que el tablero se muestre correctamente
+        repaint();
+
     }
 
-    private void redimensionarCañas() {
-        // Tamaño deseado para las cañas
-        int ancho = 70; // Cambia este valor para ajustar el ancho
-        int alto = 35;  // Cambia este valor para ajustar el alto
-
-        // Redimensionar cada caña
-        JLabel[] cañas = {cana1, cana2, cana3, cana4, cana5};
-        for (JLabel caña : cañas) {
-            // Cargar la imagen original del JLabel
-            ImageIcon iconoOriginal = (ImageIcon) caña.getIcon();
-            Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-
-            // Establecer la nueva imagen escalada en el JLabel
-            caña.setIcon(new ImageIcon(imagenRedimensionada));
-        }
-    }
-
-    /**
-     * Método para posicionar las cañas en el tablero.
-     */
     private void posicionarCañas(JLayeredPane layeredPane) {
-        // Coordenadas para las cañas, basadas en la imagen
         int[][] posiciones = {
-            {820, 210}, // caña1
-            {820, 250}, // caña2
-            {820, 290}, // caña3
-            {820, 330}, // caña4
-            {820, 370} // caña5
+            {820, 210}, {820, 250}, {820, 290}, {820, 330}, {820, 370}
         };
 
         JLabel[] cañas = {cana1, cana2, cana3, cana4, cana5};
 
         for (int i = 0; i < cañas.length; i++) {
-            cañas[i].setBounds(posiciones[i][0], posiciones[i][1], 110, 50); // Ajustar tamaño y posición
-            layeredPane.add(cañas[i], Integer.valueOf(2)); // Añadir a la capa intermedia
+            cañas[i].setBounds(posiciones[i][0], posiciones[i][1], ANCHO_CAÑA, ALTO_CAÑA);
+            layeredPane.add(cañas[i], Integer.valueOf(2));
+        }
+    }
+
+    private void redimensionarCañas() {
+        JLabel[] cañas = {cana1, cana2, cana3, cana4, cana5};
+
+        for (JLabel caña : cañas) {
+            ImageIcon iconoOriginal = (ImageIcon) caña.getIcon();
+            Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(ANCHO_CAÑA, ALTO_CAÑA, Image.SCALE_SMOOTH);
+            caña.setIcon(new ImageIcon(imagenRedimensionada));
+        }
+    }
+
+    private void mostrarCañas(boolean[] resultados) {
+        JLabel[] cañas = {cana1, cana2, cana3, cana4, cana5};
+        for (int i = 0; i < cañas.length; i++) {
+            String rutaImagen = resultados[i] ? "/img/cañaPunto.png" : "/img/cañaVacia.png";
+            ImageIcon iconoOriginal = new ImageIcon(getClass().getResource(rutaImagen));
+            Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(ANCHO_CAÑA, ALTO_CAÑA, Image.SCALE_SMOOTH);
+            cañas[i].setIcon(new ImageIcon(imagenRedimensionada));
         }
     }
 
@@ -137,7 +143,7 @@ public class vistaTablero extends JFrame {
 
         Nombre2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre2.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 0, 170, 50));
+        getContentPane().add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 170, 40));
 
         Dinero2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Dinero2.setForeground(new java.awt.Color(0, 0, 0));
@@ -145,11 +151,11 @@ public class vistaTablero extends JFrame {
 
         Nombre3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Nombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, 140, 40));
+        getContentPane().add(Nombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, 170, 40));
 
         Dinero3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Dinero3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Dinero3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 620, 140, 40));
+        getContentPane().add(Dinero3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 140, 40));
 
         Nombre4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre4.setForeground(new java.awt.Color(0, 0, 0));
@@ -172,7 +178,7 @@ public class vistaTablero extends JFrame {
                 TirarActionPerformed(evt);
             }
         });
-        getContentPane().add(Tirar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 670, 170, 60));
+        getContentPane().add(Tirar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 630, 200, 50));
 
         btnVolverInicio.setBorderPainted(false);
         btnVolverInicio.setContentAreaFilled(false);
@@ -181,7 +187,7 @@ public class vistaTablero extends JFrame {
                 btnVolverInicioActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 670, 100, 60));
+        getContentPane().add(btnVolverInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 630, 110, 60));
 
         Tablero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tablero2.png"))); // NOI18N
         getContentPane().add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -197,7 +203,26 @@ public class vistaTablero extends JFrame {
     }//GEN-LAST:event_btnVolverInicioActionPerformed
 
     private void TirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TirarActionPerformed
-        // TODO add your handling code here:
+       try {
+        // Generar resultados de las cañas y calcular los pasos
+        boolean[] resultados = controlPartida.generarCañasAleatorias();
+        int pasos = controlPartida.calcularPasos(resultados);
+
+        // Mostrar las cañas en la interfaz
+        mostrarCañas(resultados);
+
+        // Mover la ficha del jugador actual
+        controlPartida.turnoJugador(jugadorActual, pasos);
+
+        // Actualizar el indicador de turno en la interfaz
+        Turno.setText("Turno de: " + controlPartida.getJugadorActualColor(jugadorActual));
+
+
+        jugadorActual = (jugadorActual + 1) % jugadoresMax;
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al tirar los dados: " + e.getMessage());
+    }
     }//GEN-LAST:event_TirarActionPerformed
 
 

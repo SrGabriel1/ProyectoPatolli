@@ -7,6 +7,7 @@ package logica;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +25,7 @@ public class TableroBuilder {
     private final List<JLabel> casillas;
     private final TipoTablero tipoTablero;
     private final int numJugadores;
+    private final List<Integer> casillasAmarillasPos = new ArrayList<>();
 
     public enum TipoTablero {
         ARRIBA, ABAJO, IZQUIERDA, DERECHA, CENTRAL
@@ -52,18 +54,38 @@ public class TableroBuilder {
         int panelAncho = columnas * casillaAncho;
         int panelAlto = filas * casillaAlto;
         tablero.setPreferredSize(new Dimension(panelAncho, panelAlto));
-        
+
         // Utiliza GridLayout con espaciado adecuado
         tablero.setLayout(new GridLayout(filas, columnas, 0, 0)); // 0px de espaciado
     }
 
     public void construirTablero() {
         configurarTamano();
+        int indiceGlobal = calcularIndiceInicial(); // Método nuevo que calcularemos
+
         for (int i = 1; i <= filas * columnas; i++) {
             JLabel casilla = crearCasilla();
             pintarCasillas(casilla, i);
             tablero.add(casilla);
             casillas.add(casilla);
+        }
+    }
+
+    private int calcularIndiceInicial() {
+        // Calcula el índice inicial basado en el tipo de tablero
+        switch (tipoTablero) {
+            case ARRIBA:
+                return 0;
+            case DERECHA:
+                return filas * columnas;
+            case ABAJO:
+                return filas * columnas * 2;
+            case IZQUIERDA:
+                return filas * columnas * 3;
+            case CENTRAL:
+                return filas * columnas * 4;
+            default:
+                return 0;
         }
     }
 
@@ -207,6 +229,11 @@ public class TableroBuilder {
 
         if (casillaAmarilla) {
             casilla.setBackground(Color.YELLOW);
+            casillasAmarillasPos.add(posicion);
         }
+    }
+
+    public List<Integer> getCasillasAmarillas() {
+        return new ArrayList<>(casillasAmarillasPos);
     }
 }
