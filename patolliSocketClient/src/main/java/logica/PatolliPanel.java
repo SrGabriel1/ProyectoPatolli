@@ -140,23 +140,22 @@ public class PatolliPanel extends JPanel {
         this.casillasAmarillas = casillasAmarillas;
     }
 
-    public void moverFicha(int posicionActual, int pasos, String colorFicha) {
+    public int moverFicha(int posicionActual, int pasos, String colorFicha) {
         // Asegurarse de que la posición está dentro del rango válido
-        if (posicionActual >= 0 && posicionActual < casillas.size()) {
+        if (posicionActual >= 0 && posicionActual <= casillas.size()) {
             // Calcula la nueva posición
             int nuevaPosicion = posicionActual + pasos;
-            int antiguaPosicion = 0;
-
-            // Verifica que la nueva posición esté dentro del rango
-            if (nuevaPosicion >= casillas.size()) {
-                nuevaPosicion = casillas.size() - 1;
+            if(nuevaPosicion==posicionActual){
+                return posicionActual;
             }
-
+            int antiguaPosicion = 0;
+            if(nuevaPosicion>casillas.size()){
+                nuevaPosicion=nuevaPosicion-casillas.size();
+            }
             for (int i = 0; i < casillas.size(); i++) {
                 if(casillas.get(i).getIcon()==null){
                     continue;
-                }
-                else if (casillas.get(i).getText().equalsIgnoreCase(""+posicionActual)) {
+                }else if (casillas.get(i).getText().equalsIgnoreCase(""+posicionActual)) {
                     antiguaPosicion=i;
                 }
             }
@@ -166,9 +165,9 @@ public class PatolliPanel extends JPanel {
                     c.setIcon(obtenerImagenFicha(colorFicha));
                     c.setHorizontalAlignment(JLabel.CENTER);
                     c.setVerticalAlignment(JLabel.CENTER);
-                    System.out.println(posicionActual);
                     casillas.get(antiguaPosicion).setIcon(null);
                     repaint();
+                    return nuevaPosicion;
                 }
             }
 //            // Limpia la casilla anterior (quita solo la imagen)
@@ -190,6 +189,18 @@ public class PatolliPanel extends JPanel {
 //            System.out.println("¡Casilla amarilla, juega de nuevo!");
 //        }
         }
+        return 0;
+    }
+    
+    public void colocarFichaInicial(int posicionInical,String color){
+        for (JLabel c : casillas) {
+                if (c.getText().equalsIgnoreCase("" + posicionInical)) {
+                    c.setIcon(obtenerImagenFicha(color));
+                    c.setHorizontalAlignment(JLabel.CENTER);
+                    c.setVerticalAlignment(JLabel.CENTER);
+                    repaint();
+                }
+            }
     }
 
     private ImageIcon obtenerImagenFicha(String colorFicha) {

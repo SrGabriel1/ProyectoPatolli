@@ -101,6 +101,7 @@ public class vistaTablero extends JFrame {
         cana4 = new javax.swing.JLabel();
         cana5 = new javax.swing.JLabel();
         cana2 = new javax.swing.JLabel();
+        Turno = new javax.swing.JLabel();
         Nombre1 = new javax.swing.JLabel();
         Dinero1 = new javax.swing.JLabel();
         Nombre2 = new javax.swing.JLabel();
@@ -109,7 +110,6 @@ public class vistaTablero extends JFrame {
         Dinero3 = new javax.swing.JLabel();
         Nombre4 = new javax.swing.JLabel();
         Dinero4 = new javax.swing.JLabel();
-        Turno = new javax.swing.JLabel();
         Tirar = new javax.swing.JButton();
         btnVolverInicio = new javax.swing.JButton();
         Tablero = new javax.swing.JLabel();
@@ -132,6 +132,10 @@ public class vistaTablero extends JFrame {
 
         cana2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
         getContentPane().add(cana2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, 110, 50));
+
+        Turno.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Turno.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(Turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 50, 50));
 
         Nombre1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre1.setForeground(new java.awt.Color(0, 0, 0));
@@ -164,10 +168,6 @@ public class vistaTablero extends JFrame {
         Dinero4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Dinero4.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(Dinero4, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 620, 150, 40));
-
-        Turno.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        Turno.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 140, 50));
 
         Tirar.setBorderPainted(false);
         Tirar.setContentAreaFilled(false);
@@ -209,15 +209,14 @@ public class vistaTablero extends JFrame {
 
         // Mostrar las cañas en la interfaz
         mostrarCañas(resultados);
-        
+           
         
         int pasos = controlPartida.calcularPasos(resultados);
-
         // Mover la ficha del jugador actual
         controlPartida.turnoJugador(jugadorActual, pasos);
 
         // Actualizar el indicador de turno en la interfaz
-        Turno.setText("Turno de: " + controlPartida.getJugadorActualColor(jugadorActual));
+        Turno.setText(controlPartida.getJugadorActualColor(jugadorActual));
 
 
         jugadorActual = (jugadorActual + 1) % jugadoresMax;

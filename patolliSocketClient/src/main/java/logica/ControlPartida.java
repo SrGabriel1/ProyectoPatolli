@@ -75,38 +75,21 @@ public class ControlPartida {
     }
 
     public void turnoJugador(int jugador, int pasos) {
-        // Si la ficha no está en el tablero, colócala en su casilla amarilla
         if (!fichasEnTablero[jugador] && pasos > 0) {
             colocarFichaInicial(jugador);
-            return;
+        }else if (fichasEnTablero[jugador]) {
+            int posicionActual=tablero.moverFicha(posicionesJugadores[jugador],pasos , coloresJugadores[jugador]);
+            posicionesJugadores[jugador] = posicionActual;
         }
-
-        // Si la ficha ya está en el tablero, moverla
-        else if (fichasEnTablero[jugador]) {
-            int posicionActual = posicionesJugadores[jugador];
-            int nuevaPosicion = calcularNuevaPosicion(posicionActual, pasos);
-
-            // Mover la ficha gráficamente
-            tablero.moverFicha(posicionActual, nuevaPosicion - posicionActual, coloresJugadores[jugador]);
-
-            // Actualizar la nueva posición del jugador
-            posicionesJugadores[jugador] = nuevaPosicion;
-        }
-    }
-
-    private int calcularNuevaPosicion(int posicionActual, int pasos) {
-        int totalCasillas = tablero.getCasillas().size(); // Total de casillas en el tablero
-        return (posicionActual + pasos) % totalCasillas; // Movimiento circular
     }
 
     private void colocarFichaInicial(int jugador) {
-        // Obtener la posición inicial del jugador (casilla amarilla asignada)
         int posicionInicial = casillasInicialesPorJugador.get(jugador);
-        posicionesJugadores[jugador] = posicionInicial; // Actualizar posición inicial
-        fichasEnTablero[jugador] = true; // Indicar que la ficha está en el tablero
-        System.out.println(posicionInicial);
+        posicionesJugadores[jugador] = posicionInicial;
+        fichasEnTablero[jugador] = true;
+        
         // Mover la ficha gráficamente al tablero
-        tablero.moverFicha(posicionInicial, 0, coloresJugadores[jugador]);
+        tablero.colocarFichaInicial(posicionInicial, coloresJugadores[jugador]);
     }
 
     public boolean esFichaEnTablero(int jugador) {
