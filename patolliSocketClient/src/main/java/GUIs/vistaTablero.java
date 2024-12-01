@@ -228,7 +228,6 @@ public class vistaTablero extends JFrame implements Observer {
             boolean victoria = controlPartida.moverFichaJugador(numeroJugador, pasos);
 
             if (victoria == true) {
-                System.out.println("si entro en la condicion");
                 controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Gano", new MensajeMovimiento(numeroJugador))));
             }
             esperandoTuTurnoLabel.setVisible(true);

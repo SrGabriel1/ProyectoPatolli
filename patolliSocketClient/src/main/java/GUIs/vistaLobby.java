@@ -78,19 +78,19 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
 
         jugador1.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         jugador1.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jugador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 200, 30));
+        getContentPane().add(jugador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 200, 40));
 
         jugador2.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         jugador2.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 200, 30));
+        getContentPane().add(jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 200, 40));
 
         jugador3.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         jugador3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jugador3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 200, 30));
+        getContentPane().add(jugador3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 200, 40));
 
         jugador4.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         jugador4.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jugador4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 200, 30));
+        getContentPane().add(jugador4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 200, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Lobby.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 450, 630));

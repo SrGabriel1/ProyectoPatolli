@@ -22,27 +22,30 @@ public class ControlPartida {
     private List<Jugador> jugadores;
     private List<Integer> casillasInicialesPorJugador; // Nuevo: Guarda la casilla inicial de cada jugador
     private List<Integer> casillasFinal = new ArrayList<>();
+    private int numJugadores;
+    int numFichasPorJugador;
 
     public ControlPartida(PatolliPanel tablero, int numJugadores) {
+        this.numJugadores = numJugadores;
         this.tablero = tablero;
         this.posicionesJugadores = new int[numJugadores];
         this.fichasEnTablero = new boolean[numJugadores];
         this.jugadores = new ArrayList<>();
         this.casillasInicialesPorJugador = new ArrayList<>();
 
-        // Obtener casillas amarillas
-        List<Integer> casillasAmarillas = tablero.getCasillasAmarillas();
-        if (casillasAmarillas == null || casillasAmarillas.isEmpty()) {
-            casillasAmarillas = generarCasillasAmarillasDefault(numJugadores);
-        }
-        casillasFinal.add(27);
-        casillasFinal.add(61);
-        casillasFinal.add(44);
-        casillasFinal.add(10);
-        for (int i = 0; i < numJugadores; i++) {
-            int posicionInicial = casillasAmarillas.get(i);
-            casillasInicialesPorJugador.add(posicionInicial);
-            posicionesJugadores[i] = -1; // Indica que no están en el tablero
+        iniciarCasillasAmarillas(numJugadores);
+
+        iniciarJugadores(numJugadores);
+    }
+
+    private void iniciarJugadores(int numJugadores) {
+        switch (numJugadores) {
+            case 2:
+                numFichasPorJugador = 2;
+            case 3:
+                numFichasPorJugador = 4;
+            case 4:
+                numFichasPorJugador = 5;
         }
 
         // Inicializar jugadores
@@ -51,30 +54,41 @@ public class ControlPartida {
             jugador.setNombre("Jugador " + (i + 1));
             jugador.setFondos(1000);
             jugador.setApuesta(0);
-
             List<Ficha> fichas = new ArrayList<>();
-            Ficha ficha = new Ficha(coloresJugadores[i]);
-            ficha.setPosicion(-1);
-            fichas.add(ficha);
-            colocarFichaInicial(i);
-
+            for (int j = 0; j < numFichasPorJugador; j++) {
+                Ficha ficha = new Ficha(coloresJugadores[i]);
+                ficha.setPosicion(-1);
+                fichas.add(ficha);
+            }
             jugador.setFichas(fichas);
             jugadores.add(jugador);
+            colocarFichaInicial(i);
         }
     }
 
-    // Método auxiliar para generar posiciones por defecto
-    private List<Integer> generarCasillasAmarillasDefault(int numJugadores) {
+    public void iniciarCasillasAmarillas(int numJugadores) {
+        List<Integer> casillasAmarillas = tablero.getCasillasAmarillas();
+        if (casillasAmarillas == null || casillasAmarillas.isEmpty()) {
+            casillasAmarillas = generarCasillasAmarillasDefault();
+        }
+        casillasFinal.add(27);
+        casillasFinal.add(61);
+        casillasFinal.add(44);
+        casillasFinal.add(10);
+        for (int i = 0; i < numJugadores; i++) {
+            int posicionInicial = casillasAmarillas.get(i);
+            casillasInicialesPorJugador.add(posicionInicial);
+            posicionesJugadores[i] = -1;
+        }
+    }
+
+    private List<Integer> generarCasillasAmarillasDefault() {
         List<Integer> casillasDefault = new ArrayList<>();
         casillasDefault.add(61); // Arriba
         casillasDefault.add(27); // Abajo
         casillasDefault.add(10); // Izquierda
         casillasDefault.add(44); // Derecha
 
-//        Si hay más jugadores que casillas amarillas
-//        while (casillasDefault.size() < numJugadores) {
-//            casillasDefault.add(casillasDefault.size() + 1);
-//        }
         return casillasDefault;
     }
 
@@ -84,10 +98,6 @@ public class ControlPartida {
 
         posicionesJugadores[jugador] = posicionActual;
 
-//        if (verificarGanador() == true) {
-//            panelPartidaGanada p = new panelPartidaGanada();
-//            p.setVisible(true);
-//        }
         return verificarGanador();
     }
 
@@ -96,7 +106,6 @@ public class ControlPartida {
         posicionesJugadores[jugador] = posicionInicial;
         fichasEnTablero[jugador] = true;
 
-        // Mover la ficha gráficamente al tablero
         tablero.colocarFichaInicial(posicionInicial, coloresJugadores[jugador]);
     }
 
@@ -105,13 +114,13 @@ public class ControlPartida {
     }
 
     public String getJugadorActualColor(int jugadorActual) {
-        return coloresJugadores[jugadorActual]; // Devuelve el color del jugador actual
+        return coloresJugadores[jugadorActual];
     }
 
     public int lanzarDados() {
         boolean[] resultados = new boolean[5];
         for (int i = 0; i < resultados.length; i++) {
-            resultados[i] = Math.random() < 0.5; // 50% de probabilidad de punto
+            resultados[i] = Math.random() < 0.5;
         }
         int pasos = 0;
         for (boolean resultado : resultados) {
@@ -119,19 +128,17 @@ public class ControlPartida {
                 pasos++;
             }
         }
-        return pasos > 0 ? pasos : 10; // Si no hay puntos, mueve 10 pasos como regla alternativa
+        return 0;
     }
 
-    // Genera resultados aleatorios de las cañas
     public boolean[] generarCañasAleatorias() {
         boolean[] resultados = new boolean[5];
         for (int i = 0; i < resultados.length; i++) {
-            resultados[i] = Math.random() < 0.5; // 50% de probabilidad de punto
+            resultados[i] = Math.random() < 0.5;
         }
         return resultados;
     }
 
-    // Calcula los pasos en función de los resultados de las cañas
     public int calcularPasos(boolean[] resultados) {
         int pasos = 0;
         for (boolean resultado : resultados) {
@@ -143,10 +150,17 @@ public class ControlPartida {
     }
 
     public boolean verificarGanador() {
+        int totalCasillas = 68;
         for (int i = 0; i < posicionesJugadores.length; i++) {
-            if (posicionesJugadores[i] == casillasFinal.get(i)) {
-                System.out.println("si entro a la condicion");
-                return true; 
+            int casillaInicial = casillasInicialesPorJugador.get(i);
+            int casillaFinal = casillasFinal.get(i);
+            int posicionActual = posicionesJugadores[i];
+
+            int distanciaDesdeInicial = (posicionActual - casillaInicial + totalCasillas) % totalCasillas;
+            int distanciaHastaFinal = (casillaFinal - casillaInicial + totalCasillas) % totalCasillas;
+
+            if (distanciaDesdeInicial >= distanciaHastaFinal) {
+                return true;
             }
         }
         return false;

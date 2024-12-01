@@ -13,8 +13,14 @@ public class Ficha {
     private Integer Posicion;
     private String color;
     private Jugador propetario;
+    private boolean esGanadora; // Indica si la ficha ha llegado a la casilla final
 
     public Ficha() {
+    }
+
+    public Ficha(Integer Posicion, String color) {
+        this.Posicion = Posicion;
+        this.color = color;
     }
 
     public Ficha(Integer Posicion, String color, Jugador propetario) {
@@ -27,7 +33,13 @@ public class Ficha {
         this.color = color;
     }
 
-    
+    public boolean EsGanadora() {
+        return esGanadora;
+    }
+
+    public void setEsGanadora(boolean esGanadora) {
+        this.esGanadora = esGanadora;
+    }
 
     public Integer getPosicion() {
         return Posicion;

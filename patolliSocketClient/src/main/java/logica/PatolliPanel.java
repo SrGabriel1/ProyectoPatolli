@@ -1,5 +1,6 @@
 package logica;
 
+import Entidades.Ficha;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,19 +8,24 @@ import java.util.List;
 
 public class PatolliPanel extends JPanel {
 
-    private List<JLabel> casillas; // Lista para almacenar las casillas
+    private List<JLabel> casillas;
     private JPanel casillasArriba;
     private JPanel casillasAbajo;
     private JPanel casillasIzq;
     private JPanel casillasDer;
     private JPanel casillasCentrales;
-    private int jugadores; // Número de jugadores
+    private int jugadores;
     private int imagenAncho;
     private int imagenAlto;
+    private List<List<Ficha>> fichasJugadores;
 
-    // Constructor que acepta el número de jugadores
     public PatolliPanel(int jugadores, int imagenAncho, int imagenAlto) throws Exception {
         this.jugadores = jugadores;
+        this.fichasJugadores = new ArrayList<>();
+        for (int i = 0; i < jugadores; i++) {
+            this.fichasJugadores.add(new ArrayList<>());
+        }
+
         this.casillas = new ArrayList<>();
         this.imagenAlto = imagenAlto;
         this.imagenAncho = imagenAncho;
@@ -118,7 +124,7 @@ public class PatolliPanel extends JPanel {
 
         configurarPanel(casillasArriba, casillasPorAspa, columnasPorAspa, TableroBuilder.TipoTablero.ARRIBA);
         configurarPanel(casillasAbajo, casillasPorAspa, columnasPorAspa, TableroBuilder.TipoTablero.ABAJO);
-        configurarPanel(casillasIzq, columnasPorAspa,casillasPorAspa , TableroBuilder.TipoTablero.IZQUIERDA);
+        configurarPanel(casillasIzq, columnasPorAspa, casillasPorAspa, TableroBuilder.TipoTablero.IZQUIERDA);
         configurarPanel(casillasDer, columnasPorAspa, casillasPorAspa, TableroBuilder.TipoTablero.DERECHA);
         configurarPanel(casillasCentrales, 2, 2, TableroBuilder.TipoTablero.CENTRAL); // Mantén el central como 2x2
     }
@@ -148,6 +154,7 @@ public class PatolliPanel extends JPanel {
         this.casillasAmarillas = casillasAmarillas;
     }
 
+    
     public int moverFicha(int posicionActual, int pasos, String colorFicha) {
         // Asegurarse de que la posición está dentro del rango válido
         if (posicionActual >= 0 && posicionActual <= casillas.size()) {
@@ -199,7 +206,11 @@ public class PatolliPanel extends JPanel {
         }
         return 0;
     }
-
+    public void removerFicha(int posicion) {
+        JLabel casilla = casillas.get(posicion);
+        casilla.setIcon(null); // Limpia la ficha de la casilla
+        repaint();
+    }
     public void colocarFichaInicial(int posicionInical, String color) {
         for (JLabel c : casillas) {
             if (c.getText().equalsIgnoreCase("" + posicionInical)) {
