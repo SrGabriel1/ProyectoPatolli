@@ -24,6 +24,10 @@ public class MensajeMovimiento implements Serializable{
         this.pasos = pasos;
     }
 
+    public MensajeMovimiento(int usuarioTira) {
+        this.usuarioTira = usuarioTira;
+    }
+
     public int getUsuarioTira() {
         return usuarioTira;
     }

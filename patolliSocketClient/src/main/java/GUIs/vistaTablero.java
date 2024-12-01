@@ -228,7 +228,8 @@ public class vistaTablero extends JFrame implements Observer {
             boolean victoria = controlPartida.moverFichaJugador(numeroJugador, pasos);
 
             if (victoria == true) {
-                controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Gano", numeroJugador)));
+                System.out.println("si entro en la condicion");
+                controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Gano", new MensajeMovimiento(numeroJugador))));
             }
             esperandoTuTurnoLabel.setVisible(true);
             Tirar.setEnabled(false);
@@ -273,6 +274,10 @@ public class vistaTablero extends JFrame implements Observer {
         } else if (mensaje.getTipo().equalsIgnoreCase("TiroJugador")) {
             MensajeMovimiento movimiento = (MensajeMovimiento) mensaje.getContenido();
             controlPartida.moverFichaJugador(movimiento.getUsuarioTira(), movimiento.getPasos());
+        } else if (mensaje.getTipo().equalsIgnoreCase("PantallaVictoria")) {
+            controlador.cambiarPartidaGanada(this);
+        } else if (mensaje.getTipo().equalsIgnoreCase("PantallaPerdida")) {
+            controlador.cambiarPartidaPerdida(this);
         }
 
     }

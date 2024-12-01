@@ -144,10 +144,9 @@ public class ControlPartida {
 
     public boolean verificarGanador() {
         for (int i = 0; i < posicionesJugadores.length; i++) {
-            // Verifica si el jugador ha llegado o se ha pasado de su casilla final
             if (posicionesJugadores[i] == casillasFinal.get(i)) {
                 System.out.println("si entro a la condicion");
-                return true; // Indica que hay un ganador
+                return true; 
             }
         }
         return false;

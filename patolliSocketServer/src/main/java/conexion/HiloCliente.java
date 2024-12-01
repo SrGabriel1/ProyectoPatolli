@@ -63,15 +63,10 @@ public class HiloCliente implements Runnable {
                     ClienteConectado cliente = new ClienteConectado(out, in, solicitud.getNombre());
                     protocolo.unirClienteALobby(solicitud, cliente);
                 } else if (mensajeRecibido.getTipo().equalsIgnoreCase("MensajeALobby")) {
+                    System.out.println("entro en mensaje");
                     MensajeALobby mensaje = (MensajeALobby) mensajeRecibido.getContenido();
                     protocolo.manejarMensajesALobby(mensaje);
-                } else if (mensajeRecibido.getTipo().equalsIgnoreCase("PantallaVictoria")) {
-                    vistaPartidaGanada pantalla = new vistaPartidaGanada();
-                    pantalla.setVisible(true);
-                }else if (mensajeRecibido.getTipo().equalsIgnoreCase("PantallaPerdida")) {
-                    vistaPartidaGanada pantalla = new vistaPartidaGanada();
-                    pantalla.setVisible(true);
-                }
+                } 
             }
         } catch (Exception e) {
             e.printStackTrace();

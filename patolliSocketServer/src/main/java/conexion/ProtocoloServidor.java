@@ -104,17 +104,15 @@ public class ProtocoloServidor {
 
         } else if (mensaje.getMensaje().equalsIgnoreCase("Gano")) {
             MensajeMovimiento jugador = (MensajeMovimiento) mensaje.getContenido();
-            int jugadorGanador =  jugador.getUsuarioTira();
-            lobby.getClientesEnLobby().get(jugadorGanador).getOut().writeObject(new Mensaje("PantallaVictoria", null));
-            lobby.getClientesEnLobby().get(jugadorGanador).getOut().flush();
+            lobby.getClientesEnLobby().get(jugador.getUsuarioTira()).getOut().writeObject(new Mensaje("PantallaVictoria", null));
+            lobby.getClientesEnLobby().get(jugador.getUsuarioTira()).getOut().flush();
+            
             for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
-                if (i != jugadorGanador) {
+                if (i != jugador.getUsuarioTira()) {
                     lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("PantallaPerdida", null));
                     lobby.getClientesEnLobby().get(i).getOut().flush();
                 }
             }
-
         }
-
     }
 }
