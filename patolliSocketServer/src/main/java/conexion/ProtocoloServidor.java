@@ -20,15 +20,16 @@ import modelo.ClienteConectado;
  * @author USER
  */
 public class ProtocoloServidor {
+
     private ManejadorClientes manejadorClientes;
 
     public ProtocoloServidor(ManejadorClientes manejadorClientes) {
         this.manejadorClientes = manejadorClientes;
     }
-    
-    public void unirClienteALobby(SolicitudALobby solicitud,ClienteConectado cliente) throws IOException{
-        Lobby lobby=manejadorClientes.comprobarSiLobbyExiste(solicitud.getCodigo());
-        if(lobby!=null){
+
+    public void unirClienteALobby(SolicitudALobby solicitud, ClienteConectado cliente) throws IOException {
+        Lobby lobby = manejadorClientes.comprobarSiLobbyExiste(solicitud.getCodigo());
+        if (lobby != null) {
             if (lobby.lobbyLleno()) {
                 if (manejadorClientes.comprobarUsuarioEnLobby(lobby, solicitud.getNombre())) {
                     cliente.getOut().writeObject(new Mensaje("UsuarioValido", null));
@@ -49,48 +50,50 @@ public class ProtocoloServidor {
                 cliente.getOut().writeObject(new Mensaje("LobbyLleno", "Este lobby ya esta lleno"));
                 cliente.getOut().flush();
             }
-        }else{
+        } else {
             cliente.getOut().writeObject(new Mensaje("LobbyInexistente", "No existe ese lobby"));
             cliente.getOut().flush();
         }
     }
-    
-    public String crearLobby(CondicionesPartida condiciones){
-        String codigo=generarCodigo();
-        Lobby lobby=new Lobby(codigo);
+
+    public String crearLobby(CondicionesPartida condiciones) {
+        String codigo = generarCodigo();
+        Lobby lobby = new Lobby(codigo);
         lobby.setCondiciones(condiciones);
         manejadorClientes.anadirLobby(lobby);
         System.out.println(codigo);
         return codigo;
     }
+
     public String generarCodigo() {
         Random random = new Random();
         StringBuilder codigo = new StringBuilder(4);
-        
+
         for (int i = 0; i < 4; i++) {
             char letra = (char) (random.nextInt(26) + 'A');
             codigo.append(letra);
         }
-        
+
         return codigo.toString();
     }
-    public void manejarMensajesALobby(MensajeALobby mensaje) throws IOException{
-        String codigo=mensaje.getCodigo();
-        Lobby lobby=manejadorClientes.comprobarSiLobbyExiste(codigo);
-        if(mensaje.getMensaje().equalsIgnoreCase("UsuarioListo")){
-            if(lobby.usuarioListo()){
+
+    public void manejarMensajesALobby(MensajeALobby mensaje) throws IOException {
+        String codigo = mensaje.getCodigo();
+        Lobby lobby = manejadorClientes.comprobarSiLobbyExiste(codigo);
+        if (mensaje.getMensaje().equalsIgnoreCase("UsuarioListo")) {
+            if (lobby.usuarioListo()) {
                 lobby.informarATodosLosJugadoresEnLobby(new Mensaje("PartidaIniciada", null));
-                for(int i=0;i<lobby.getClientesEnLobby().size();i++){
+                for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
                     lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("TuNumeroDeJugador", i));
                     lobby.getClientesEnLobby().get(i).getOut().flush();
                 }
             }
-        }else if (mensaje.getMensaje().equalsIgnoreCase("Tirar")) {
-            MensajeMovimiento movimiento=(MensajeMovimiento)mensaje.getContenido();
-            for(int i=0;i<lobby.getClientesEnLobby().size();i++){
-                if(i==movimiento.getUsuarioTira()){
+        } else if (mensaje.getMensaje().equalsIgnoreCase("Tirar")) {
+            MensajeMovimiento movimiento = (MensajeMovimiento) mensaje.getContenido();
+            for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
+                if (i == movimiento.getUsuarioTira()) {
                     continue;
-                }else{
+                } else {
                     lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("TiroJugador", movimiento));
                     lobby.getClientesEnLobby().get(i).getOut().flush();
                 }
@@ -98,7 +101,20 @@ public class ProtocoloServidor {
             lobby.cambiarTurno();
             lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getOut().writeObject(new Mensaje("Tu turno", null));
             lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getOut().flush();
-            
+
+        } else if (mensaje.getMensaje().equalsIgnoreCase("Gano")) {
+            MensajeMovimiento jugador = (MensajeMovimiento) mensaje.getContenido();
+            int jugadorGanador =  jugador.getUsuarioTira();
+            lobby.getClientesEnLobby().get(jugadorGanador).getOut().writeObject(new Mensaje("PantallaVictoria", null));
+            lobby.getClientesEnLobby().get(jugadorGanador).getOut().flush();
+            for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
+                if (i != jugadorGanador) {
+                    lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("PantallaPerdida", null));
+                    lobby.getClientesEnLobby().get(i).getOut().flush();
+                }
+            }
+
         }
+
     }
 }

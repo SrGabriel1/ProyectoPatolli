@@ -226,9 +226,9 @@ public class vistaTablero extends JFrame implements Observer {
             mostrarCañas(resultados);
             int pasos = controlPartida.calcularPasos(resultados);
             boolean victoria = controlPartida.moverFichaJugador(numeroJugador, pasos);
+
             if (victoria == true) {
-                vistaPartidaGanada p = new vistaPartidaGanada();
-                p.setVisible(true);
+                controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Gano", numeroJugador)));
             }
             esperandoTuTurnoLabel.setVisible(true);
             Tirar.setEnabled(false);
