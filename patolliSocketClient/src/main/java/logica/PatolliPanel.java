@@ -14,7 +14,6 @@ public class PatolliPanel extends JPanel {
     private JPanel casillasDer;
     private JPanel casillasCentrales;
     private int jugadores; // Número de jugadores
-    private Image fondoImagen;
     private int imagenAncho;
     private int imagenAlto;
 
@@ -105,12 +104,21 @@ public class PatolliPanel extends JPanel {
      * de jugadores.
      */
     private void configurarTablero() throws Exception {
-        int casillasPorAspa = 7; // Siempre 7 filas por aspa
+        int casillasPorAspa = switch (jugadores) {
+            case 2 ->
+                8;
+            case 3 ->
+                10;
+            case 4 ->
+                14;
+            default ->
+                throw new Exception("Número de jugadores inválido");
+        };
         int columnasPorAspa = 2; // Siempre 2 columnas
 
         configurarPanel(casillasArriba, casillasPorAspa, columnasPorAspa, TableroBuilder.TipoTablero.ARRIBA);
         configurarPanel(casillasAbajo, casillasPorAspa, columnasPorAspa, TableroBuilder.TipoTablero.ABAJO);
-        configurarPanel(casillasIzq, columnasPorAspa, casillasPorAspa, TableroBuilder.TipoTablero.IZQUIERDA);
+        configurarPanel(casillasIzq, columnasPorAspa,casillasPorAspa , TableroBuilder.TipoTablero.IZQUIERDA);
         configurarPanel(casillasDer, columnasPorAspa, casillasPorAspa, TableroBuilder.TipoTablero.DERECHA);
         configurarPanel(casillasCentrales, 2, 2, TableroBuilder.TipoTablero.CENTRAL); // Mantén el central como 2x2
     }
@@ -145,18 +153,18 @@ public class PatolliPanel extends JPanel {
         if (posicionActual >= 0 && posicionActual <= casillas.size()) {
             // Calcula la nueva posición
             int nuevaPosicion = posicionActual + pasos;
-            if(nuevaPosicion==posicionActual){
+            if (nuevaPosicion == posicionActual) {
                 return posicionActual;
             }
             int antiguaPosicion = 0;
-            if(nuevaPosicion>casillas.size()){
-                nuevaPosicion=nuevaPosicion-casillas.size();
+            if (nuevaPosicion > casillas.size()) {
+                nuevaPosicion = nuevaPosicion - casillas.size();
             }
             for (int i = 0; i < casillas.size(); i++) {
-                if(casillas.get(i).getIcon()==null){
+                if (casillas.get(i).getIcon() == null) {
                     continue;
-                }else if (casillas.get(i).getText().equalsIgnoreCase(""+posicionActual)) {
-                    antiguaPosicion=i;
+                } else if (casillas.get(i).getText().equalsIgnoreCase("" + posicionActual)) {
+                    antiguaPosicion = i;
                 }
             }
 
@@ -191,16 +199,16 @@ public class PatolliPanel extends JPanel {
         }
         return 0;
     }
-    
-    public void colocarFichaInicial(int posicionInical,String color){
+
+    public void colocarFichaInicial(int posicionInical, String color) {
         for (JLabel c : casillas) {
-                if (c.getText().equalsIgnoreCase("" + posicionInical)) {
-                    c.setIcon(obtenerImagenFicha(color));
-                    c.setHorizontalAlignment(JLabel.CENTER);
-                    c.setVerticalAlignment(JLabel.CENTER);
-                    repaint();
-                }
+            if (c.getText().equalsIgnoreCase("" + posicionInical)) {
+                c.setIcon(obtenerImagenFicha(color));
+                c.setHorizontalAlignment(JLabel.CENTER);
+                c.setVerticalAlignment(JLabel.CENTER);
+                repaint();
             }
+        }
     }
 
     private ImageIcon obtenerImagenFicha(String colorFicha) {

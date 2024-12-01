@@ -21,6 +21,7 @@ public class ControlPartida {
     private PatolliPanel tablero;
     private List<Jugador> jugadores;
     private List<Integer> casillasInicialesPorJugador; // Nuevo: Guarda la casilla inicial de cada jugador
+    private List<Integer> casillasFinal = new ArrayList<>();
 
     public ControlPartida(PatolliPanel tablero, int numJugadores) {
         this.tablero = tablero;
@@ -34,7 +35,10 @@ public class ControlPartida {
         if (casillasAmarillas == null || casillasAmarillas.isEmpty()) {
             casillasAmarillas = generarCasillasAmarillasDefault(numJugadores);
         }
-
+        casillasFinal.add(27);
+        casillasFinal.add(61);
+        casillasFinal.add(44);
+        casillasFinal.add(10);
         for (int i = 0; i < numJugadores; i++) {
             int posicionInicial = casillasAmarillas.get(i);
             casillasInicialesPorJugador.add(posicionInicial);
@@ -53,7 +57,7 @@ public class ControlPartida {
             ficha.setPosicion(-1);
             fichas.add(ficha);
             colocarFichaInicial(i);
-            
+
             jugador.setFichas(fichas);
             jugadores.add(jugador);
         }
@@ -62,29 +66,36 @@ public class ControlPartida {
     // Método auxiliar para generar posiciones por defecto
     private List<Integer> generarCasillasAmarillasDefault(int numJugadores) {
         List<Integer> casillasDefault = new ArrayList<>();
-        casillasDefault.add(54); // Arriba
-        casillasDefault.add(24); // Abajo
-        casillasDefault.add(9); // Izquierda
-        casillasDefault.add(52); // Derecha
+        casillasDefault.add(61); // Arriba
+        casillasDefault.add(27); // Abajo
+        casillasDefault.add(10); // Izquierda
+        casillasDefault.add(44); // Derecha
 
-//        // Si hay más jugadores que casillas amarillas
+//        Si hay más jugadores que casillas amarillas
 //        while (casillasDefault.size() < numJugadores) {
 //            casillasDefault.add(casillasDefault.size() + 1);
 //        }
-
         return casillasDefault;
     }
 
-    public void moverFichaJugador(int jugador, int pasos) {
+    public boolean moverFichaJugador(int jugador, int pasos) {
+
         int posicionActual = tablero.moverFicha(posicionesJugadores[jugador], pasos, coloresJugadores[jugador]);
+
         posicionesJugadores[jugador] = posicionActual;
+
+//        if (verificarGanador() == true) {
+//            panelPartidaGanada p = new panelPartidaGanada();
+//            p.setVisible(true);
+//        }
+        return verificarGanador();
     }
 
     private void colocarFichaInicial(int jugador) {
         int posicionInicial = casillasInicialesPorJugador.get(jugador);
         posicionesJugadores[jugador] = posicionInicial;
         fichasEnTablero[jugador] = true;
-        
+
         // Mover la ficha gráficamente al tablero
         tablero.colocarFichaInicial(posicionInicial, coloresJugadores[jugador]);
     }
@@ -92,6 +103,7 @@ public class ControlPartida {
     public boolean esFichaEnTablero(int jugador) {
         return fichasEnTablero[jugador];
     }
+
     public String getJugadorActualColor(int jugadorActual) {
         return coloresJugadores[jugadorActual]; // Devuelve el color del jugador actual
     }
@@ -130,12 +142,14 @@ public class ControlPartida {
         return pasos;
     }
 
-    public void iniciarPartida() {
-    }
-
-    public void verificarGanador() {
-    }
-
-    public void mostrarVictoria() {
+    public boolean verificarGanador() {
+        for (int i = 0; i < posicionesJugadores.length; i++) {
+            // Verifica si el jugador ha llegado o se ha pasado de su casilla final
+            if (posicionesJugadores[i] == casillasFinal.get(i)) {
+                System.out.println("si entro a la condicion");
+                return true; // Indica que hay un ganador
+            }
+        }
+        return false;
     }
 }

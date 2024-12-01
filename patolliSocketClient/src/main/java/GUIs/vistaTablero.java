@@ -17,7 +17,8 @@ import mensajes.Mensaje;
 import mensajes.MensajeALobby;
 import mensajes.MensajeMovimiento;
 
-public class vistaTablero extends JFrame implements Observer{
+public class vistaTablero extends JFrame implements Observer {
+
     private ControladorVentanas controlador;
     private static final int ANCHO_CAÑA = 70;
     private static final int ALTO_CAÑA = 35;
@@ -27,12 +28,12 @@ public class vistaTablero extends JFrame implements Observer{
     private String codigoLobby;
     private int numeroJugador;
 
-    public vistaTablero(int jugadores, String codigoLobby,ControladorVentanas controlador) throws Exception {
+    public vistaTablero(int jugadores, String codigoLobby, ControladorVentanas controlador) throws Exception {
         initComponents();
-        this.controlador=controlador;
+        this.controlador = controlador;
         esperandoTuTurnoLabel.setText("Espera tu turno...");
         esperandoTuTurnoLabel.setVisible(false);
-        this.codigoLobby=codigoLobby;
+        this.codigoLobby = codigoLobby;
         setLocationRelativeTo(null);
         jugadoresMax = jugadores;
 
@@ -195,7 +196,7 @@ public class vistaTablero extends JFrame implements Observer{
                 TirarActionPerformed(evt);
             }
         });
-        getContentPane().add(Tirar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 630, 200, 50));
+        getContentPane().add(Tirar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, 200, 60));
 
         btnVolverInicio.setBorderPainted(false);
         btnVolverInicio.setContentAreaFilled(false);
@@ -220,18 +221,22 @@ public class vistaTablero extends JFrame implements Observer{
     }//GEN-LAST:event_btnVolverInicioActionPerformed
 
     private void TirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TirarActionPerformed
-       try {
-        boolean[] resultados = controlPartida.generarCañasAleatorias();
-        mostrarCañas(resultados);
-        int pasos = controlPartida.calcularPasos(resultados);
-        controlPartida.moverFichaJugador(numeroJugador, pasos);
-        esperandoTuTurnoLabel.setVisible(true);
-        Tirar.setEnabled(false);
-        controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby",new MensajeALobby(codigoLobby,"Tirar",new  MensajeMovimiento(numeroJugador, pasos))));
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error al tirar los dados: " + e.getMessage());
-    }
+        try {
+            boolean[] resultados = controlPartida.generarCañasAleatorias();
+            mostrarCañas(resultados);
+            int pasos = controlPartida.calcularPasos(resultados);
+            boolean victoria = controlPartida.moverFichaJugador(numeroJugador, pasos);
+            if (victoria == true) {
+                vistaPartidaGanada p = new vistaPartidaGanada();
+                p.setVisible(true);
+            }
+            esperandoTuTurnoLabel.setVisible(true);
+            Tirar.setEnabled(false);
+            controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Tirar", new MensajeMovimiento(numeroJugador, pasos))));
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al tirar los dados: " + e.getMessage());
+        }
     }//GEN-LAST:event_TirarActionPerformed
 
 
@@ -259,17 +264,16 @@ public class vistaTablero extends JFrame implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        Mensaje mensaje=(Mensaje) arg;
-        if(mensaje.getTipo().equalsIgnoreCase("Tu Turno")){
+        Mensaje mensaje = (Mensaje) arg;
+        if (mensaje.getTipo().equalsIgnoreCase("Tu Turno")) {
             Tirar.setEnabled(true);
-        }else if(mensaje.getTipo().equalsIgnoreCase("TuNumeroDeJugador")){
-            numeroJugador=(int)mensaje.getContenido();
+        } else if (mensaje.getTipo().equalsIgnoreCase("TuNumeroDeJugador")) {
+            numeroJugador = (int) mensaje.getContenido();
             System.out.println(numeroJugador);
-        }else if(mensaje.getTipo().equalsIgnoreCase("TiroJugador")){
-            MensajeMovimiento movimiento=(MensajeMovimiento)mensaje.getContenido();
+        } else if (mensaje.getTipo().equalsIgnoreCase("TiroJugador")) {
+            MensajeMovimiento movimiento = (MensajeMovimiento) mensaje.getContenido();
             controlPartida.moverFichaJugador(movimiento.getUsuarioTira(), movimiento.getPasos());
         }
-        
-        
+
     }
 }

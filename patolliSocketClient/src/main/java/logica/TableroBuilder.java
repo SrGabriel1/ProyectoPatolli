@@ -66,80 +66,88 @@ public class TableroBuilder {
     }
 
     private void construirTableroExterno() {
-        JLabel[][] casillasTemp = new JLabel[7][2];
+    int filasTemp = filas;
+    int columnasTemp = columnas;
 
-        // Determinar el rango de números según el tipo de tablero
-        int[][] numeracion = getNumeracionSegunTipo();
+    // Ajustar dimensiones para IZQUIERDA y DERECHA
+    if (tipoTablero == TipoTablero.IZQUIERDA || tipoTablero == TipoTablero.DERECHA) {
+        filasTemp = columnas;
+        columnasTemp = filas;
+    }
 
-        // Crear y numerar las casillas
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 2; j++) {
-                int numero = numeracion[i][j];
-                JLabel casilla = crearCasilla(numero);
-                casillasTemp[i][j] = casilla;
-                pintarCasillas(casilla, numero);
-            }
-        }
+    JLabel[][] casillasTemp = new JLabel[filasTemp][columnasTemp];
+    int[][] numeracion = getNumeracionSegunTipo();
 
-        // Agregar las casillas al tablero
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 2; j++) {
-                tablero.add(casillasTemp[i][j]);
-                casillas.add(casillasTemp[i][j]);
-                
-            }
+    for (int i = 0; i < filasTemp; i++) {
+        for (int j = 0; j < columnasTemp; j++) {
+            int numero = numeracion[i][j];
+            JLabel casilla = crearCasilla(numero);
+            casillasTemp[i][j] = casilla;
+            pintarCasillas(casilla, numero);
         }
     }
 
+    for (int i = 0; i < filasTemp; i++) {
+        for (int j = 0; j < columnasTemp; j++) {
+            tablero.add(casillasTemp[i][j]);
+            casillas.add(casillasTemp[i][j]);
+        }
+    }
+}
+
     private int[][] getNumeracionSegunTipo() {
-        int[][] numeracion = new int[7][2];
+        int[][] numeracion = new int[8][2];
 
         switch (tipoTablero) {
             case ARRIBA:
                 numeracion = new int[][]{
-                    {1, 60},
-                    {2, 59},
-                    {3, 58},
-                    {4, 57},
-                    {5, 56},
-                    {6, 55},
-                    {7, 54}
+                    {1, 68},
+                    {2, 67},
+                    {3, 66},
+                    {4, 65},
+                    {5, 64},
+                    {6, 63},
+                    {7, 62},
+                    {8, 61}
                 };
                 break;
 
             case IZQUIERDA:
                 numeracion = new int[][]{
-                    {15, 14}, // Empieza en 15 y cuenta hacia atrás
-                    {13, 12},
-                    {11, 10}, // Continúa en orden
-                    {9, 16},
-                    {17, 18}, // Conecta con el tablero central
-                    {19, 20},
-                    {21, 22}
+                    {17, 16}, // Empieza en 15 y cuenta hacia atrás
+                    {15, 14},
+                    {13, 12}, // Continúa en orden
+                    {11, 10},
+                    {18, 19}, // Conecta con el tablero central
+                    {20, 21},
+                    {22, 23},
+                    {24, 25}
                 };
                 break;
 
             case ABAJO:
                 numeracion = new int[][]{
-                    {24, 37}, // Empieza a contar hacia abajo
-                    {25, 36},
-                    {26, 35},
-                    {27, 34},
-                    {28, 33},
-                    {29, 32},
-                    {30, 31}
+                    {27, 42}, // Empieza a contar hacia abajo
+                    {28, 41},
+                    {29, 40},
+                    {30, 39},
+                    {31, 38},
+                    {32, 37},
+                    {33, 36},
+                    {34, 35}
                 };
                 break;
 
             case DERECHA:
                 numeracion = new int[][]{
-                    {52, 51}, // Continúa hacia la derecha
-                    {50, 49},
-                    {48, 47},
-                    {46, 39},
-                    {40, 41},
-                    {42, 43},
-                    {44, 45}
+                    {59, 58}, // Continúa hacia la derecha
+                    {57, 56},
+                    {55, 54},
+                    {53, 52},
+                    {44, 45},
+                    {46, 47},
+                    {48, 49},
+                    {50, 51}
                 };
                 break;
         }
@@ -149,8 +157,8 @@ public class TableroBuilder {
 
     private void construirTableroCentral() {
         int[][] numeracionCentral = {
-            {8, 53}, // Primera fila del centro
-            {23, 38} // Segunda fila del centro
+            {9, 60}, // Primera fila del centro
+            {26, 43} // Segunda fila del centro
         };
 
         for (int i = 0; i < numeracionCentral.length; i++) {
@@ -183,16 +191,16 @@ public class TableroBuilder {
         boolean casillaAmarilla = false;
         switch (tipoTablero) {
             case ARRIBA:
-                casillaAmarilla = (posicion == 54);
+                casillaAmarilla = (posicion == 61);
                 break;
             case ABAJO:
-                casillaAmarilla = (posicion == 24);
+                casillaAmarilla = (posicion == 27);
                 break;
             case IZQUIERDA:
-                casillaAmarilla = (posicion == 9);
+                casillaAmarilla = (posicion == 10);
                 break;
             case DERECHA:
-                casillaAmarilla = (posicion == 52);
+                casillaAmarilla = (posicion == 44);
                 break;
         }
 
@@ -205,16 +213,16 @@ public class TableroBuilder {
         boolean casillaRoja = false;
         switch (tipoTablero) {
             case ARRIBA:
-                casillaRoja = (posicion == 3 || posicion == 58);
+                casillaRoja = (posicion == 3 || posicion == 66);
                 break;
             case ABAJO:
-                casillaRoja = (posicion == 28 || posicion == 33);
+                casillaRoja = (posicion == 33 || posicion == 36);
                 break;
             case IZQUIERDA:
-                casillaRoja = (posicion == 13 || posicion == 18);
+                casillaRoja = (posicion == 15 || posicion == 20);
                 break;
             case DERECHA:
-                casillaRoja = (posicion == 43 || posicion == 48);
+                casillaRoja = (posicion == 49 || posicion == 54);
                 break;
         }
 
