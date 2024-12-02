@@ -20,7 +20,7 @@ public class NewMain {
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
         ControladorVentanas controlador = null;
-        vistaPartidaGanada p = new vistaPartidaGanada();
+        vistaTablero p = new vistaTablero(3, "xxx", controlador);
                 p.setVisible(true);
     }
     

@@ -209,8 +209,10 @@ public class PatolliPanel extends JPanel {
     public void removerFicha(int posicion) {
         JLabel casilla = casillas.get(posicion);
         casilla.setIcon(null); // Limpia la ficha de la casilla
+        System.out.println("Andamos en el remover en la posicion: " + posicion);
         repaint();
     }
+    
     public void colocarFichaInicial(int posicionInical, String color) {
         for (JLabel c : casillas) {
             if (c.getText().equalsIgnoreCase("" + posicionInical)) {

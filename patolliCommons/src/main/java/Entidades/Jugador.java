@@ -16,6 +16,7 @@ public class Jugador {
     private Integer fondos;
     private List<Ficha> fichas;
     private Integer apuesta;
+    private Integer numVueltas = 0;
 
     public int tirarDados() {
 
@@ -36,6 +37,14 @@ public class Jugador {
         this.fondos = fondos;
         this.fichas = fichas;
         this.apuesta = apuesta;
+    }
+
+    public Integer getNumVueltas() {
+        return numVueltas;
+    }
+
+    public void setNumVueltas(Integer numVueltas) {
+        this.numVueltas = numVueltas;
     }
 
     public String getNombre() {

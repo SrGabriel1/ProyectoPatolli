@@ -46,6 +46,8 @@ public class ControlPartida {
                 numFichasPorJugador = 4;
             case 4:
                 numFichasPorJugador = 5;
+            default:
+                numFichasPorJugador = 1;
         }
 
         // Inicializar jugadores
@@ -92,13 +94,39 @@ public class ControlPartida {
         return casillasDefault;
     }
 
+    public void numVueltasMethod(int jugador) {
+        int totalCasillas = 68;
+
+        for (int i = 0; i < posicionesJugadores.length; i++) {
+            int casillaInicial = casillasInicialesPorJugador.get(i);
+            int casillaFinal = casillasFinal.get(i);
+            int posicionActual = posicionesJugadores[i];
+
+            int distanciaDesdeInicial = (posicionActual - casillaInicial + totalCasillas) % totalCasillas;
+            int distanciaHastaFinal = (casillaFinal - casillaInicial + totalCasillas) % totalCasillas;
+
+            if (distanciaDesdeInicial >= distanciaHastaFinal) {
+                tablero.removerFicha(posicionActual);
+                System.out.println("Posicion actual: " + posicionActual);
+                colocarFichaInicial(jugador);
+                int vueltas = jugadores.get(jugador).getNumVueltas();
+                vueltas++;
+                jugadores.get(jugador).setNumVueltas(vueltas);
+                System.out.println("Numero de vueltas: " + vueltas);
+            }
+        }
+    }
+
     public boolean moverFichaJugador(int jugador, int pasos) {
 
         int posicionActual = tablero.moverFicha(posicionesJugadores[jugador], pasos, coloresJugadores[jugador]);
-
         posicionesJugadores[jugador] = posicionActual;
+        if (jugadores.get(jugador).getNumVueltas() < numFichasPorJugador) {
+            numVueltasMethod(jugador);
+        }
 
         return verificarGanador();
+
     }
 
     private void colocarFichaInicial(int jugador) {
