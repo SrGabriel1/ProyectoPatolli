@@ -4,6 +4,7 @@
  */
 package logica;
 
+import Tablero.PatolliPanel;
 import Entidades.Ficha;
 import Entidades.Jugador;
 import java.util.ArrayList;

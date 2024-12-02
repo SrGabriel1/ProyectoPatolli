@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package logica;
+package Tablero;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import logica.CasillaPintar;
+import Tablero.CasillaPintar;
 
 /**
  *

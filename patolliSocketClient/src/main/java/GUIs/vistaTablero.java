@@ -4,7 +4,7 @@
  */
 package GUIs;
 
-import logica.PatolliPanel;
+import Tablero.PatolliPanel;
 import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -57,13 +57,46 @@ public class vistaTablero extends JFrame implements Observer {
         redimensionarCañas();
         posicionarCañas(layeredPane);
 
+        // Agrega los labels de nombres y turnos  (capa superior)
+        Nombre1.setBounds(10, 10, 170, 40);
+        Dinero1.setBounds(20, 50, 130, 20);
+        layeredPane.add(Nombre1, Integer.valueOf(2));
+        layeredPane.add(Dinero1, Integer.valueOf(2));
+
+        Nombre2.setBounds(610, 10, 170, 40);
+        Dinero2.setBounds(620, 50, 130, 20);
+        layeredPane.add(Nombre2, Integer.valueOf(2));
+        layeredPane.add(Dinero2, Integer.valueOf(2));
+
+        Nombre3.setBounds(10, 540, 170, 40);
+        Dinero3.setBounds(30, 585, 130, 20);
+        layeredPane.add(Nombre3, Integer.valueOf(2));
+        layeredPane.add(Dinero3, Integer.valueOf(2));
+
+        Nombre4.setBounds(610, 540, 170, 40);
+        Dinero4.setBounds(620, 585, 130, 20);
+        layeredPane.add(Nombre4, Integer.valueOf(2));
+        layeredPane.add(Dinero4, Integer.valueOf(2));
+
+        Turno.setBounds(10, 340, 130, 40);
+        layeredPane.add(Turno, Integer.valueOf(2));
         // Botones
-        Tirar.setBounds(340, 650, 170, 60);
+        Tirar.setBounds(300, 620, 200, 60);
         layeredPane.add(Tirar, Integer.valueOf(2));
 
         btnVolverInicio.setBounds(10, 650, 100, 60);
         layeredPane.add(btnVolverInicio, Integer.valueOf(2));
-
+        
+        Nombre1.setText("hola");
+        Dinero1.setText("200");
+        Nombre2.setText("hola");
+        Dinero2.setText("200");
+        Nombre3.setText("hola");
+        Dinero3.setText("200");
+        Nombre4.setText("hola");
+        Dinero4.setText("200");
+        
+        Turno.setText("hola1");
         // Agrega el layeredPane al JFrame
         setContentPane(layeredPane);
         pack();
@@ -153,39 +186,39 @@ public class vistaTablero extends JFrame implements Observer {
 
         Turno.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Turno.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 50, 50));
+        getContentPane().add(Turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 130, 40));
 
         Nombre1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre1.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Nombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 50));
+        getContentPane().add(Nombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 40));
 
-        Dinero1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Dinero1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         Dinero1.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Dinero1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 130, 40));
+        getContentPane().add(Dinero1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 130, 20));
 
         Nombre2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre2.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 170, 40));
+        getContentPane().add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 10, 170, 40));
 
-        Dinero2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Dinero2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         Dinero2.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Dinero2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, 150, 40));
+        getContentPane().add(Dinero2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 50, 150, 30));
 
         Nombre3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Nombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, 170, 40));
+        getContentPane().add(Nombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 170, 40));
 
-        Dinero3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Dinero3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         Dinero3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Dinero3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 140, 40));
+        getContentPane().add(Dinero3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 140, 30));
 
         Nombre4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre4.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Nombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 570, 160, 40));
+        getContentPane().add(Nombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 540, 160, 40));
 
-        Dinero4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Dinero4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         Dinero4.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(Dinero4, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 620, 150, 40));
+        getContentPane().add(Dinero4, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 580, 150, 40));
 
         Tirar.setBorderPainted(false);
         Tirar.setContentAreaFilled(false);

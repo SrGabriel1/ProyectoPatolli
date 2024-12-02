@@ -1,5 +1,6 @@
-package logica;
+package Tablero;
 
+import Tablero.TableroBuilder;
 import Entidades.Ficha;
 import javax.swing.*;
 import java.awt.*;
@@ -154,7 +155,6 @@ public class PatolliPanel extends JPanel {
         this.casillasAmarillas = casillasAmarillas;
     }
 
-    
     public int moverFicha(int posicionActual, int pasos, String colorFicha) {
         // Asegurarse de que la posición está dentro del rango válido
         if (posicionActual >= 0 && posicionActual <= casillas.size()) {
@@ -206,13 +206,14 @@ public class PatolliPanel extends JPanel {
         }
         return 0;
     }
+
     public void removerFicha(int posicion) {
         JLabel casilla = casillas.get(posicion);
         casilla.setIcon(null); // Limpia la ficha de la casilla
         System.out.println("Andamos en el remover en la posicion: " + posicion);
         repaint();
     }
-    
+
     public void colocarFichaInicial(int posicionInical, String color) {
         for (JLabel c : casillas) {
             if (c.getText().equalsIgnoreCase("" + posicionInical)) {
@@ -256,5 +257,7 @@ public class PatolliPanel extends JPanel {
     public void actualizarPosicionFicha(int jugador, int posicion) {
         JLabel casilla = casillas.get(posicion); // Obtén la casilla por posición
         casilla.setIcon(new ImageIcon("/img/fichaJugador" + jugador + ".png")); // Cambia el ícono de la casilla
+        repaint(); // Asegura que el cambio sea visible
+        revalidate();
     }
 }
