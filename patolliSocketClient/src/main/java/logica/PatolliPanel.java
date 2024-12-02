@@ -65,9 +65,9 @@ public class PatolliPanel extends JPanel {
         // Añade los paneles centrados relativos al punto central
         add(casillasArriba, new org.netbeans.lib.awtextra.AbsoluteConstraints(
                 centerX, // x
-                centerY - 200, // y
+                centerY - 240, // y
                 100, // ancho
-                200 // alto
+                240 // alto
         ));
         revalidate();
         repaint();
@@ -75,14 +75,14 @@ public class PatolliPanel extends JPanel {
                 centerX, // x
                 centerY + 100, // y
                 100, // ancho
-                200 // alto
+                240 // alto
         ));
         revalidate();
         repaint();
         add(casillasIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                centerX - 200, // x
+                centerX - 250, // x
                 centerY, // y
-                200, // ancho
+                250, // ancho
                 100 // alto
         ));
         revalidate();
@@ -90,7 +90,7 @@ public class PatolliPanel extends JPanel {
         add(casillasDer, new org.netbeans.lib.awtextra.AbsoluteConstraints(
                 centerX + 100, // x
                 centerY, // y
-                200, // ancho
+                250, // ancho
                 100 // alto
         ));
         revalidate();
