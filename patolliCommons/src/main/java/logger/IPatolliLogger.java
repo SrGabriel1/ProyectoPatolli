@@ -6,7 +6,7 @@ package logger;
 
 /**
  *
- * @author felix
+ * @author felix :p
  */
 public interface IPatolliLogger {
     void log(String message);
