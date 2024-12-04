@@ -84,7 +84,7 @@ public class TableroBuilder {
         for (int i = 0; i < filasTemp; i++) {
             for (int j = 0; j < columnasTemp; j++) {
                 int numero = numeracion[i][j];
-                JLabel casilla = crearCasilla();
+                JLabel casilla = crearCasilla(numero);
                 casillasTemp[i][j] = casilla;
                 pintarCasillas(casilla, numero);
             }
@@ -120,7 +120,7 @@ public class TableroBuilder {
         for (int i = 0; i < numeracionCentral.length; i++) {
             for (int j = 0; j < numeracionCentral[i].length; j++) {
                 int numero = numeracionCentral[i][j]; // Obtener número desde la matriz
-                JLabel casilla = crearCasilla(); // Crear la casilla
+                JLabel casilla = crearCasilla(numero); // Crear la casilla
                 tablero.add(casilla); // Agregar al tablero
                 casillas.add(casilla); // Guardar referencia
             }
@@ -128,13 +128,15 @@ public class TableroBuilder {
 
     }
 
-    private JLabel crearCasilla() {
+    private JLabel crearCasilla(int numero) {
         JLabel label = new JLabel();
+        label.setText(""); // No se muestra texto
         label.setBorder(new LineBorder(Color.BLACK, 1));
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
+        label.putClientProperty("numero", numero); // Almacena el número internamente
         return label;
     }
 
@@ -154,6 +156,7 @@ public class TableroBuilder {
             casilla.setBackground(Color.RED);
         }
     }
+
     public List<Integer> getCasillasAmarillas() {
         return new ArrayList<>(casillasAmarillasPos);
     }

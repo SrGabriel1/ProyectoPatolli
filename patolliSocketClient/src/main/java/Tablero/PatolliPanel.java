@@ -170,13 +170,13 @@ public class PatolliPanel extends JPanel {
             for (int i = 0; i < casillas.size(); i++) {
                 if (casillas.get(i).getIcon() == null) {
                     continue;
-                } else if (casillas.get(i).getText().equalsIgnoreCase("" + posicionActual)) {
+                } else if ((int)casillas.get(i).getClientProperty("numero")==(posicionActual)) {
                     antiguaPosicion = i;
                 }
             }
 
             for (JLabel c : casillas) {
-                if (c.getText().equalsIgnoreCase("" + nuevaPosicion)) {
+                if ((int)c.getClientProperty("numero")==(nuevaPosicion)) {
                     c.setIcon(obtenerImagenFicha(colorFicha));
                     c.setHorizontalAlignment(JLabel.CENTER);
                     c.setVerticalAlignment(JLabel.CENTER);
@@ -191,7 +191,7 @@ public class PatolliPanel extends JPanel {
 
     public void removerFicha(int posicion) {
         for (JLabel c : casillas) {
-            if (c.getText().equalsIgnoreCase("" + posicion)) {
+            if ((int)c.getClientProperty("numero")==(posicion)) {
                 c.setIcon(null);
                 repaint();
             }
@@ -200,7 +200,7 @@ public class PatolliPanel extends JPanel {
 
     public void colocarFichaInicial(int posicionInical, String color) {
         for (JLabel c : casillas) {
-            if (c.getText().equalsIgnoreCase("" + posicionInical)) {
+            if ((int)c.getClientProperty("numero")==(posicionInical)) {
                 c.setIcon(obtenerImagenFicha(color));
                 c.setHorizontalAlignment(JLabel.CENTER);
                 c.setVerticalAlignment(JLabel.CENTER);

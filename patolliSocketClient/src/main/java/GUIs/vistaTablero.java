@@ -80,6 +80,10 @@ public class vistaTablero extends JFrame implements Observer {
 
         Turno.setBounds(10, 340, 130, 40);
         layeredPane.add(Turno, Integer.valueOf(2));
+
+        Fichas.setBounds(10, 260, 130, 40);
+        layeredPane.add(Turno, Integer.valueOf(2));
+
         // Botones
         Tirar.setBounds(300, 620, 200, 60);
         layeredPane.add(Tirar, Integer.valueOf(2));
@@ -139,6 +143,7 @@ public class vistaTablero extends JFrame implements Observer {
         cana5 = new javax.swing.JLabel();
         cana2 = new javax.swing.JLabel();
         Turno = new javax.swing.JLabel();
+        Fichas = new javax.swing.JLabel();
         Nombre1 = new javax.swing.JLabel();
         Dinero1 = new javax.swing.JLabel();
         Nombre2 = new javax.swing.JLabel();
@@ -177,6 +182,10 @@ public class vistaTablero extends JFrame implements Observer {
         Turno.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         Turno.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(Turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 130, 40));
+
+        Fichas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Fichas.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(Fichas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 130, 40));
 
         Nombre1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         Nombre1.setForeground(new java.awt.Color(0, 0, 0));
@@ -269,6 +278,7 @@ public class vistaTablero extends JFrame implements Observer {
     private javax.swing.JLabel Dinero2;
     private javax.swing.JLabel Dinero3;
     private javax.swing.JLabel Dinero4;
+    private javax.swing.JLabel Fichas;
     private javax.swing.JLabel Nombre1;
     private javax.swing.JLabel Nombre2;
     private javax.swing.JLabel Nombre3;
@@ -309,6 +319,7 @@ public class vistaTablero extends JFrame implements Observer {
         } else if (mensaje.getTipo().equalsIgnoreCase("JugadorActual")) {
             String nombre = (String) mensaje.getContenido();
             Turno.setText(nombre);
+          
         } else if (mensaje.getTipo().equalsIgnoreCase("DineroPartida")) {
             int dinero = (int) mensaje.getContenido();
             for (int i = 0; i < jugadoresMax; i++) {
