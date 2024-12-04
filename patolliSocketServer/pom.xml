@@ -8,12 +8,12 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>patolliSocketClient</artifactId>
+            <artifactId>patolliCommons</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>patolliCommons</artifactId>
+            <artifactId>patolliSocketClient</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
