@@ -264,9 +264,8 @@ public class vistaTablero extends JFrame implements Observer {
                 controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Gano", new MensajeMovimiento(numeroJugador))));
             }
             esperandoTuTurnoLabel.setVisible(true);
-            
-            controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Tirar", new MensajeMovimiento(numeroJugador, pasos))));
             Tirar.setEnabled(false);
+            controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Tirar", new MensajeMovimiento(numeroJugador, pasos))));
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al tirar los dados: " + e.getMessage());
