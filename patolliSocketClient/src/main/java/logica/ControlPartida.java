@@ -125,7 +125,6 @@ public class ControlPartida {
         if (jugadores.get(jugador).getNumVueltas() < numFichasPorJugador) {
             numVueltasMethod(jugador);
         }
-
         return verificarGanador();
 
     }
@@ -174,6 +173,9 @@ public class ControlPartida {
             if (resultado) {
                 pasos++;
             }
+        }
+        if (pasos == 5) {
+            pasos = 10;
         }
         return pasos;
     }

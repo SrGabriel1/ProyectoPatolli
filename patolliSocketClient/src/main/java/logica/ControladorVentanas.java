@@ -26,7 +26,7 @@ public class ControladorVentanas {
 
     Thread hiloCliente;
     Cliente cliente;
-
+CondicionesPartida condiciones;
     public ControladorVentanas() {
         this.cliente = new Cliente();
     }
@@ -62,15 +62,16 @@ public class ControladorVentanas {
     public void cambiaraVentanaLobby(vistaCrearJuego actual, CondicionesPartida condiciones) {
         vistaLobby nuevo = new vistaLobby(this);
         cliente.mandarMensajeAlServidor(new Mensaje("CrearLobby", condiciones));
+        System.out.println("Dinero"+condiciones.getSemillas());
         cliente.addObserver(nuevo);
         actual.dispose();
         nuevo.setVisible(true);
     }
 
-    public void cambiaraVentanaVistaTablero(vistaLobby actual, String codigo) throws Exception {
+    public void cambiaraVentanaVistaTablero(vistaLobby actual,int jugadores, String codigo) throws Exception {
 
         cliente.mandarMensajeAlServidor(new Mensaje("JugadorListo", ""));
-        vistaTablero nuevo = new vistaTablero(2, codigo, this);
+        vistaTablero nuevo = new vistaTablero(jugadores, codigo, this);
         cliente.deleteObserver(actual);
         cliente.addObserver(nuevo);
         actual.dispose();

@@ -69,7 +69,7 @@ public class Lobby {
     
     public boolean usuarioListo(){
         usuariosListos++;
-        if(usuariosListos==clientesEnLobby.size()){
+        if(usuariosListos==clientesEnLobby.size() && usuariosListos>1){
             return true;
         }else{
             return false;

@@ -86,7 +86,17 @@ public class ProtocoloServidor {
                 for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
                     lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("TuNumeroDeJugador", i));
                     lobby.getClientesEnLobby().get(i).getOut().flush();
+                    lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("UsuariosConectados", lobby.obtenerNombresDeUsuarios()));
+                    lobby.getClientesEnLobby().get(i).getOut().flush();
+                    lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("JugadorActual", lobby.getClientesEnLobby().get(0).getNombre()));
+                    lobby.getClientesEnLobby().get(i).getOut().flush();
+                    lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("DineroPartida", lobby.getCondiciones().getSemillas()));
+                    lobby.getClientesEnLobby().get(i).getOut().flush();
                 }
+
+                lobby.getClientesEnLobby().get(0).getOut().writeObject(new Mensaje("Tu turno", null));
+                lobby.getClientesEnLobby().get(0).getOut().flush();
+
             }
         } else if (mensaje.getMensaje().equalsIgnoreCase("Tirar")) {
             MensajeMovimiento movimiento = (MensajeMovimiento) mensaje.getContenido();
@@ -101,12 +111,15 @@ public class ProtocoloServidor {
             lobby.cambiarTurno();
             lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getOut().writeObject(new Mensaje("Tu turno", null));
             lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getOut().flush();
-
+            for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
+                lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("JugadorActual", lobby.getClientesEnLobby().get(lobby.getUsuarioEnTurno()).getNombre()));
+                lobby.getClientesEnLobby().get(i).getOut().flush();
+            }
         } else if (mensaje.getMensaje().equalsIgnoreCase("Gano")) {
             MensajeMovimiento jugador = (MensajeMovimiento) mensaje.getContenido();
             lobby.getClientesEnLobby().get(jugador.getUsuarioTira()).getOut().writeObject(new Mensaje("PantallaVictoria", null));
             lobby.getClientesEnLobby().get(jugador.getUsuarioTira()).getOut().flush();
-            
+
             for (int i = 0; i < lobby.getClientesEnLobby().size(); i++) {
                 if (i != jugador.getUsuarioTira()) {
                     lobby.getClientesEnLobby().get(i).getOut().writeObject(new Mensaje("PantallaPerdida", null));

@@ -19,7 +19,8 @@ import mensajes.MensajeALobby;
  *
  * @author Gabriel
  */
-public class vistaLobby extends javax.swing.JFrame implements Observer{
+public class vistaLobby extends javax.swing.JFrame implements Observer {
+
     ControladorVentanas controlador;
     private int JugadoresListos = 0;
     private int TotalJugadores = 0;
@@ -28,7 +29,7 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
      * Creates new form vistaMenuInicio
      */
     public vistaLobby(ControladorVentanas controlador) {
-        this.controlador=controlador;
+        this.controlador = controlador;
         initComponents();
         setLocationRelativeTo(null);
         esperandoJugadoresLabel.setText("Esperando Jugadores...");
@@ -127,8 +128,9 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
     private void botonListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonListoActionPerformed
         esperandoJugadoresLabel.setVisible(true);
         botonListo.setEnabled(false);
-        Mensaje mensaje=new Mensaje("MensajeALobby", new MensajeALobby(Codigo.getText(),"UsuarioListo", null));
+        Mensaje mensaje = new Mensaje("MensajeALobby", new MensajeALobby(Codigo.getText(), "UsuarioListo", null));
         controlador.mandarMensajeAServidor(mensaje);
+
     }//GEN-LAST:event_botonListoActionPerformed
 
 
@@ -152,30 +154,32 @@ public class vistaLobby extends javax.swing.JFrame implements Observer{
             Codigo.setText((String) mensaje.getContenido());
         } else if (mensaje.getTipo().equalsIgnoreCase("UsuarioNuevo")) {
             comprobarLabelVacio().setText((String) mensaje.getContenido());
+            TotalJugadores++;
         } else if (mensaje.getTipo().equalsIgnoreCase("UsuariosConectados")) {
             List<String> usuarios = (List<String>) mensaje.getContenido();
             for (String s : usuarios) {
                 comprobarLabelVacio().setText(s);
             }
+            TotalJugadores=usuarios.size();
         } else if (mensaje.getTipo().equalsIgnoreCase("PartidaIniciada")) {
             try {
-                controlador.cambiaraVentanaVistaTablero(this, Codigo.getText());
+                controlador.cambiaraVentanaVistaTablero(this, TotalJugadores, Codigo.getText());
             } catch (Exception ex) {
                 Logger.getLogger(vistaLobby.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
-    public JLabel comprobarLabelVacio(){
-        if(jugador1.getText().equalsIgnoreCase("")){
+
+    public JLabel comprobarLabelVacio() {
+        if (jugador1.getText().equalsIgnoreCase("")) {
             return jugador1;
-        }else if(jugador2.getText().equalsIgnoreCase("")){
+        } else if (jugador2.getText().equalsIgnoreCase("")) {
             return jugador2;
-        }else if(jugador3.getText().equalsIgnoreCase("")){
+        } else if (jugador3.getText().equalsIgnoreCase("")) {
             return jugador3;
-        }else if(jugador4.getText().equalsIgnoreCase("")){
+        } else if (jugador4.getText().equalsIgnoreCase("")) {
             return jugador4;
-        }else{
+        } else {
             return null;
         }
     }

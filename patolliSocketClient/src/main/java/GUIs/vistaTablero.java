@@ -58,22 +58,22 @@ public class vistaTablero extends JFrame implements Observer {
         posicionarCañas(layeredPane);
 
         // Agrega los labels de nombres y turnos  (capa superior)
-        Nombre1.setBounds(10, 10, 170, 40);
+        Nombre1.setBounds(10, 10, 200, 40);
         Dinero1.setBounds(20, 50, 130, 20);
         layeredPane.add(Nombre1, Integer.valueOf(2));
         layeredPane.add(Dinero1, Integer.valueOf(2));
 
-        Nombre2.setBounds(610, 10, 170, 40);
+        Nombre2.setBounds(610, 10, 200, 40);
         Dinero2.setBounds(620, 50, 130, 20);
         layeredPane.add(Nombre2, Integer.valueOf(2));
         layeredPane.add(Dinero2, Integer.valueOf(2));
 
-        Nombre3.setBounds(10, 540, 170, 40);
+        Nombre3.setBounds(10, 540, 200, 40);
         Dinero3.setBounds(30, 585, 130, 20);
         layeredPane.add(Nombre3, Integer.valueOf(2));
         layeredPane.add(Dinero3, Integer.valueOf(2));
 
-        Nombre4.setBounds(610, 540, 170, 40);
+        Nombre4.setBounds(610, 540, 200, 40);
         Dinero4.setBounds(620, 585, 130, 20);
         layeredPane.add(Nombre4, Integer.valueOf(2));
         layeredPane.add(Dinero4, Integer.valueOf(2));
@@ -86,23 +86,13 @@ public class vistaTablero extends JFrame implements Observer {
 
         btnVolverInicio.setBounds(10, 650, 100, 60);
         layeredPane.add(btnVolverInicio, Integer.valueOf(2));
-        
-        Nombre1.setText("hola");
-        Dinero1.setText("200");
-        Nombre2.setText("hola");
-        Dinero2.setText("200");
-        Nombre3.setText("hola");
-        Dinero3.setText("200");
-        Nombre4.setText("hola");
-        Dinero4.setText("200");
-        
-        Turno.setText("hola1");
+
         // Agrega el layeredPane al JFrame
         setContentPane(layeredPane);
         pack();
         revalidate();
         repaint();
-
+        Tirar.enable(false);
     }
 
     private void posicionarCañas(JLayeredPane layeredPane) {
@@ -184,7 +174,7 @@ public class vistaTablero extends JFrame implements Observer {
         cana2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cañaVacia.png"))); // NOI18N
         getContentPane().add(cana2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, 110, 50));
 
-        Turno.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Turno.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         Turno.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(Turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 130, 40));
 
@@ -264,7 +254,7 @@ public class vistaTablero extends JFrame implements Observer {
                 controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Gano", new MensajeMovimiento(numeroJugador))));
             }
             esperandoTuTurnoLabel.setVisible(true);
-            
+
             controlador.mandarMensajeAServidor(new Mensaje("MensajeALobby", new MensajeALobby(codigoLobby, "Tirar", new MensajeMovimiento(numeroJugador, pasos))));
             Tirar.setEnabled(false);
         } catch (Exception e) {
@@ -304,6 +294,11 @@ public class vistaTablero extends JFrame implements Observer {
         } else if (mensaje.getTipo().equalsIgnoreCase("TuNumeroDeJugador")) {
             numeroJugador = (int) mensaje.getContenido();
             System.out.println(numeroJugador);
+        } else if (mensaje.getTipo().equalsIgnoreCase("UsuariosConectados")) {
+            List<String> usuarios = (List<String>) mensaje.getContenido();
+            for (String s : usuarios) {
+                comprobarLabelVacio().setText(s);
+            }
         } else if (mensaje.getTipo().equalsIgnoreCase("TiroJugador")) {
             MensajeMovimiento movimiento = (MensajeMovimiento) mensaje.getContenido();
             controlPartida.moverFichaJugador(movimiento.getUsuarioTira(), movimiento.getPasos());
@@ -311,7 +306,46 @@ public class vistaTablero extends JFrame implements Observer {
             controlador.cambiarPartidaGanada(this);
         } else if (mensaje.getTipo().equalsIgnoreCase("PantallaPerdida")) {
             controlador.cambiarPartidaPerdida(this);
+        } else if (mensaje.getTipo().equalsIgnoreCase("JugadorActual")) {
+            String nombre = (String) mensaje.getContenido();
+            Turno.setText(nombre);
+        } else if (mensaje.getTipo().equalsIgnoreCase("DineroPartida")) {
+            int dinero = (int) mensaje.getContenido();
+            for (int i = 0; i < jugadoresMax; i++) {
+                JLabel label = comprobarLabelVacioDinero();
+                label.setText("" + dinero);
+
+            }
+
         }
 
+    }
+
+    public JLabel comprobarLabelVacio() {
+        if (Nombre1.getText().equalsIgnoreCase("")) {
+            return Nombre1;
+        } else if (Nombre2.getText().equalsIgnoreCase("")) {
+            return Nombre2;
+        } else if (Nombre3.getText().equalsIgnoreCase("")) {
+            return Nombre3;
+        } else if (Nombre4.getText().equalsIgnoreCase("")) {
+            return Nombre4;
+        } else {
+            return null;
+        }
+    }
+
+    public JLabel comprobarLabelVacioDinero() {
+        if (Dinero1.getText().equalsIgnoreCase("")) {
+            return Dinero1;
+        } else if (Dinero2.getText().equalsIgnoreCase("")) {
+            return Dinero2;
+        } else if (Dinero3.getText().equalsIgnoreCase("")) {
+            return Dinero3;
+        } else if (Dinero4.getText().equalsIgnoreCase("")) {
+            return Dinero4;
+        } else {
+            return null;
+        }
     }
 }

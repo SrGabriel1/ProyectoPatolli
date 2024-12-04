@@ -5,6 +5,7 @@
 package GUIs;
 
 import Entidades.CondicionesPartida;
+import logica.ControlPartida;
 import logica.ControladorVentanas;
 
 /**
@@ -24,6 +25,7 @@ public class vistaCrearJuego extends javax.swing.JFrame {
     private final int SemillasMax = 900;
     private int minApuesta = 10;
     private final int MaxApuesta = 900;
+    private ControlPartida controlPartida;
 
     public vistaCrearJuego(ControladorVentanas control,CondicionesPartida condiciones) {
         this.control=control;

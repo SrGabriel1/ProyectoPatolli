@@ -185,33 +185,17 @@ public class PatolliPanel extends JPanel {
                     return nuevaPosicion;
                 }
             }
-//            // Limpia la casilla anterior (quita solo la imagen)
-//            JLabel casillaAnterior = casillas.get(posicionActual);
-//            casillaAnterior.setIcon(null);
-//
-//            // Marca la nueva casilla con la imagen correspondiente
-//            JLabel nuevaCasilla = casillas.get(nuevaPosicion);
-//            nuevaCasilla.setIcon(obtenerImagenFicha(colorFicha));
-//            nuevaCasilla.setHorizontalAlignment(JLabel.CENTER);
-//            nuevaCasilla.setVerticalAlignment(JLabel.CENTER);
-//            repaint();
-
-//        // Opcional: lógica adicional según tipo de casilla
-//        if (nuevaCasilla.getBackground().equals(Color.RED)) {
-//            System.out.println("¡Detente en la casilla roja!");
-//        }
-//        if (nuevaCasilla.getBackground().equals(Color.YELLOW)) {
-//            System.out.println("¡Casilla amarilla, juega de nuevo!");
-//        }
         }
         return 0;
     }
 
     public void removerFicha(int posicion) {
-        JLabel casilla = casillas.get(posicion);
-        casilla.setIcon(null); // Limpia la ficha de la casilla
-        System.out.println("Andamos en el remover en la posicion: " + posicion);
-        repaint();
+        for (JLabel c : casillas) {
+            if (c.getText().equalsIgnoreCase("" + posicion)) {
+                c.setIcon(null);
+                repaint();
+            }
+        }
     }
 
     public void colocarFichaInicial(int posicionInical, String color) {
