@@ -13,11 +13,25 @@ public class TableroNumeracion {
     private final int numJugadores;
     private final TableroBuilder.TipoTablero tipoTablero;
 
+    /**
+     * Constructor de la clase TableroNumeracion.
+     *
+     * @param numJugadores Número de jugadores en el juego.
+     * @param tipoTablero Tipo de tablero (ARRIBA, ABAJO, IZQUIERDA, DERECHA).
+     */
     public TableroNumeracion(int numJugadores, TableroBuilder.TipoTablero tipoTablero) {
         this.numJugadores = numJugadores;
         this.tipoTablero = tipoTablero;
     }
 
+    /**
+     * Devuelve la matriz de numeración de casillas según el número de jugadores
+     * y el tipo de tablero.
+     *
+     * @return Matriz bidimensional que representa la numeración del tablero.
+     * @throws IllegalArgumentException Si el número de jugadores no es
+     * soportado.
+     */
     public int[][] getNumeracionSegunTipo() {
         switch (numJugadores) {
             case 2:
@@ -31,6 +45,12 @@ public class TableroNumeracion {
         }
     }
 
+    /**
+     * Genera la numeración de las casillas para dos jugadores.
+     *
+     * @return Matriz bidimensional con la numeración para dos jugadores.
+     * @throws IllegalArgumentException Si el tipo de tablero no es soportado.
+     */
     private int[][] obtenerNumeracionDosJugadores() {
         switch (tipoTablero) {
             case ARRIBA:
@@ -58,6 +78,12 @@ public class TableroNumeracion {
         }
     }
 
+    /**
+     * Genera la numeración de las casillas para tres jugadores.
+     *
+     * @return Matriz bidimensional con la numeración para tres jugadores.
+     * @throws IllegalArgumentException Si el tipo de tablero no es soportado.
+     */
     private int[][] obtenerNumeracionTresJugadores() {
         switch (tipoTablero) {
             case ARRIBA:
@@ -89,6 +115,12 @@ public class TableroNumeracion {
         }
     }
 
+    /**
+     * Genera la numeración de las casillas para cuatro jugadores.
+     *
+     * @return Matriz bidimensional con la numeración para cuatro jugadores.
+     * @throws IllegalArgumentException Si el tipo de tablero no es soportado.
+     */
     private int[][] obtenerNumeracionCuatroJugadores() {
         switch (tipoTablero) {
             case ARRIBA:

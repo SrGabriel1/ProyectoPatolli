@@ -28,10 +28,24 @@ public class TableroBuilder {
     private final int numJugadores;
     private final List<Integer> casillasAmarillasPos = new ArrayList<>();
 
+    /**
+     * Enumeración que define los tipos de tablero disponibles.
+     */
     public enum TipoTablero {
         ARRIBA, ABAJO, IZQUIERDA, DERECHA, CENTRAL
     }
 
+    /**
+     * Constructor privado de la clase TableroBuilder.
+     *
+     * @param filas Número de filas del tablero.
+     * @param columnas Número de columnas del tablero.
+     * @param tablero Panel que representa el tablero.
+     * @param casillas Lista de casillas del tablero.
+     * @param tipoTablero Tipo de tablero (ARRIBA, ABAJO, IZQUIERDA, DERECHA,
+     * CENTRAL).
+     * @param numJugadores Número de jugadores en el juego.
+     */
     private TableroBuilder(int filas, int columnas, JPanel tablero, List<JLabel> casillas,
             TipoTablero tipoTablero, int numJugadores) {
         this.filas = filas;
@@ -42,20 +56,38 @@ public class TableroBuilder {
         this.numJugadores = numJugadores;
     }
 
+    /**
+     * Método estático para crear una instancia de TableroBuilder.
+     *
+     * @param filas Número de filas del tablero.
+     * @param columnas Número de columnas del tablero.
+     * @param tablero Panel que representa el tablero.
+     * @param casillas Lista de casillas del tablero.
+     * @param tipoTablero Tipo de tablero (ARRIBA, ABAJO, IZQUIERDA, DERECHA,
+     * CENTRAL).
+     * @param numJugadores Número de jugadores en el juego.
+     * @return Instancia de TableroBuilder.
+     */
     public static TableroBuilder builderTablero(int filas, int columnas, JPanel tablero,
             List<JLabel> casillas, TipoTablero tipoTablero, int numJugadores) {
         return new TableroBuilder(filas, columnas, tablero, casillas, tipoTablero, numJugadores);
     }
 
+    /**
+     * Configura el tamaño del tablero y define el layout del panel.
+     */
     private void configurarTamano() {
-        int casillaAncho = 60;  // Reducido de 100 a 60
-        int casillaAlto = 60;   // Reducido de 100 a 60
+        int casillaAncho = 60;
+        int casillaAlto = 60;
         int panelAncho = 2 * casillaAncho;
         int panelAlto = 7 * casillaAlto;
         tablero.setPreferredSize(new Dimension(panelAncho, panelAlto));
-        tablero.setLayout(new GridLayout(filas, columnas, 2, 2)); // Añadido gap de 2 pixels
+        tablero.setLayout(new GridLayout(filas, columnas, 2, 2));
     }
 
+    /**
+     * Construye el tablero según el tipo especificado.
+     */
     public void construirTablero() {
         configurarTamano();
 
@@ -66,6 +98,9 @@ public class TableroBuilder {
         }
     }
 
+    /**
+     * Construye un tablero externo (ARRIBA, ABAJO, IZQUIERDA, DERECHA).
+     */
     private void construirTableroExterno() {
         int filasTemp = filas;
         int columnasTemp = columnas;
@@ -98,6 +133,9 @@ public class TableroBuilder {
         }
     }
 
+    /**
+     * Construye el tablero central (CENTRAL).
+     */
     private void construirTableroCentral() {
         int[][] numeracionCentral = null;
         if (numJugadores == 2) {
@@ -119,15 +157,21 @@ public class TableroBuilder {
 
         for (int i = 0; i < numeracionCentral.length; i++) {
             for (int j = 0; j < numeracionCentral[i].length; j++) {
-                int numero = numeracionCentral[i][j]; // Obtener número desde la matriz
-                JLabel casilla = crearCasilla(numero); // Crear la casilla
-                tablero.add(casilla); // Agregar al tablero
-                casillas.add(casilla); // Guardar referencia
+                int numero = numeracionCentral[i][j];
+                JLabel casilla = crearCasilla(numero);
+                tablero.add(casilla);
+                casillas.add(casilla);
             }
         }
 
     }
 
+    /**
+     * Crea una casilla (JLabel) con un número específico.
+     *
+     * @param numero Número asociado a la casilla.
+     * @return Casilla configurada.
+     */
     private JLabel crearCasilla(int numero) {
         JLabel label = new JLabel();
         label.setText(""); // No se muestra texto
@@ -136,10 +180,16 @@ public class TableroBuilder {
         label.setBackground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
-        label.putClientProperty("numero", numero); // Almacena el número internamente
+        label.putClientProperty("numero", numero);
         return label;
     }
 
+    /**
+     * Pinta las casillas según su tipo (amarilla o roja).
+     *
+     * @param casilla Casilla a pintar.
+     * @param posicion Posición de la casilla.
+     */
     private void pintarCasillas(JLabel casilla, int posicion) {
 
         if (tipoTablero == TipoTablero.CENTRAL) {
@@ -157,6 +207,11 @@ public class TableroBuilder {
         }
     }
 
+    /**
+     * Obtiene las posiciones de las casillas amarillas.
+     *
+     * @return Lista de posiciones de casillas amarillas.
+     */
     public List<Integer> getCasillasAmarillas() {
         return new ArrayList<>(casillasAmarillasPos);
     }

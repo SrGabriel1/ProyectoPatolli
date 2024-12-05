@@ -26,6 +26,12 @@ public class ControlPartida {
     private int numJugadores;
     int numFichasPorJugador;
 
+    /**
+     * Constructor que inicializa los elementos de la partida.
+     *
+     * @param tablero Referencia al panel del tablero del juego.
+     * @param numJugadores Número de jugadores en la partida.
+     */
     public ControlPartida(PatolliPanel tablero, int numJugadores) {
         this.numJugadores = numJugadores;
         this.tablero = tablero;
@@ -39,6 +45,11 @@ public class ControlPartida {
         iniciarJugadores(numJugadores);
     }
 
+    /**
+     * Inicializa los jugadores y sus fichas.
+     *
+     * @param numJugadores Número de jugadores en la partida.
+     */
     private void iniciarJugadores(int numJugadores) {
         switch (numJugadores) {
             case 2:
@@ -69,6 +80,12 @@ public class ControlPartida {
         }
     }
 
+    /**
+     * Configura las casillas iniciales y finales para cada jugador en el
+     * tablero.
+     *
+     * @param numJugadores Número de jugadores en la partida.
+     */
     public void iniciarCasillasAmarillas(int numJugadores) {
         List<Integer> casillasAmarillas = tablero.getCasillasAmarillas();
         if (casillasAmarillas == null || casillasAmarillas.isEmpty()) {
@@ -85,6 +102,11 @@ public class ControlPartida {
         }
     }
 
+    /**
+     * Genera una configuración por defecto para las casillas amarillas.
+     *
+     * @return Lista de posiciones de casillas amarillas por defecto.
+     */
     private List<Integer> generarCasillasAmarillasDefault() {
         List<Integer> casillasDefault = new ArrayList<>();
         casillasDefault.add(61); // Arriba
@@ -95,6 +117,11 @@ public class ControlPartida {
         return casillasDefault;
     }
 
+    /**
+     * Método que maneja el número de vueltas completadas por un jugador.
+     *
+     * @param jugador Índice del jugador.
+     */
     public void numVueltasMethod(int jugador) {
         int totalCasillas = 68;
 
@@ -118,6 +145,13 @@ public class ControlPartida {
         }
     }
 
+    /**
+     * Mueve la ficha de un jugador en el tablero.
+     *
+     * @param jugador Índice del jugador.
+     * @param pasos Número de pasos a mover.
+     * @return {@code true} si hay un ganador; de lo contrario, {@code false}.
+     */
     public boolean moverFichaJugador(int jugador, int pasos) {
 
         int posicionActual = tablero.moverFicha(posicionesJugadores[jugador], pasos, coloresJugadores[jugador]);
@@ -129,6 +163,11 @@ public class ControlPartida {
 
     }
 
+    /**
+     * Coloca la ficha inicial para un jugador.
+     *
+     * @param jugador Índice del jugador.
+     */
     private void colocarFichaInicial(int jugador) {
         int posicionInicial = casillasInicialesPorJugador.get(jugador);
         posicionesJugadores[jugador] = posicionInicial;
@@ -137,14 +176,35 @@ public class ControlPartida {
         tablero.colocarFichaInicial(posicionInicial, coloresJugadores[jugador]);
     }
 
+    /**
+     * Verifica si el jugador tiene alguna ficha en el tablero.
+     *
+     * @param jugador Índice del jugador.
+     * @return true si el jugador tiene una ficha en el tablero de lo contrario
+     * un false.
+     */
     public boolean esFichaEnTablero(int jugador) {
         return fichasEnTablero[jugador];
     }
 
+    /**
+     * Obtiene el color asignado al jugador actual.
+     *
+     * @param jugadorActual Índice del jugador actual.
+     * @return Color del jugador actual como una cadena de texto.
+     */
     public String getJugadorActualColor(int jugadorActual) {
         return coloresJugadores[jugadorActual];
     }
 
+    /**
+     * Lanza cinco dados virtuales y calcula el número de pasos en función de
+     * los resultados. Cada dado tiene un 50% de probabilidad de resultar en
+     * éxito.
+     *
+     * @return Número de pasos a mover, calculados en función de los resultados
+     * de los dados.
+     */
     public int lanzarDados() {
         boolean[] resultados = new boolean[5];
         for (int i = 0; i < resultados.length; i++) {
@@ -159,6 +219,12 @@ public class ControlPartida {
         return 0;
     }
 
+    /**
+     * Genera cañas aleatorias simulando un lanzamiento de dados.
+     *
+     * @return Arreglo de booleanos representando los resultados del
+     * lanzamiento.
+     */
     public boolean[] generarCañasAleatorias() {
         boolean[] resultados = new boolean[5];
         for (int i = 0; i < resultados.length; i++) {
@@ -167,6 +233,12 @@ public class ControlPartida {
         return resultados;
     }
 
+    /**
+     * Calcula los pasos basados en los resultados de las cañas.
+     *
+     * @param resultados Resultados del lanzamiento de las cañas.
+     * @return Número de pasos a mover.
+     */
     public int calcularPasos(boolean[] resultados) {
         int pasos = 0;
         for (boolean resultado : resultados) {
@@ -180,6 +252,11 @@ public class ControlPartida {
         return pasos;
     }
 
+    /**
+     * Verifica si hay un jugador ganador.
+     *
+     * @return {@code true} si hay un ganador; de lo contrario, {@code false}.
+     */
     public boolean verificarGanador() {
         int totalCasillas = 68;
         for (int i = 0; i < posicionesJugadores.length; i++) {

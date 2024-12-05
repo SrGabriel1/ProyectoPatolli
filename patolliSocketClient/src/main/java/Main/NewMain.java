@@ -4,6 +4,7 @@
  */
 package Main;
 
+import GUIs.vistaInicio;
 import GUIs.vistaPartidaGanada;
 import GUIs.vistaTablero;
 import logica.ControladorVentanas;
@@ -19,9 +20,8 @@ public class NewMain {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        ControladorVentanas controlador = null;
-        vistaTablero p = new vistaTablero(4, "xxx", controlador);
-                p.setVisible(true);
+        vistaInicio inicio = new vistaInicio();
+        inicio.setVisible(true);
     }
-    
+
 }

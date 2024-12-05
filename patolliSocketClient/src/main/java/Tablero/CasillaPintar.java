@@ -11,13 +11,28 @@ package Tablero;
 public class CasillaPintar {
 
     private final int numJugadores;
-    private  TableroBuilder.TipoTablero tipoTablero;
+    private TableroBuilder.TipoTablero tipoTablero;
 
+    /**
+     * Constructor para inicializar la clase CasillaPintar.
+     *
+     * @param numJugadores Número de jugadores en el tablero.
+     * @param tipoTablero Tipo de tablero (ARRIBA, ABAJO, IZQUIERDA, DERECHA).
+     */
     public CasillaPintar(int numJugadores, TableroBuilder.TipoTablero tipoTablero) {
         this.numJugadores = numJugadores;
         this.tipoTablero = tipoTablero;
     }
 
+    /**
+     * Determina si una casilla específica es amarilla.
+     *
+     * @param posicion La posición de la casilla en el tablero.
+     * @return true si la casilla en la posición dada es amarilla, false en caso
+     * contrario.
+     * @throws IllegalArgumentException si el número de jugadores no está
+     * soportado.
+     */
     public boolean esCasillaAmarilla(int posicion) {
         switch (numJugadores) {
             case 2:
@@ -64,6 +79,15 @@ public class CasillaPintar {
         }
     }
 
+    /**
+     * Determina si una casilla específica es roja.
+     *
+     * @param posicion La posición de la casilla en el tablero.
+     * @return true si la casilla en la posición dada es roja, false en caso
+     * contrario.
+     * @throws IllegalArgumentException si el número de jugadores no está
+     * soportado.
+     */
     public boolean esCasillaRoja(int posicion) {
         switch (numJugadores) {
             case 2:
